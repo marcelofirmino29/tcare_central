@@ -9,6 +9,8 @@ venv
 static/
 media/
 
+#configurações locais
+central/local_settings.py
 # Backup files # 
 *.bak 
 _backup
