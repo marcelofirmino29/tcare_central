@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
+    # Inclui as URLs definidas no aplicativo 'home'
     path('', include('home.urls')),
+    # Rota para a página de administração do Django
     path('admin/', admin.site.urls),
 ]

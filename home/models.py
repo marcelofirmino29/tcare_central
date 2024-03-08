@@ -167,3 +167,24 @@ class Endereco(models.Model):
     def __str__(self):
         return f"{self.tipo}: {self.logradouro}, {self.numero}, {self.bairro}, {self.cidade} - {self.uf}"
     
+
+"""
+Este código define uma série de modelos em Django que representam diferentes entidades de um sistema. Aqui está uma visão geral do que acontece em cada seção:
+
+Importações e Definição de Modelos:
+
+O código começa importando models do Django e o módulo uuid.
+Em seguida, são definidos vários modelos Django que representam diferentes entidades do sistema, como TagBle, Local, Raspberry, Monitorado, LeituraTag, Objeto, Pessoa, Paciente, Acompanhante, Visitante, Funcionario, Recepcionista, Medico, Enfermeiro, Especialidade, MedicoEspecialidade e Endereco.
+Cada modelo possui campos que representam atributos da entidade correspondente, como nome, CPF, gênero, data de nascimento, etc. Além disso, existem campos relacionais como chaves estrangeiras e campos de muitos para muitos.
+Herança de Modelos:
+
+Alguns modelos, como Objeto, Pessoa, Recepcionista, Medico e Enfermeiro, herdam de Monitorado. Isso significa que eles têm todos os campos e métodos de Monitorado, além de campos e métodos adicionais específicos para cada subclasse.
+Definição de Campos e Métodos:
+
+Os modelos definem diferentes tipos de campos, como CharField, UUIDField, IntegerField, DecimalField, DateField, DateTimeField, etc., para armazenar diferentes tipos de dados.
+Além disso, alguns modelos definem métodos especiais, como __str__, para retornar representações em string dos objetos.
+Relacionamentos entre Modelos:
+
+Os modelos estão interconectados por meio de chaves estrangeiras (ForeignKey) e chaves únicas (OneToOneField). Por exemplo, LeituraTag está relacionado com TagBle, Raspberry, Monitorado e Local.
+Em resumo, este código define a estrutura de dados de um sistema em Django, representando diferentes entidades e seus relacionamentos. Esses modelos podem ser usados para persistir dados e realizar operações de banco de dados dentro de um aplicativo Django.
+"""

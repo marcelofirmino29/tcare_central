@@ -3,72 +3,98 @@ from home import models
 
 @admin.register(models.TagBle)
 class TagBleAdmin(admin.ModelAdmin):
-    list_display = ('id','uuid_tag', 'status')
+    """
+    Classe de administração para o modelo TagBle.
+    """
+    list_display = ('id', 'uuid_tag', 'status')
     search_fields = ('uuid_tag',)
 
 
 @admin.register(models.Raspberry)
 class RaspberryAdmin(admin.ModelAdmin):
-    list_display = ('id','local')
+    """
+    Classe de administração para o modelo Raspberry.
+    """
+    list_display = ('id', 'local')
     search_fields = ('local',)
-
 
 
 @admin.register(models.LeituraTag)
 class LeituraTagAdmin(admin.ModelAdmin):
+    """
+    Classe de administração para o modelo LeituraTag.
+    """
     list_display = ('tag_ble', 'raspberry', 'data_leitura', 'monitorado', 'local')
     search_fields = ('tag_ble', 'raspberry', 'monitorado', 'local')
 
-    #def nome(self,obj):
-    #    return obj.monitorado
-    
-   # def local(self, obj):
-     #   return obj.raspberry.local
 
 @admin.register(models.Local)
 class LocalAdmin(admin.ModelAdmin):
+    """
+    Classe de administração para o modelo Local.
+    """
     list_display = ('localizacao',)
-
 
 
 @admin.register(models.Objeto)
 class ObjetoAdmin(admin.ModelAdmin):
-    list_display = ('id','descricao','tag_ble','valor')
-
-
-class PessoaAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'cpf', 'genero', 'data_nascimento', 'telefone','tag_ble')
-    search_fields = ('nome', 'cpf')
+    """
+    Classe de administração para o modelo Objeto.
+    """
+    list_display = ('id', 'descricao', 'tag_ble', 'valor')
 
 
 @admin.register(models.Funcionario)
 class FuncionarioAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'tag_ble','cpf', 'genero', 'data_nascimento', 'telefone', 'matricula', 'salario', 'data_admissao', 'status', 'setor')
+    """
+    Classe de administração para o modelo Funcionario.
+    """
+    list_display = ('nome', 'tag_ble', 'cpf', 'genero', 'data_nascimento', 'telefone', 'matricula', 'salario', 'data_admissao', 'status', 'setor')
+
 
 @admin.register(models.Paciente)
 class PacienteAdmin(admin.ModelAdmin):
+    """
+    Classe de administração para o modelo Paciente.
+    """
     list_display = ('nome', 'cpf', 'genero', 'data_nascimento', 'telefone', 'numero_quarto')
+
 
 @admin.register(models.Acompanhante)
 class AcompanhanteAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'tag_ble','cpf', 'genero', 'data_nascimento', 'telefone', 'relacionamento', 'paciente_acomp')
+    """
+    Classe de administração para o modelo Acompanhante.
+    """
+    list_display = ('nome', 'tag_ble', 'cpf', 'genero', 'data_nascimento', 'telefone', 'relacionamento', 'paciente_acomp')
 
-    def paciente(self, obj):
-        return obj.paciente_acomp.nome
 
 @admin.register(models.Visitante)
 class VisitanteAdmin(admin.ModelAdmin):
-    list_display = ('nome','tag_ble', 'cpf', 'genero', 'data_nascimento', 'telefone', 'motivo_visita', 'paciente_vis')
+    """
+    Classe de administração para o modelo Visitante.
+    """
+    list_display = ('nome', 'tag_ble', 'cpf', 'genero', 'data_nascimento', 'telefone', 'motivo_visita', 'paciente_vis')
+
 
 @admin.register(models.Endereco)
 class EnderecoAdmin(admin.ModelAdmin):
+    """
+    Classe de administração para o modelo Endereco.
+    """
     list_display = ('tipo', 'cep', 'logradouro', 'numero', 'bairro', 'cidade', 'uf', 'pessoa')
-
-    #def nome_pessoa(self, obj):
-      #  return obj.pessoa.nome
 
 
 @admin.register(models.Medico)
 class MedicoAdmin(admin.ModelAdmin):
-    list_display = ('nome','tag_ble', 'cpf', 'genero', 'data_nascimento', 'telefone', 'matricula', 'salario', 'data_admissao', 'status', 'setor', 'especialidade')
+    """
+    Classe de administração para o modelo Medico.
+    """
+    list_display = ('nome', 'tag_ble', 'cpf', 'genero', 'data_nascimento', 'telefone', 'matricula', 'salario', 'data_admissao', 'status', 'setor', 'especialidade')
 
+"""
+Neste código:
+
+Cada classe de administração é documentada com uma breve descrição do modelo correspondente.
+A lista de campos de exibição (list_display) e campos de pesquisa (search_fields) são definidos para cada classe, especificando como os modelos devem ser exibidos e pesquisados na interface de administração do Django.
+Essa documentação ajuda os desenvolvedores a entender o propósito de cada classe de administração e como ela está configurada para trabalhar com os modelos Django correspondentes.
+"""

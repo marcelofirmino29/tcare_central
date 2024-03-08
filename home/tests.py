@@ -3,6 +3,10 @@ from django.test import TestCase
 from django.test import TestCase
 from models import Pessoa, Paciente
 
+
+"""
+DESCONSIDERAR, POR ORA
+"""
 class PessoaTestCase(TestCase):
     def setUp(self):
         Pessoa.objects.create(nome="João", cpf="123.456.789-00", genero="M", data_nascimento="1990-01-01", telefone="12345-6789")
