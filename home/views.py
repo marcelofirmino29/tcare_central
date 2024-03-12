@@ -1,27 +1,41 @@
 from django.shortcuts import render
-from home.models import TagBle
+from home.models import TagBle, Pessoa
+from django.core.paginator import Paginator
 
 def index(request):
-    """
-    Função de visualização para renderizar a página inicial.
-
-    Parameters:
-        request (HttpRequest): O objeto HttpRequest para a solicitação HTTP.
-
-    Returns:
-        HttpResponse: Uma resposta HTTP renderizada com o conteúdo da página inicial.
-    """
-    # Recupera todas as tags com status 'novo' e as ordena por ID em ordem decrescente
-    tags = TagBle.objects.filter(status='novo').order_by('-id')
-
     # Define o contexto com as tags recuperadas
     context = {
-        'tags': tags,
+        'site_title': 'Home | ',
     }
 
     # Renderiza o template 'home/index.html' com o contexto e retorna a resposta
     return render(request, 'home/index.html', context)
 
+def get_tags(request):
+    tags_ble = TagBle.objects.filter(status='novo').order_by('-id')
+    
+    paginator = Paginator(tags_ble, 10)  
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    # Define o contexto com as tags recuperadas
+    context = {
+        'page_obj': page_obj,
+        'site_title': 'Tags | ',
+    }
+
+    # Renderiza o template 'home/index.html' com o contexto e retorna a resposta
+    return render(request, 'home/tags.html', context)
+
+def get_pessoas(request):
+    pessoas = Pessoa.objects.all()
+    #print(pessoas.query)
+
+    context = {
+        'pessoas': pessoas,
+        'site_title': 'Pessoas | ',
+    }
+    return render(request,'home/pessoas.html', context)
 
 """
 Neste código:

@@ -4,6 +4,8 @@ from home import views
 urlpatterns = [
     # Define a rota raiz que corresponde à função 'index' no arquivo 'views.py' dentro do aplicativo 'home'
     path('',views.index, name='index'),
+    path('tags/',views.get_tags, name='tags'),
+    path('pessoas/',views.get_pessoas, name='pessoas'),
 ]
 
 

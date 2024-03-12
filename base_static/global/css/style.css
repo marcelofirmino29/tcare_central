@@ -3,11 +3,11 @@
     --link-dark-color: rgb(0, 83, 134);
     --link-light-color: rgb(156, 217, 255);
     --clr-white: rgb(245, 245, 255);
-    --clr-black: rgb(0, 0, 30);
+    --clr-black: rgb(0, 90, 80);
     --clr-light-gray: rgb(230, 230, 245);
-    --clr-dark-shadow-5: rgba(0, 0, 10, 5%);
-    --clr-dark-shadow-10: rgba(0, 0, 10, 10%);
-    --clr-dark-shadow-20: rgba(0, 0, 10, 20%);
+    --clr-dark-shadow-5: rgba(0, 90, 80, 5%);
+    --clr-dark-shadow-10: rgba(0, 90, 80, 10%);
+    --clr-dark-shadow-20: rgba(0, 90, 80, 20%);
     --clr-light-shadow-5: rgba(200, 200, 255, 5%);
     --clr-light-shadow-10: rgba(200, 200, 255, 10%);
     --clr-light-shadow-20: rgba(200, 200, 255, 20%);

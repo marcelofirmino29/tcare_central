@@ -1,39 +1,5 @@
 {% extends "global/base.html" %}
 
 {% block content %}
-    <!-- Este bloco representa o conteúdo específico desta página -->
-    <div class="responsive-table">
-        <table class="contacts-table">
-            <!-- Título da tabela -->
-            <caption class="table-caption">
-                Tags
-            </caption>
 
-            <!-- Cabeçalho da tabela -->
-            <thead>
-                <tr class="table-row table-row-header">
-                    <th class="table-header">ID</th>
-                    <th class="table-header">UUID</th>
-                    <th class="table-header">STATUS</th>
-                </tr>
-            </thead>
-
-            <!-- Corpo da tabela -->
-            <tbody>
-                <!-- Loop sobre cada tag para exibir na tabela -->
-                {% for tag in tags %}
-                    <tr class="table-row">
-                        <!-- Coluna de ID -->
-                        <td class="table-cel">{{tag.id}}</td>
-                        <!-- Coluna de UUID -->
-                        <td class="table-cel">{{tag.uuid_tag}}</td>
-                        <!-- Coluna de status -->
-                        <td class="table-cel">{{tag.status}}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
 {% endblock content %}
-
- 
