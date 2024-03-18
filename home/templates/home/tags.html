@@ -1,7 +1,18 @@
+
 {% extends "global/base.html" %}
 
 {% block content %}
     <!-- Este bloco representa o conteúdo específico desta página -->
+    
+    <!-- Formulário de seleção para escolher entre todas as tags ou apenas aquelas com monitorado vinculado -->
+    <form method="get" action="{% url 'tags' %}">
+        <input type="radio" id="todas" name="filtro" value="todas" {% if filtro == 'todas' %}checked{% endif %}>
+        <label for="todas">Todas |</label>
+        <input type="radio" id="vinculadas" name="filtro" value="vinculadas" {% if filtro == 'vinculadas' %}checked{% endif %}>
+        <label for="vinculadas">Vinculadas |</label>
+        <button class="btn" type="submit">Filtrar</button>
+    </form>
+
     <div class="responsive-table">
         <table class="contacts-table">
             <!-- Título da tabela -->
@@ -25,11 +36,12 @@
                 {% for tag in page_obj %}
                     <tr class="table-row">
                         <!-- Coluna de ID -->
-                        <td class="table-cel">{{tag.id}}</td>
+                        <td class="table-cel">{{ tag.id }}</td>
                         <!-- Coluna de UUID -->
-                        <td class="table-cel">{{tag.uuid_tag}}</td>
+                        <td class="table-cel">{{ tag.uuid_tag }}</td>
                         <!-- Coluna de status -->
-                        <td class="table-cel">{{tag.status}}</td>
+                        <td class="table-cel">{{ tag.status }}</td>
+                        <!-- Coluna de monitorado -->
                         <td class="table-cel">{{ tag.monitorado }}</td>
                     </tr>
                 {% endfor %}
@@ -37,5 +49,3 @@
         </table>
     </div>
 {% endblock content %}
-
- 

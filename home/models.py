@@ -3,6 +3,7 @@ import uuid
 
 class TagBle(models.Model):
     uuid_tag = models.UUIDField(default=uuid.uuid4, unique=True)
+    show = models.BooleanField(default=True)
     
     CHOICES = [
         ('novo', 'Novo'),
@@ -57,6 +58,7 @@ class Raspberry(models.Model):
     def __str__(self) -> str:
         return str(self.id)
 
+
 class Monitorado(models.Model):
     tag_ble = models.OneToOneField(TagBle, on_delete=models.PROTECT, null=True, blank=True)
 
@@ -105,6 +107,7 @@ class Pessoa(Monitorado):
     genero = models.CharField(max_length=1, choices=GENERO_CHOICES)
     data_nascimento = models.DateField()
     telefone = models.CharField(max_length=20)  # Considerando formato com DDD e número
+    email = models.EmailField(max_length=80)
 
     def __str__(self):
         return self.nome
@@ -113,13 +116,16 @@ class Pessoa(Monitorado):
 class Paciente(Pessoa):
     numero_quarto = models.IntegerField(blank=True, null=True)
 
+
 class Acompanhante(Pessoa):
     relacionamento = models.CharField(max_length=100)
     paciente_acomp = models.OneToOneField(Paciente, on_delete=models.PROTECT)
 
+
 class Visitante(Pessoa):
     motivo_visita = models.CharField(max_length=100)
     paciente_vis = models.ForeignKey(Paciente, on_delete=models.PROTECT)
+
 
 class Funcionario(Pessoa):
     STATUS_CHOICES = [
@@ -133,22 +139,26 @@ class Funcionario(Pessoa):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='ativo')
     setor = models.CharField(max_length=100)
 
+
 class Recepcionista(Funcionario):
     pass
 
+
 class Medico(Funcionario):
-    especialidade = models.CharField(max_length=100)
+    pass
+
 
 class Enfermeiro(Funcionario):
    pass
-
+"""
 class Especialidade(models.Model):
     descricao = models.CharField(max_length=50)
 
 class MedicoEspecialidade(models.Model):
     medico = models.ForeignKey(Medico, on_delete=models.CASCADE)
     especialidade = models.ForeignKey(Especialidade, on_delete=models.CASCADE)
-
+"""
+"""
 class Endereco(models.Model):
     TIPO_CHOICES = [
         ('residencial', 'Residencial'),
@@ -166,7 +176,7 @@ class Endereco(models.Model):
 
     def __str__(self):
         return f"{self.tipo}: {self.logradouro}, {self.numero}, {self.bairro}, {self.cidade} - {self.uf}"
-    
+"""   
 
 """
 Este código define uma série de modelos em Django que representam diferentes entidades de um sistema. Aqui está uma visão geral do que acontece em cada seção:

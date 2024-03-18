@@ -4,8 +4,16 @@ from home import views
 urlpatterns = [
     # Define a rota raiz que corresponde à função 'index' no arquivo 'views.py' dentro do aplicativo 'home'
     path('',views.index, name='index'),
-    path('tags/',views.get_tags, name='tags'),
+    path('tags/',views.tags, name='tags'),
     path('pessoas/',views.get_pessoas, name='pessoas'),
+    path('criar_tag/',views.criar_tag, name='criar_tag'),
+    path('criar_paciente/',views.criar_paciente, name='criar_paciente'),
+
+    # user
+    path('usuario/registrar/',views.registrar_usuario, name='registrar_usuario'),
+    path('usuario/login/',views.login_view, name='login'),
+    path('usuario/logout/',views.logout_view, name='logout'),
+
 ]
 
 

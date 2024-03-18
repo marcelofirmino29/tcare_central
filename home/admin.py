@@ -6,7 +6,7 @@ class TagBleAdmin(admin.ModelAdmin):
     """
     Classe de administração para o modelo TagBle.
     """
-    list_display = ('id', 'uuid_tag', 'status')
+    list_display = ('id', 'uuid_tag', 'status', 'show',)
     search_fields = ('uuid_tag',)
 
 
@@ -49,7 +49,7 @@ class FuncionarioAdmin(admin.ModelAdmin):
     """
     Classe de administração para o modelo Funcionario.
     """
-    list_display = ('nome', 'tag_ble', 'cpf', 'genero', 'data_nascimento', 'telefone', 'matricula', 'salario', 'data_admissao', 'status', 'setor')
+    list_display = ('nome', 'tag_ble', 'cpf', 'genero', 'data_nascimento', 'telefone', 'email','matricula', 'salario', 'data_admissao', 'status', 'setor')
 
 
 @admin.register(models.Paciente)
@@ -57,7 +57,7 @@ class PacienteAdmin(admin.ModelAdmin):
     """
     Classe de administração para o modelo Paciente.
     """
-    list_display = ('nome', 'tag_ble','cpf', 'genero', 'data_nascimento', 'telefone', 'numero_quarto')
+    list_display = ('nome', 'tag_ble','cpf', 'genero', 'data_nascimento', 'email','telefone', 'numero_quarto')
 
 
 @admin.register(models.Acompanhante)
@@ -65,7 +65,7 @@ class AcompanhanteAdmin(admin.ModelAdmin):
     """
     Classe de administração para o modelo Acompanhante.
     """
-    list_display = ('nome', 'tag_ble', 'cpf', 'genero', 'data_nascimento', 'telefone', 'relacionamento', 'paciente_acomp')
+    list_display = ('nome', 'tag_ble', 'cpf', 'genero', 'data_nascimento', 'telefone','email', 'relacionamento', 'paciente_acomp')
 
 
 @admin.register(models.Visitante)
@@ -73,23 +73,21 @@ class VisitanteAdmin(admin.ModelAdmin):
     """
     Classe de administração para o modelo Visitante.
     """
-    list_display = ('nome', 'tag_ble', 'cpf', 'genero', 'data_nascimento', 'telefone', 'motivo_visita', 'paciente_vis')
+    list_display = ('nome', 'tag_ble', 'cpf', 'genero', 'data_nascimento','email', 'telefone', 'motivo_visita', 'paciente_vis')
 
-
+"""
 @admin.register(models.Endereco)
 class EnderecoAdmin(admin.ModelAdmin):
-    """
-    Classe de administração para o modelo Endereco.
-    """
+   
     list_display = ('tipo', 'cep', 'logradouro', 'numero', 'bairro', 'cidade', 'uf', 'pessoa')
 
-
+"""
 @admin.register(models.Medico)
 class MedicoAdmin(admin.ModelAdmin):
     """
     Classe de administração para o modelo Medico.
     """
-    list_display = ('nome', 'tag_ble', 'cpf', 'genero', 'data_nascimento', 'telefone', 'matricula', 'salario', 'data_admissao', 'status', 'setor', 'especialidade')
+    list_display = ('nome', 'tag_ble', 'cpf', 'genero', 'data_nascimento', 'telefone', 'email','matricula', 'salario', 'data_admissao', 'status', 'setor', )
 
 """
 Neste código:

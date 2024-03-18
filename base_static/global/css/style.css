@@ -1,6 +1,6 @@
 :root {
     --spacing: 1.5rem;
-    --link-dark-color: rgb(0, 83, 134);
+    --link-dark-color: rgb(0, 90, 80);
     --link-light-color: rgb(156, 217, 255);
     --clr-white: rgb(245, 245, 255);
     --clr-black: rgb(0, 90, 80);
@@ -238,7 +238,12 @@
     background: rgba(255, 255, 0, 0.3);
     border: 1px solid rgba(255, 255, 0, 90%);
   }
-  
+
+  .message.info {
+    background: rgba(0, 0, 255, 0.3);
+    border: 1px solid rgba(33, 33, 255, 90%);
+  }
+
   .form-wrapper {
     max-width: 60rem;
     margin: var(--spacing) auto;
