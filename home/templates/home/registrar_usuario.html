@@ -27,3 +27,7 @@
         </form>
     </div>
 {% endblock content %}
+
+{% block nao_autenticado %}
+    <p>Você não está logado. Por favor, faça o <a href="{% url 'login' %}">login</a> para acessar este conteúdo.</p> 
+{% endblock nao_autenticado %}

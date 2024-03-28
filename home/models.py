@@ -61,6 +61,7 @@ class Raspberry(models.Model):
 
 class Monitorado(models.Model):
     tag_ble = models.OneToOneField(TagBle, on_delete=models.PROTECT, null=True, blank=True)
+    local_atual = models.ForeignKey(Local, on_delete=models.PROTECT, null=True, blank=True)
 
     def nome_ou_descricao(self, obj):
         if hasattr(obj, 'objeto'):
@@ -83,8 +84,17 @@ class LeituraTag(models.Model):
     data_leitura = models.DateTimeField(auto_now_add=True)
     local = models.ForeignKey(Local, on_delete=models.PROTECT,default=1)
 
+    def get_leitura_como_array(self):
+        return [
+            self.tag_ble_id,
+            self.raspberry_id,
+            self.data_leitura,
+            self.monitorado_id,
+            self.local_id
+        ]
     def __str__(self) -> str:
         return f'{self.tag_ble, self.raspberry, self.data_leitura, self.monitorado, self.local}'
+    
 
     class Meta:
         verbose_name_plural = 'Leituras de Tags'

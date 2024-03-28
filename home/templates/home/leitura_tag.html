@@ -1,0 +1,14 @@
+{% extends "global/base.html" %}
+
+{% block content %}
+    <h1>Simulação de Leitura de Tag</h1>
+    <p>Tag BLE lida: {{ leitura.tag_ble }}</p>
+    <p>Monitorado: {{ leitura.monitorado }}</p>
+    <p>Dispositivo Raspberry: {{ leitura.raspberry }}</p>
+    <p>Data da leitura: {{ leitura.data_leitura }}</p>
+    <p>Local: {{ leitura.local }}</p>
+{% endblock content %}
+
+{% block nao_autenticado %}
+    <p>Você não está logado. Por favor, faça o <a href="{% url 'login' %}">login</a> para acessar este conteúdo.</p> 
+{% endblock nao_autenticado %}

@@ -33,7 +33,7 @@ class LocalAdmin(admin.ModelAdmin):
     """
     Classe de administração para o modelo Local.
     """
-    list_display = ('localizacao',)
+    list_display = ('id','localizacao',)
 
 
 @admin.register(models.Objeto)
@@ -42,6 +42,10 @@ class ObjetoAdmin(admin.ModelAdmin):
     Classe de administração para o modelo Objeto.
     """
     list_display = ('id', 'descricao', 'tag_ble', 'valor')
+
+@admin.register(models.Pessoa)
+class PessoaAdmin(admin.ModelAdmin):
+        list_display = ('nome', 'tag_ble','cpf', 'genero','local_atual','data_nascimento', 'email','telefone')
 
 
 @admin.register(models.Funcionario)
@@ -57,7 +61,7 @@ class PacienteAdmin(admin.ModelAdmin):
     """
     Classe de administração para o modelo Paciente.
     """
-    list_display = ('nome', 'tag_ble','cpf', 'genero', 'data_nascimento', 'email','telefone', 'numero_quarto')
+    list_display = ('nome', 'tag_ble','cpf', 'genero','local_atual','data_nascimento', 'email','telefone', 'numero_quarto')
 
 
 @admin.register(models.Acompanhante)
@@ -87,8 +91,15 @@ class MedicoAdmin(admin.ModelAdmin):
     """
     Classe de administração para o modelo Medico.
     """
-    list_display = ('nome', 'tag_ble', 'cpf', 'genero', 'data_nascimento', 'telefone', 'email','matricula', 'salario', 'data_admissao', 'status', 'setor', )
+    list_display = ('nome', 'tag_ble', 'cpf', 'genero','local_atual', 'data_nascimento', 'telefone', 'email','matricula', 'salario', 'data_admissao', 'status', 'setor', )
 
+
+@admin.register(models.Enfermeiro)
+class EnfermeiroAdmin(admin.ModelAdmin):
+    """
+    Classe de administração para o modelo Enfermeiro.
+    """
+    list_display = ('nome', 'tag_ble', 'cpf', 'genero','local_atual', 'data_nascimento', 'telefone', 'email','matricula', 'salario', 'data_admissao', 'status', 'setor', )
 """
 Neste código:
 

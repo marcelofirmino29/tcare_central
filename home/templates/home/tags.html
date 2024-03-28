@@ -11,7 +11,10 @@
         <input type="radio" id="vinculadas" name="filtro" value="vinculadas" {% if filtro == 'vinculadas' %}checked{% endif %}>
         <label for="vinculadas">Vinculadas |</label>
         <button class="btn" type="submit">Filtrar</button>
+        <a class="btn" href="{% url "criar_tag" %}">Adicionar nova TAG</a>
     </form>
+
+   
 
     <div class="responsive-table">
         <table class="contacts-table">
@@ -49,3 +52,7 @@
         </table>
     </div>
 {% endblock content %}
+
+{% block nao_autenticado %}
+    <p>Você não está logado. Por favor, faça o <a href="{% url 'login' %}">login</a> para acessar este conteúdo.</p> 
+{% endblock nao_autenticado %}

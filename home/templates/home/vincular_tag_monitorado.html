@@ -1,0 +1,36 @@
+{% extends "global/base.html" %}
+
+{% block content %}
+    <h1>Vincular Tag a Monitorado</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        {% if tags_ble %}
+            <label for="tag">Selecione uma Tag:</label>
+            <select name="tag_id" id="tag">
+                {% for tag in tags_ble %}
+                    <option value="{{ tag.id }}">{{ tag }}</option>
+                {% endfor %}
+            </select><br><br>
+        {% else %}
+            <p>Não há monitorados disponíveis.</p>
+        {% endif %}
+        {% if monitorados %}
+            <label for="monitorado">Selecione um Monitorado:</label>
+            <select name="monitorado_id" id="monitorado">
+            {% for monitorado in monitorados %}
+                <option value="{{ monitorado.id }}">{{ monitorado }}</option>
+            {% endfor %}
+            </select><br><br>
+        {% else %}
+            <p>Não há monitorados disponíveis.</p>
+        {% endif %}
+
+        <button type="submit">Vincular</button>
+    </form>
+{% endblock content %}
+
+{% block nao_autenticado %}
+    <p>Você não está logado. Por favor, faça o <a href="{% url 'login' %}">login</a> para acessar este conteúdo.</p> 
+{% endblock nao_autenticado %}

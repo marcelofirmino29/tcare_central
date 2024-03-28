@@ -1,0 +1,79 @@
+{% extends "global/base.html" %}
+
+{% block content %}
+    <h1>Lista de Leituras de Tags</h1>
+        
+    <form method="GET">
+        <label for="monitorado">Filtrar por Pessoa:</label>
+        <select name="monitorado" id="monitorado">
+            <option value="">Todas as Pessoas</option>
+            <!-- Aqui você pode iterar sobre as pessoas disponíveis -->
+            {% for monitorado in monitorados %}
+                <option value="{{ monitorado.id }}">{{ monitorado }}</option>
+            {% endfor %}
+        </select>
+        
+        <label for="local">Filtrar por Local:</label>
+        <select name="local" id="local">
+            <option value="">Todos os Locais</option>
+            <!-- Aqui você pode iterar sobre os locais disponíveis -->
+            {% for local in locais %}
+                <option value="{{ local.id }}">{{ local.localizacao }}</option>
+            {% endfor %}
+        </select>
+        
+        <!-- Campo de entrada para data -->
+        <label for="data">Filtrar por Data:</label>
+        <input type="date" name="data" id="data"><br><br>
+
+        <button type="submit">Filtrar</button>
+    </form>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID Leitura</th>
+                <th>Tag BLE</th>
+                <th>Monitorado</th>
+                <th>Raspberry</th>
+                <th>Local</th>
+                <th>Data da Leitura</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Iterar sobre as leituras e exibir -->
+            {% for leitura in leituras %}
+                <tr>
+                    <td>{{ leitura.id }}</td>
+                    <td>{{ leitura.tag_ble }}</td>
+                    <td>{{ leitura.monitorado }}</td>
+                    <td>{{ leitura.raspberry }}</td>
+                    <td>{{ leitura.local }}</td>
+                    <td>{{ leitura.data_leitura }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if leituras.has_previous %}
+                <a href="?page=1">&laquo; Primeira</a>
+                <a href="?page={{ leituras.previous_page_number }}">Anterior</a>
+            {% endif %}
+
+            <span class="current">
+                Página {{ leituras.number }} de {{ leituras.paginator.num_pages }}.
+            </span>
+
+            {% if leituras.has_next %}
+                <a href="?page={{ leituras.next_page_number }}">Próxima</a>
+                <a href="?page={{ leituras.paginator.num_pages }}">Última &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+{% endblock content %}
+
+{% block nao_autenticado %}
+    <p>Você não está logado. Por favor, faça o <a href="{% url 'login' %}">login</a> para acessar este conteúdo.</p> 
+{% endblock nao_autenticado %}
