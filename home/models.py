@@ -62,6 +62,7 @@ class Raspberry(models.Model):
 class Monitorado(models.Model):
     tag_ble = models.OneToOneField(TagBle, on_delete=models.PROTECT, null=True, blank=True)
     local_atual = models.ForeignKey(Local, on_delete=models.PROTECT, null=True, blank=True)
+    
 
     def nome_ou_descricao(self, obj):
         if hasattr(obj, 'objeto'):
@@ -127,6 +128,7 @@ class Paciente(Pessoa):
     numero_quarto = models.IntegerField(blank=True, null=True)
 
 
+
 class Acompanhante(Pessoa):
     relacionamento = models.CharField(max_length=100)
     paciente_acomp = models.OneToOneField(Paciente, on_delete=models.PROTECT)
@@ -151,15 +153,14 @@ class Funcionario(Pessoa):
 
 
 class Recepcionista(Funcionario):
-    pass
+    ...
 
 
 class Medico(Funcionario):
-    pass
-
+    ...
 
 class Enfermeiro(Funcionario):
-   pass
+    ...
 """
 class Especialidade(models.Model):
     descricao = models.CharField(max_length=50)

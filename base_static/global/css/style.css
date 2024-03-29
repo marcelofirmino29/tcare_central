@@ -1,4 +1,135 @@
-:root {
+.logo-menu{
+  border-radius: 50%;
+}
+
+.navbar-color{
+  background-color: rgb(0, 90, 80);
+  
+}
+
+a:hover{
+  background-color: rgb(220, 230, 250); /* Cor de fundo quando passar o mouse */
+  color: rgb(0, 90, 80); /* Cor do texto quando passar o mouse */
+  border-radius: 5px; /* Borda arredondada quando passar o mouse */
+  text-decoration: none; /* Remover sublinhado quando passar o mouse */
+  padding: 4px;
+}
+
+/* Cor de fundo do menu */
+
+
+/* Cor do texto do menu */
+.navbar-color .navbar-nav .nav-link {
+  color: #ffffff !important;
+}
+
+.navbar a {
+  color: #f8f9fa;
+}
+
+/* Cor de fundo do menu suspenso */
+.navbar-color .dropdown-menu {
+  background-color:rgb(0, 90, 80) !important;
+}
+
+/* Cor do texto do menu suspenso */
+.navbar-color .dropdown-menu .dropdown-item {
+  color: #ffffff !important;
+}
+
+/* Cor de fundo do menu suspenso ao passar o mouse */
+.navbar-color .dropdown-menu .dropdown-item:hover {
+  background-color: #fff !important;
+  color:rgb(0, 90, 80)
+}
+
+/* Cor do texto do menu quando o mouse passa sobre ele */
+.navbar-color .navbar-nav .nav-link:hover {
+  color: rgb(0, 90, 80) !important; /* Cor desejada ao passar o mouse */
+}
+
+/* Cor do texto do menu suspenso quando o mouse passa sobre ele */
+.navbar-color .dropdown-menu .dropdown-item:hover {
+  color: rgb(0, 90, 80) !important; /* Cor desejada ao passar o mouse */
+}
+
+
+/* Estilos para a paginação */
+.pagination {
+  margin: 20px 0;
+}
+
+.pagination .page-item .page-link {
+  color: rgb(0, 90, 80);  /* Cor do texto dos links */
+  background-color: #fff; /* Cor de fundo dos links */
+  border: 1px solid #ddd; /* Cor da borda dos links */
+}
+
+.pagination .page-item .page-link:hover {
+  color: #fff; /* Cor do texto dos links ao passar o mouse */
+  background-color:rgb(0, 90, 80); /* Cor de fundo dos links ao passar o mouse */
+  border-color: rgb(220, 230, 250); /* Cor da borda dos links ao passar o mouse */
+}
+
+.pagination .page-item.active .page-link {
+  z-index: 1;
+  color: #fff; /* Cor do texto dos links ativos */
+  background-color: rgb(0, 90, 80); /* Cor de fundo dos links ativos */
+  border-color: rgb(220, 230, 250);/* Cor da borda dos links ativos */
+}
+
+.pagination .page-item.disabled .page-link {
+  color: #868e96; /* Cor do texto dos links desativados */
+  pointer-events: none;
+  cursor: not-allowed;
+  background-color: #fff; /* Cor de fundo dos links desativados */
+  border-color: #ddd; /* Cor da borda dos links desativados */
+}
+
+
+
+
+
+
+.custom-table thead th {
+  background-color:rgb(0, 90, 80); /* Cor de fundo do cabeçalho da tabela */
+  color: #ffffff; /* Cor do texto do cabeçalho da tabela */
+}
+
+.custom-table tbody tr:nth-child(odd) {
+  background-color: #f8f9fa; /* Cor de fundo das linhas ímpares da tabela */
+}
+
+.custom-table tbody tr:hover {
+  background-color: rgb(100, 200, 150); /* Cor de fundo das linhas ao passar o mouse sobre elas */
+}
+
+.filtro-leitura {
+  padding: 15px;
+}
+
+/* Estilo para o botão Filtrar */
+.custom-button {
+  background-color: rgb(0, 90, 80);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Mudança de cor ao passar o mouse sobre o botão */
+.custom-button:hover {
+  background-color: transparent;
+  color: rgb(0, 90, 80);
+  border: 1px solid;
+  border-color: rgb(0, 90, 80);
+  text-decoration: double;
+}
+
+
+/* :root {
     --spacing: 1.5rem;
     --link-dark-color: rgb(0, 90, 80);
     --link-light-color: rgb(156, 217, 255);
@@ -316,4 +447,5 @@
   .btn:active {
     filter: brightness(80%);
     box-shadow: 0 0 5px var(--link-dark-color);
-  }
+  } */
+

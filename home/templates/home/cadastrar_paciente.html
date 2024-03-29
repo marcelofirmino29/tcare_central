@@ -1,7 +1,7 @@
 {% extends "global/base.html" %}
 
 {% block content %}
-    <form action="{% url "criar_paciente" %}" method="POST">
+    <form action="{% url "cadastrar_paciente" %}" method="POST">
         {% csrf_token %}
 
         {% for field in form %}

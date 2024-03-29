@@ -1,79 +1,112 @@
 {% extends "global/base.html" %}
 
 {% block content %}
-    <h1>Lista de Leituras de Tags</h1>
-        
-    <form method="GET">
-        <label for="monitorado">Filtrar por Pessoa:</label>
-        <select name="monitorado" id="monitorado">
-            <option value="">Todas as Pessoas</option>
-            <!-- Aqui você pode iterar sobre as pessoas disponíveis -->
-            {% for monitorado in monitorados %}
-                <option value="{{ monitorado.id }}">{{ monitorado }}</option>
-            {% endfor %}
-        </select>
-        
-        <label for="local">Filtrar por Local:</label>
-        <select name="local" id="local">
-            <option value="">Todos os Locais</option>
-            <!-- Aqui você pode iterar sobre os locais disponíveis -->
-            {% for local in locais %}
-                <option value="{{ local.id }}">{{ local.localizacao }}</option>
-            {% endfor %}
-        </select>
-        
-        <!-- Campo de entrada para data -->
-        <label for="data">Filtrar por Data:</label>
-        <input type="date" name="data" id="data"><br><br>
 
-        <button type="submit">Filtrar</button>
-    </form>
+    <div class="container mt-5 filtro-leitura">
+        <h1 class="text-center">Lista de Leituras de Tags</h1>
+        
+        <form method="GET" class="mb-4">
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <label for="monitorado" class="form-label">Filtrar por Pessoa:</label>
+                    <select name="monitorado" id="monitorado" class="form-select">
+                        <option value="">Todas as Pessoas</option>
+                        <!-- Aqui você pode iterar sobre as pessoas disponíveis -->
+                        {% for monitorado in monitorados %}
+                            <option value="{{ monitorado.id }}">{{ monitorado }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="local" class="form-label">Filtrar por Local:</label>
+                    <select name="local" id="local" class="form-select">
+                        <option value="">Todos os Locais</option>
+                        <!-- Aqui você pode iterar sobre os locais disponíveis -->
+                        {% for local in locais %}
+                            <option value="{{ local.id }}">{{ local.localizacao }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="data" class="form-label">Filtrar por Data:</label>
+                    <input type="date" name="data" id="data" class="form-control">
+                </div>
 
-    <table border="1">
-        <thead>
+                <div class="col-md-3 text-center">
+                    <button type="submit" class="btn btn-lg btn-primary custom-button">Filtrar</button>
+                </div>
+            </div>
+    
+            
+        </form>
+    </div>
+    
+
+    <table class="table table-hover custom-table">
+        <thead class="thead-dark">
             <tr>
-                <th>ID Leitura</th>
-                <th>Tag BLE</th>
-                <th>Monitorado</th>
-                <th>Raspberry</th>
-                <th>Local</th>
-                <th>Data da Leitura</th>
+                <th scope="col">ID Leitura</th>
+                <th scope="col">Tag BLE</th>
+                <th scope="col">Monitorado</th>
+                <th scope="col">Raspberry</th>
+                <th scope="col">Local</th>
+                <th scope="col">Data da Leitura</th>
             </tr>
         </thead>
         <tbody>
             <!-- Iterar sobre as leituras e exibir -->
             {% for leitura in leituras %}
-                <tr>
-                    <td>{{ leitura.id }}</td>
-                    <td>{{ leitura.tag_ble }}</td>
-                    <td>{{ leitura.monitorado }}</td>
-                    <td>{{ leitura.raspberry }}</td>
-                    <td>{{ leitura.local }}</td>
-                    <td>{{ leitura.data_leitura }}</td>
-                </tr>
+            <tr>
+                <td>{{ leitura.id }}</td>
+                <td>{{ leitura.tag_ble }}</td>
+                <td>{{ leitura.monitorado }}</td>
+                <td>{{ leitura.raspberry }}</td>
+                <td>{{ leitura.local }}</td>
+                <td>{{ leitura.data_leitura }}</td>
+            </tr>
             {% endfor %}
         </tbody>
     </table>
+    
 
-    <div class="pagination">
-        <span class="step-links">
+    <nav aria-label="..." class="text-center">
+        <ul class="pagination">
             {% if leituras.has_previous %}
-                <a href="?page=1">&laquo; Primeira</a>
-                <a href="?page={{ leituras.previous_page_number }}">Anterior</a>
+                <li class="page-item">
+                    <a class="page-link" href="?page=1">&laquo; Primeira</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ leituras.previous_page_number }}">Anterior</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">&laquo; Primeira</span>
+                </li>
+                <li class="page-item disabled">
+                    <span class="page-link">Anterior</span>
+                </li>
             {% endif %}
-
-            <span class="current">
-                Página {{ leituras.number }} de {{ leituras.paginator.num_pages }}.
-            </span>
-
+    
+            <li class="page-item active">
+                <span class="page-link">Página {{ leituras.number }} de {{ leituras.paginator.num_pages }}</span>
+            </li>
+    
             {% if leituras.has_next %}
-                <a href="?page={{ leituras.next_page_number }}">Próxima</a>
-                <a href="?page={{ leituras.paginator.num_pages }}">Última &raquo;</a>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ leituras.next_page_number }}">Próxima</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ leituras.paginator.num_pages }}">Última &raquo;</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">Próxima</span>
+                </li>
+                <li class="page-item disabled">
+                    <span class="page-link">Última &raquo;</span>
+                </li>
             {% endif %}
-        </span>
-    </div>
+        </ul>
+    </nav>
 {% endblock content %}
 
-{% block nao_autenticado %}
-    <p>Você não está logado. Por favor, faça o <a href="{% url 'login' %}">login</a> para acessar este conteúdo.</p> 
-{% endblock nao_autenticado %}

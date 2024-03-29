@@ -58,7 +58,7 @@ def pessoas(request):
     return render(request,'home/pessoas.html', context)
 
 @login_required(login_url='login')
-def criar_tag(request):
+def cadastrar_tag(request):
     if request.method == 'POST':
         form = forms.TagBleForm(request.POST)
         context = {
@@ -69,15 +69,15 @@ def criar_tag(request):
             form.save()
             return redirect('tags')
         
-        return render(request, 'home/criar_tag.html', context)
+        return render(request, 'home/cadastrar_tag.html', context)
     
     context = {
         'form': forms.TagBleForm()
     }
-    return render(request, 'home/criar_tag.html', context)
+    return render(request, 'home/cadastrar_tag.html', context)
 
 @login_required(login_url='login')
-def criar_paciente(request):
+def cadastrar_paciente(request):
     
     if request.method == 'POST':
         form = forms.PacienteForm(request.POST)
@@ -88,12 +88,12 @@ def criar_paciente(request):
         if form.is_valid():
             form.save()
 
-        return render(request, 'home/criar_paciente.html', context)
+        return render(request, 'home/cadastrar_paciente.html', context)
 
     context = {
         'form': forms.PacienteForm()
     }
-    return render(request, 'home/criar_paciente.html', context)
+    return render(request, 'home/cadastrar_paciente.html', context)
 
 @login_required(login_url='login')
 def registrar_usuario(request):
@@ -147,6 +147,21 @@ def logout_view(request):
 def dashboard(request):
     total_pessoas = Pessoa.objects.exclude(tag_ble=None).count()
     locais = Local.objects.all()
+    ultimas_leituras = LeituraTag.objects.order_by('-id').filter()[:50] #no contexto estou passando apenas 12 leituras
+    ultimos_pacientes = []
+    ultimos_acompanhantes = []
+    ultimos_medicos = []
+    for leitura in ultimas_leituras:
+        if Paciente.objects.filter(monitorado_ptr=leitura.monitorado):
+            ultimos_pacientes.append(leitura)
+        elif Acompanhante.objects.filter(monitorado_ptr=leitura.monitorado):
+            ultimos_acompanhantes.append(leitura)
+        elif Medico.objects.filter(monitorado_ptr=leitura.monitorado):
+            ultimos_medicos.append(leitura)
+
+
+
+
 
     pessoas_por_local = {}
 
@@ -155,6 +170,8 @@ def dashboard(request):
 
     for local in locais_com_pessoas:
         pessoas_por_local[local.localizacao] = Pessoa.objects.filter(local_atual=local).count()
+    
+    # Em seguida, extraímos os IDs dos pacientes associados a essas leituras
     
 
     pacientes = Paciente.objects.exclude(tag_ble=None)
@@ -209,6 +226,10 @@ def dashboard(request):
         'enfermeiros': enfermeiros,
         'total_enfermeiros': total_enfermeiros,
         'graph_html': graph_html,
+        'ultimas_leituras': ultimas_leituras[:12],
+        'ultimos_pacientes': ultimos_pacientes,
+        'ultimos_acompanhantes': ultimos_acompanhantes,
+        'ultimos_medicos': ultimos_medicos,
 
     }
     
@@ -252,26 +273,27 @@ def simula_leitura(request):
 
 @login_required(login_url='login')
 def leituras(request):
-    leituras = LeituraTag.objects.all()
+    leituras = LeituraTag.objects.all().order_by('id')
     monitorados = set(leitura.monitorado for leitura in leituras)
     locais = set(leitura.local for leitura in leituras)
+    
 
     # Filtrando por monitorado
     monitorado_id = request.GET.get('monitorado')
     if monitorado_id:
-        leituras = leituras.filter(monitorado_id=monitorado_id)
+        leituras = leituras.filter(monitorado_id=monitorado_id).order_by('id')
 
     # Filtrando por local
     local_id = request.GET.get('local')
     if local_id:
-        leituras = leituras.filter(local_id=local_id)
+        leituras = leituras.filter(local_id=local_id).order_by('id')
 
     # Filtrando por data
     data = request.GET.get('data')
 
     if data:
         # Supondo que a data seja passada no formato YYYY-MM-DD
-        leituras = leituras.filter(data_leitura__date=data)
+        leituras = leituras.filter(data_leitura__date=data).order_by('id')
 
 
     paginator = Paginator(leituras, 20)  # 20 leituras por página
@@ -287,7 +309,7 @@ def leituras(request):
     return render(request, 'home/leituras.html', context)
 
 @login_required(login_url='login')
-def vincular_tag_monitorado(request):
+def vincular_tag_pessoa(request):
 
     if request.method == 'POST':
         tag_id = request.POST.get('tag_id')
@@ -317,4 +339,4 @@ def vincular_tag_monitorado(request):
         'tags_ble': tags_ble,
         'monitorados': monitorados
     }
-    return render(request, 'home/vincular_tag_monitorado.html', context)
+    return render(request, 'home/vincular_tag_pessoa.html', context)

@@ -1,83 +1,109 @@
 {% extends "global/base.html" %}
 
 {% block content %}
-    <div>
-        <div>
-            <h1>Estatísticas em Tempo Real</h1>
-            <h2>Número Total de Pessoas no Hospital: {{ total_pessoas }}</h2>
-
-            <h2>Distribuição de Pessoas por Área:</h2>
-            <!-- Div para renderizar o gráfico -->
-            <div id="graph">{{ graph_html | safe }}</div>
-            
-            <!-- <h2>Distribuição por Áreas:</h2>
-            <ul>
-                {% for local, quantidade_pessoas in pessoas_por_local.items %}
-                    <li>
-                        <a href="{% url 'local_detalhes' local_localizacao=local %}">{{ local }}</a> - {{ quantidade_pessoas }}
-                    </li>
-                {% endfor %}
-            </ul> -->
-        </div>
-    </div>
     
-    <br><br><br>
-    <div>
-        <div>
-            <h1>Pessoas por tipo</h1>
-            <h2>Número de Pacientes: {{ total_pacientes }}</h2>
-            <ul>
-                {% for paciente in pacientes %}
-                    <li>
-                        {{paciente}} - tag: {{paciente.tag_ble}}, local: {{paciente.local_atual}}
-                    </li>
-                {% endfor %}
-            </ul>
+
+    <div class="container mt-5">
+        <div class="row">
+            <!-- Estatísticas em Tempo Real -->
+            <div class="col-md-6">
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <h1 class="card-title">Estatísticas em Tempo Real</h1>
+                        <h2 class="card-subtitle mb-4 text-muted">Número Total de Pessoas no Hospital: {{ total_pessoas }}</h2>
+                        <!-- Div para renderizar o gráfico -->
+                        <div id="graph" class="text-center">{{ graph_html | safe }}</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Últimas Leituras -->
+            <div class="col-md-6">
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <h1 class="card-title">Últimas Leituras</h1>
+                        <ul class="list-group">
+                            {% for leitura in ultimas_leituras %}
+                                <li class="list-group-item">
+                                    <span class="fw-bold">{{ leitura.monitorado }}</span> - {{ leitura.local }} - {{ leitura.data_leitura }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-    <br>
-    <div>
-        <div>
-            <h2>Número de Acompanhantes: {{ total_acompanhantes }}</h2>
-            <ul>
-                {% for acompanhante in acompanhantes %}
-                    <li>
-                        {{acompanhante}} - tag: {{acompanhante.tag_ble}}, local: {{acompanhante.local_atual}}, {{acompanhante.relacionamento}} de {{acompanhante.paciente_acomp}}
-                    </li>
-                {% endfor %}
-            </ul>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <h1 class="card-title">Pacientes</h1>
+                        <h2 class="card-subtitle mb-4 text-muted">Número de Pacientes: {{ total_pacientes }}</h2>
+                        <ul class="list-group">
+                            {% for leitura in ultimos_pacientes %}
+                                <li class="list-group-item">
+                                    <span class="fw-bold">{{ leitura.monitorado }}</span> - Tag: {{ leitura.tag_ble }}, {{ leitura.local }}, {{leitura.data_leitura}}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <h1 class="card-title">Acompanhantes</h1>
+                        <h2 class="card-subtitle mb-4 text-muted">Número de Acompanhantes: {{ total_acompanhantes }}</h2>
+                        <ul class="list-group">
+                            {% for leitura in ultimos_acompanhantes %}
+                                <li class="list-group-item">
+                                    <span class="fw-bold">{{ leitura.monitorado }}</span> - Tag: {{ leitura.tag_ble }}, {{ leitura.local }}, {{ leitura.data_leitura }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-    <br>
-    <div>
-        <div>
-            <h2>Número de Médicos: {{ total_medicos }}</h2>
-            <ul>
-                {% for medico in medicos %}
-                    <li>
-                        {{medico}} - tag: {{medico.tag_ble}}, local: {{medico.local_atual}}
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
-    <br>
-    <div>
-        <div>
-            <h2>Número de Enfermeiros: {{ total_enfermeiros }}</h2>
-            <ul>
-                {% for enfermeiro in enfermeiros %}
-                    <li>
-                        {{enfermeiro}} - tag: {{enfermeiro.tag_ble}}, local: {{enfermeiro.local_atual}}
-                    </li>
-                {% endfor %}
-            </ul>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <h1 class="card-title">Médicos</h1>
+                        <h2 class="card-subtitle mb-4 text-muted">Número de Médicos: {{ total_medicos }}</h2>
+                        <ul class="list-group">
+                            {% for leitura in ultimos_medicos %}
+                                <li class="list-group-item">
+                                    <span class="fw-bold">{{ leitura.monitorado }}</span> - Tag: {{ leitura.tag_ble }}, {{ leitura.local }}, {{ leitura.data_leitura }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <h1 class="card-title">Enfermeiros</h1>
+                        <h2 class="card-subtitle mb-4 text-muted">Número de Enfermeiros: {{ total_enfermeiros }}</h2>
+                        <ul class="list-group">
+                            {% for enfermeiro in enfermeiros %}
+                                <li class="list-group-item">
+                                    <span class="fw-bold">{{ enfermeiro }}</span> - Tag: {{ enfermeiro.tag_ble }}, Local: {{ enfermeiro.local_atual }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
+
+    
     
 {% endblock content %}
-
-{% block nao_autenticado %}
-    <p>Você não está logado. Por favor, faça o <a href="{% url 'login' %}">login</a> para acessar este conteúdo.</p> 
-{% endblock nao_autenticado %}

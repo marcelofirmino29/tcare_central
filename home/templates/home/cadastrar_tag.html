@@ -3,7 +3,7 @@
 {% block content %}
    
    
-    <form action="{% url "criar_tag" %}" method="POST">
+    <form action="{% url "cadastrar_tag" %}" method="POST">
         {% csrf_token %}
 
         {% for field in form %}
@@ -19,7 +19,7 @@
         <div class="form-content">
             <div class="form-group">
                 <button type="submit" class="btn">
-                    Criar
+                    Cadastrar
                 </button>
             </div>
         </div>

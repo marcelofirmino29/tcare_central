@@ -1,7 +1,7 @@
 {% extends "global/base.html" %}
 
 {% block content %}
-    <h1>Vincular Tag a Monitorado</h1>
+    <h1>Vincular Tag a Pessoa</h1>
 
     <form method="POST">
         {% csrf_token %}
@@ -17,20 +17,16 @@
             <p>Não há monitorados disponíveis.</p>
         {% endif %}
         {% if monitorados %}
-            <label for="monitorado">Selecione um Monitorado:</label>
+            <label for="monitorado">Selecione uma pessoa:</label>
             <select name="monitorado_id" id="monitorado">
             {% for monitorado in monitorados %}
                 <option value="{{ monitorado.id }}">{{ monitorado }}</option>
             {% endfor %}
             </select><br><br>
         {% else %}
-            <p>Não há monitorados disponíveis.</p>
+            <p>Não há pessoas sem tag.</p>
         {% endif %}
 
         <button type="submit">Vincular</button>
     </form>
 {% endblock content %}
-
-{% block nao_autenticado %}
-    <p>Você não está logado. Por favor, faça o <a href="{% url 'login' %}">login</a> para acessar este conteúdo.</p> 
-{% endblock nao_autenticado %}
