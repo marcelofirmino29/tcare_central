@@ -6,7 +6,7 @@
     <div class="container mt-5">
         <div class="row">
             <!-- Estatísticas em Tempo Real -->
-            <div class="col-md-6">
+            <div class="col-md-7">
                 <div class="card mb-4 shadow-sm">
                     <div class="card-body">
                         <h1 class="card-title">Estatísticas em Tempo Real</h1>
@@ -18,22 +18,42 @@
             </div>
             
             <!-- Últimas Leituras -->
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <div class="card mb-4 shadow-sm">
                     <div class="card-body">
                         <h1 class="card-title">Últimas Leituras</h1>
                         <ul class="list-group">
                             {% for leitura in ultimas_leituras %}
                                 <li class="list-group-item">
-                                    <span class="fw-bold">{{ leitura.monitorado }}</span> - {{ leitura.local }} - {{ leitura.data_leitura }}
+                                    <span class="fw-bold">{{ leitura.monitorado }}</span> - {{ leitura.local }}, 
+                                    {% if leitura.data_leitura|date:"Y-m-d" == data_hoje %}
+                                        hoje, {{ leitura.data_leitura|date:"H:i:s" }}
+                                    {% else %}
+                                        {{ leitura.data_leitura|date:"d/m/Y - H:i:s" }}
+                                    {% endif %}
                                 </li>
                             {% endfor %}
                         </ul>
+                        <div class="text-center">
+                            <a href="{% url "leituras" %}" class="link-unstyled"><button type="button" class="btn custom-button">Ver mais</button></a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h1 class="card-title">Total de Pessoas no Hospital por Tipo</h1>
+                        <div id="graph_bar">{{ graph_bar_html | safe }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+
         <div class="row">
             <div class="col-md-6">
                 <div class="card mb-4 shadow-sm">
@@ -41,12 +61,20 @@
                         <h1 class="card-title">Pacientes</h1>
                         <h2 class="card-subtitle mb-4 text-muted">Número de Pacientes: {{ total_pacientes }}</h2>
                         <ul class="list-group">
-                            {% for leitura in ultimos_pacientes %}
+                            {% for leitura in ultimos_pacientes|slice:":6" %}
                                 <li class="list-group-item">
-                                    <span class="fw-bold">{{ leitura.monitorado }}</span> - Tag: {{ leitura.tag_ble }}, {{ leitura.local }}, {{leitura.data_leitura}}
+                                    <span class="fw-bold">{{ leitura.monitorado }}</span> - Tag: {{ leitura.tag_ble }}, {{ leitura.local }}, 
+                                    {% if leitura.data_leitura|date:"Y-m-d" == data_hoje %}
+                                        hoje, {{ leitura.data_leitura|date:"H:i:s" }}
+                                    {% else %}
+                                        {{ leitura.data_leitura|date:"d/m/Y - H:i:s" }}
+                                    {% endif %}
                                 </li>
                             {% endfor %}
                         </ul>
+                        <div class="text-center list-group">
+                            <a href="{% url "leituras" %}?tipo=paciente" class="link-unstyled"><button type="button" class="btn custom-button">Ver mais</button></a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -57,12 +85,20 @@
                         <h1 class="card-title">Acompanhantes</h1>
                         <h2 class="card-subtitle mb-4 text-muted">Número de Acompanhantes: {{ total_acompanhantes }}</h2>
                         <ul class="list-group">
-                            {% for leitura in ultimos_acompanhantes %}
+                            {% for leitura in ultimos_acompanhantes|slice:":6" %}
                                 <li class="list-group-item">
-                                    <span class="fw-bold">{{ leitura.monitorado }}</span> - Tag: {{ leitura.tag_ble }}, {{ leitura.local }}, {{ leitura.data_leitura }}
+                                    <span class="fw-bold">{{ leitura.monitorado }}</span> - Tag: {{ leitura.tag_ble }}, {{ leitura.local }}, 
+                                    {% if leitura.data_leitura|date:"Y-m-d" == data_hoje %}
+                                        hoje, {{ leitura.data_leitura|date:"H:i:s" }}
+                                    {% else %}
+                                        {{ leitura.data_leitura|date:"d/m/Y - H:i:s" }}
+                                    {% endif %}
                                 </li>
                             {% endfor %}
                         </ul>
+                        <div class="text-center list-group">
+                            <a href="{% url "leituras" %}?tipo=acompanhante" class="link-unstyled"><button type="button" class="btn custom-button">Ver mais</button></a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -75,12 +111,20 @@
                         <h1 class="card-title">Médicos</h1>
                         <h2 class="card-subtitle mb-4 text-muted">Número de Médicos: {{ total_medicos }}</h2>
                         <ul class="list-group">
-                            {% for leitura in ultimos_medicos %}
+                            {% for leitura in ultimos_medicos|slice:":6" %}
                                 <li class="list-group-item">
-                                    <span class="fw-bold">{{ leitura.monitorado }}</span> - Tag: {{ leitura.tag_ble }}, {{ leitura.local }}, {{ leitura.data_leitura }}
+                                    <span class="fw-bold">{{ leitura.monitorado }}</span> - Tag: {{ leitura.tag_ble }}, {{ leitura.local }}, 
+                                    {% if leitura.data_leitura|date:"Y-m-d" == data_hoje %}
+                                        hoje, {{ leitura.data_leitura|date:"H:i:s" }}
+                                    {% else %}
+                                        {{ leitura.data_leitura|date:"d/m/Y - H:i:s" }}
+                                    {% endif %}
                                 </li>
                             {% endfor %}
                         </ul>
+                        <div class="text-center list-group">
+                            <a href="{% url "leituras" %}?tipo=medico" class="link-unstyled"><button type="button" class="btn custom-button">Ver mais</button></a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -91,12 +135,20 @@
                         <h1 class="card-title">Enfermeiros</h1>
                         <h2 class="card-subtitle mb-4 text-muted">Número de Enfermeiros: {{ total_enfermeiros }}</h2>
                         <ul class="list-group">
-                            {% for enfermeiro in enfermeiros %}
+                            {% for leitura in ultimos_enfermeiros|slice:":6" %}
                                 <li class="list-group-item">
-                                    <span class="fw-bold">{{ enfermeiro }}</span> - Tag: {{ enfermeiro.tag_ble }}, Local: {{ enfermeiro.local_atual }}
+                                    <span class="fw-bold">{{ leitura.monitorado }}</span> - Tag: {{ leitura.tag_ble }}, {{ leitura.local }}, 
+                                    {% if leitura.data_leitura|date:"Y-m-d" == data_hoje %}
+                                        hoje, {{ leitura.data_leitura|date:"H:i:s" }}
+                                    {% else %}
+                                        {{ leitura.data_leitura|date:"d/m/Y - H:i:s" }}
+                                    {% endif %}
                                 </li>
                             {% endfor %}
                         </ul>
+                        <div class="text-center list-group">
+                            <a href="{% url "leituras" %}?tipo=enfermeiro" class="link-unstyled"><button type="button" class="btn custom-button">Ver mais</button></a>
+                        </div>
                     </div>
                 </div>
             </div>

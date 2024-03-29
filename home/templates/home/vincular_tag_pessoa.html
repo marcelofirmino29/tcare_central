@@ -1,32 +1,75 @@
 {% extends "global/base.html" %}
 
 {% block content %}
-    <h1>Vincular Tag a Pessoa</h1>
 
-    <form method="POST">
-        {% csrf_token %}
+    <div class="container">
+        <div class="row ">
+            <div class="col-md-4 border-end">
+                <h2 class="mt-4 mb-4">Vincular Tag a Pessoa</h2>
+                <form method="POST">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="tag_id" class="form-label">ID da Tag:</label>
+                        <input type="text" class="form-control" name="tag_id" id="tag_id">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="pessoa_id" class="form-label">ID da Pessoa:</label>
+                        <input type="text" class="form-control" name="pessoa_id" id="pessoa_id">
+                    </div>
+                    
+                    <button type="submit" class="btn custom-button">Vincular</button>
+                </form>
 
-        {% if tags_ble %}
-            <label for="tag">Selecione uma Tag:</label>
-            <select name="tag_id" id="tag">
-                {% for tag in tags_ble %}
-                    <option value="{{ tag.id }}">{{ tag }}</option>
-                {% endfor %}
-            </select><br><br>
-        {% else %}
-            <p>Não há monitorados disponíveis.</p>
-        {% endif %}
-        {% if monitorados %}
-            <label for="monitorado">Selecione uma pessoa:</label>
-            <select name="monitorado_id" id="monitorado">
-            {% for monitorado in monitorados %}
-                <option value="{{ monitorado.id }}">{{ monitorado }}</option>
-            {% endfor %}
-            </select><br><br>
-        {% else %}
-            <p>Não há pessoas sem tag.</p>
-        {% endif %}
+                
+            </div>
+            <div class="col-md-8">
+                <form method="GET">
+                    <!-- Input para pesquisa por nome ou CPF -->
+                    <div class="mb-3">
+                        <h2 class="mt-4 mb-4">Buscar pessoa por nome ou CPF</h2>
+                        <label for="search" class="form-label">Busca:</label>
+                        <input type="text" class="form-control" name="search" id="search">
+                    </div>
+                    <!-- Botão de envio para busca -->
+                    <button type="submit" class="btn custom-button">Buscar</button>
+                </form>
+                <h2>Resultados da busca</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>CPF</th>
+                        <th>Tag BLE</th>
+                        <!-- Adicione mais colunas conforme necessário -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Iterar sobre os resultados da busca -->
+                    {% for resultado in resultados_da_busca %}
+                    <tr>
+                        <td>{{ resultado.id }}</td>
+                        <td>{{ resultado.nome }}</td>
+                        <td>{{ resultado.cpf }}</td>
+                        <td>
+                            {% if resultado.tag_ble %}
+                                {{ resultado.tag_ble }}
+                            {% else %}
+                                Sem tag vinculada
+                            {% endif %}
+                        </td>
+                        <!-- Adicione mais colunas conforme necessário -->
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            </div>
+        </div>
+    </div>
+    <!-- Tabela de resultados da busca -->
+    
+</div>
 
-        <button type="submit">Vincular</button>
-    </form>
 {% endblock content %}

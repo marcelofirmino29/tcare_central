@@ -31,13 +31,20 @@
                     <label for="data" class="form-label">Filtrar por Data:</label>
                     <input type="date" name="data" id="data" class="form-control">
                 </div>
-
-                <div class="col-md-3 text-center">
+                <div class="col-md-3 mb-3">
+                    <label for="tipo" class="form-label">Filtrar por Tipo:</label>
+                    <select name="tipo" id="tipo" class="form-select">
+                        <option value="">Todos os Tipos</option>
+                        <option value="paciente">Paciente</option>
+                        <option value="medico">Médico</option>
+                        <option value="acompanhante">Acompanhante</option>
+                    </select>
+                </div>
+        
+                <div class="col-md-12 text-center">
                     <button type="submit" class="btn btn-lg btn-primary custom-button">Filtrar</button>
                 </div>
             </div>
-    
-            
         </form>
     </div>
     
@@ -68,45 +75,46 @@
         </tbody>
     </table>
     
-
-    <nav aria-label="..." class="text-center">
-        <ul class="pagination">
-            {% if leituras.has_previous %}
-                <li class="page-item">
-                    <a class="page-link" href="?page=1">&laquo; Primeira</a>
+    <div>
+        <nav aria-label="...">
+            <ul class="pagination d-flex justify-content-center">
+                {% if leituras.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1">&laquo; Primeira</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ leituras.previous_page_number }}">Anterior</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">&laquo; Primeira</span>
+                    </li>
+                    <li class="page-item disabled">
+                        <span class="page-link">Anterior</span>
+                    </li>
+                {% endif %}
+        
+                <li class="page-item active">
+                    <span class="page-link">Página {{ leituras.number }} de {{ leituras.paginator.num_pages }}</span>
                 </li>
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ leituras.previous_page_number }}">Anterior</a>
-                </li>
-            {% else %}
-                <li class="page-item disabled">
-                    <span class="page-link">&laquo; Primeira</span>
-                </li>
-                <li class="page-item disabled">
-                    <span class="page-link">Anterior</span>
-                </li>
-            {% endif %}
-    
-            <li class="page-item active">
-                <span class="page-link">Página {{ leituras.number }} de {{ leituras.paginator.num_pages }}</span>
-            </li>
-    
-            {% if leituras.has_next %}
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ leituras.next_page_number }}">Próxima</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ leituras.paginator.num_pages }}">Última &raquo;</a>
-                </li>
-            {% else %}
-                <li class="page-item disabled">
-                    <span class="page-link">Próxima</span>
-                </li>
-                <li class="page-item disabled">
-                    <span class="page-link">Última &raquo;</span>
-                </li>
-            {% endif %}
-        </ul>
-    </nav>
+        
+                {% if leituras.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ leituras.next_page_number }}">Próxima</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ leituras.paginator.num_pages }}">Última &raquo;</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">Próxima</span>
+                    </li>
+                    <li class="page-item disabled">
+                        <span class="page-link">Última &raquo;</span>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
 {% endblock content %}
 

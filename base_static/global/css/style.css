@@ -1,3 +1,8 @@
+
+body {
+  padding-top: 60px;
+}
+
 .logo-menu{
   border-radius: 50%;
 }
@@ -117,18 +122,64 @@ a:hover{
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  width: 100%;
 }
 
 /* Mudança de cor ao passar o mouse sobre o botão */
 .custom-button:hover {
-  background-color: transparent;
-  color: rgb(0, 90, 80);
+  background-color: rgb(0, 45, 40);
+  color: #fff;
   border: 1px solid;
   border-color: rgb(0, 90, 80);
-  text-decoration: double;
+  
 }
 
+.container {
+  padding: 15px;
+}
 
+.link-unstyled {
+  text-decoration: none; /* Remove sublinhado */
+  color: inherit; /* Usa a cor padrão do texto */
+}
+.link-unstyled:hover {
+  text-decoration: none; /* Remove sublinhado no hover */
+  color: inherit; /* Mantém a cor padrão do texto no hover */
+}
+
+.text-center {
+  padding-top: 5px;
+}
+
+.message {
+  max-width: 600px;
+  margin: var(--spacing) auto;
+  margin-top: calc(var(--spacing) * 2);
+  padding: var(--spacing);
+  text-align: center;
+  border-radius: var(--default-border-radius);
+  font-size: var(--smaller-font-size);
+}
+
+.message.success {
+  background: rgba(0, 255, 0, 0.3);
+  border: 1px solid rgba(0, 255, 0, 90%);
+}
+
+.message.error {
+  background: rgba(255, 0, 0, 0.3);
+  border: 1px solid rgba(255, 0, 0, 90%);
+}
+
+.message.warning {
+  background: rgba(255, 255, 0, 0.3);
+  border: 1px solid rgba(255, 255, 0, 90%);
+}
+
+.message.info {
+  background: rgba(0, 0, 255, 0.3);
+  border: 1px solid rgba(33, 33, 255, 90%);
+}
 /* :root {
     --spacing: 1.5rem;
     --link-dark-color: rgb(0, 90, 80);

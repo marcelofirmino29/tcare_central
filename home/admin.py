@@ -61,7 +61,7 @@ class PacienteAdmin(admin.ModelAdmin):
     """
     Classe de administração para o modelo Paciente.
     """
-    list_display = ('nome', 'tag_ble','cpf', 'genero','local_atual','data_nascimento', 'email','telefone', 'numero_quarto')
+    list_display = ('id','nome', 'tag_ble','cpf', 'genero','local_atual','data_nascimento', 'email','telefone', 'numero_quarto')
 
 
 @admin.register(models.Acompanhante)

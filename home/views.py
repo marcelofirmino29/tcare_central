@@ -9,6 +9,7 @@ import plotly.graph_objs as go
 import colorsys, random
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
+from collections import Counter
 
 def index(request):
     # Define o contexto com as tags recuperadas
@@ -147,21 +148,11 @@ def logout_view(request):
 def dashboard(request):
     total_pessoas = Pessoa.objects.exclude(tag_ble=None).count()
     locais = Local.objects.all()
-    ultimas_leituras = LeituraTag.objects.order_by('-id').filter()[:50] #no contexto estou passando apenas 12 leituras
-    ultimos_pacientes = []
-    ultimos_acompanhantes = []
-    ultimos_medicos = []
-    for leitura in ultimas_leituras:
-        if Paciente.objects.filter(monitorado_ptr=leitura.monitorado):
-            ultimos_pacientes.append(leitura)
-        elif Acompanhante.objects.filter(monitorado_ptr=leitura.monitorado):
-            ultimos_acompanhantes.append(leitura)
-        elif Medico.objects.filter(monitorado_ptr=leitura.monitorado):
-            ultimos_medicos.append(leitura)
-
-
-
-
+    ultimas_leituras = LeituraTag.objects.order_by('-id').filter()[:11] 
+    ultimos_pacientes = LeituraTag.objects.filter(monitorado__in=Paciente.objects.all()).order_by('-id')[:6]
+    ultimos_acompanhantes = LeituraTag.objects.filter(monitorado__in=Acompanhante.objects.all()).order_by('-id')[:6]
+    ultimos_medicos = LeituraTag.objects.filter(monitorado__in=Medico.objects.all()).order_by('-id')[:6]
+    ultimos_enfermeiros = LeituraTag.objects.filter(monitorado__in=Enfermeiro.objects.all()).order_by('-id')[:6]
 
     pessoas_por_local = {}
 
@@ -182,6 +173,8 @@ def dashboard(request):
     total_acompanhantes = acompanhantes.count()
     enfermeiros = Enfermeiro.objects.exclude(tag_ble=None)
     total_enfermeiros = enfermeiros.count()
+
+
 
      # Criar dados para o gráfico de pizza
     labels = list(pessoas_por_local.keys())
@@ -213,28 +206,59 @@ def dashboard(request):
     # Converter a figura para HTML
     graph_html = fig.to_html(full_html=False)
 
+    # Contar o número de pessoas por tipo (paciente, médico, acompanhante)
+    total_por_tipo = Counter()
+    total_por_tipo.update({'Paciente': total_pacientes, 'Médico': total_medicos, 'Enfermeiro': total_enfermeiros, 'Acompanhante': total_acompanhantes})
+
+    # Criar dados para o gráfico de barras
+    tipos = list(total_por_tipo.keys())
+    quantidades = list(total_por_tipo.values())
+
+    # Usar as mesmas cores do gráfico de pizza para o gráfico de barras
+    bar_colors = colors[:len(tipos)]
+
+    # Criar gráfico de barras
+    bar_links = [f"<a href='/leituras/?tipo={tipo.lower()}' target='_self'>{tipo}</a>" for tipo in tipos]
+
+    fig_bar = go.Figure([go.Bar(
+        x=bar_links,
+        y=quantidades,
+        marker_color=bar_colors,
+        hoverinfo='x',
+        text=quantidades,
+        textposition='outside',
+    )])
+
+
+    # Definir layout
+    fig_bar.update_layout(title='Total de Pessoas no Hospital por Tipo')
+
+    # Converter a figura para HTML
+    graph_bar_html = fig_bar.to_html(full_html=False)
+
+    data_hoje = timezone.now().strftime("%Y-%m-%d")
 
     context = {
         'total_pessoas': total_pessoas,
         'pessoas_por_local': pessoas_por_local,
-        'pacientes': pacientes,
         'total_pacientes': total_pacientes,
-        'medicos': medicos,
         'total_medicos': total_medicos,
-        'acompanhantes': acompanhantes,
         'total_acompanhantes': total_acompanhantes,
-        'enfermeiros': enfermeiros,
         'total_enfermeiros': total_enfermeiros,
         'graph_html': graph_html,
-        'ultimas_leituras': ultimas_leituras[:12],
+        'graph_bar_html': graph_bar_html,
+        'ultimas_leituras': ultimas_leituras,
         'ultimos_pacientes': ultimos_pacientes,
         'ultimos_acompanhantes': ultimos_acompanhantes,
         'ultimos_medicos': ultimos_medicos,
+        'ultimos_enfermeiros': ultimos_enfermeiros,
+        'data_hoje': data_hoje,
 
     }
     
 
     return render(request,'home/dashboard.html', context)
+
 @login_required(login_url='login')
 def local_detalhes(request, local_localizacao):
     local = get_object_or_404(Local,localizacao=local_localizacao)
@@ -273,7 +297,7 @@ def simula_leitura(request):
 
 @login_required(login_url='login')
 def leituras(request):
-    leituras = LeituraTag.objects.all().order_by('id')
+    leituras = LeituraTag.objects.all().order_by('-id')
     monitorados = set(leitura.monitorado for leitura in leituras)
     locais = set(leitura.local for leitura in leituras)
     
@@ -295,6 +319,25 @@ def leituras(request):
         # Supondo que a data seja passada no formato YYYY-MM-DD
         leituras = leituras.filter(data_leitura__date=data).order_by('id')
 
+    tipo = request.GET.get('tipo')
+    if tipo:
+        if tipo == 'paciente':
+            leituras = LeituraTag.objects.filter(monitorado__in=Paciente.objects.all()).order_by('-id')[:50]
+        elif tipo == 'acompanhante':
+            leituras = LeituraTag.objects.filter(monitorado__in=Acompanhante.objects.all()).order_by('-id')[:50]
+        elif tipo == 'medico':
+            leituras = LeituraTag.objects.filter(monitorado__in=Medico.objects.all()).order_by('-id')[:50]
+        elif tipo == 'enfermeiro':
+            leituras = LeituraTag.objects.filter(monitorado__in=Enfermeiro.objects.all()).order_by('-id')[:50]
+        else:
+            # Se o tipo não corresponder a nenhum dos tipos esperados, exibir todas as últimas leituras
+            leituras = LeituraTag.objects.order_by('-id')[:50]
+    else:
+        # Se nenhum tipo for especificado, exibir todas as últimas leituras
+        leituras = LeituraTag.objects.order_by('-id')[:50]
+
+            
+
 
     paginator = Paginator(leituras, 20)  # 20 leituras por página
     page_number = request.GET.get('page')
@@ -313,23 +356,30 @@ def vincular_tag_pessoa(request):
 
     if request.method == 'POST':
         tag_id = request.POST.get('tag_id')
-        monitorado_id = request.POST.get('monitorado_id')
+        pessoa_id = request.POST.get('pessoa_id')
 
-        if tag_id and monitorado_id:
+        if tag_id and pessoa_id:
             try:
-                # Obtendo a tag e o monitorado correspondentes às IDs fornecidas
-                tag = TagBle.objects.get(id=tag_id)
-                monitorado = Monitorado.objects.get(id=monitorado_id)
+                # Verifica se a tag existe e não está vinculada a uma pessoa
+                tag = TagBle.objects.get(id=tag_id, monitorado=None)
+                # Obtendo a pessoa correspondente à ID fornecida
+                pessoa = Pessoa.objects.get(id=pessoa_id)
 
-                # Vinculando a tag ao monitorado
-                monitorado.tag_ble = tag
-                monitorado.save()
+                # Vinculando a tag à pessoa
+                pessoa.tag_ble = tag
+                pessoa.save()
 
-                messages.success(request, f'Tag {tag} vinculada a {monitorado}')
-
-                return redirect('tags')
-            except (TagBle.DoesNotExist, Monitorado.DoesNotExist):
-                messages.error(request, 'Erro. Tag não vinculada')
+                messages.success(request, f'Tag {tag} vinculada a {pessoa}')
+                return redirect('vincular_tag_pessoa')
+            except (TagBle.DoesNotExist, Pessoa.DoesNotExist):
+                messages.error(request, 'Tag ou pessoa indisponíveis. Tag não vinculada',)
+    elif request.method == 'GET' and 'search' in request.GET:
+        termo_busca = request.GET.get('search')
+        # Realizar a busca no banco de dados
+        resultados_da_busca = Pessoa.objects.filter(nome__icontains=termo_busca) | Pessoa.objects.filter(cpf__icontains=termo_busca)
+    else:
+        resultados_da_busca = 'Nenhum resultado'
+    
 
 
     tags_ble = TagBle.objects.filter(monitorado=None)
@@ -337,6 +387,7 @@ def vincular_tag_pessoa(request):
 
     context = {
         'tags_ble': tags_ble,
-        'monitorados': monitorados
+        'monitorados': monitorados,
+        'resultados_da_busca': resultados_da_busca
     }
     return render(request, 'home/vincular_tag_pessoa.html', context)
