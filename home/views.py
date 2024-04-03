@@ -1,5 +1,4 @@
 from home import forms
-from home.forms import RegistroForm
 from home.models import TagBle, Monitorado, Pessoa, Local, Paciente, Medico, Acompanhante, Enfermeiro, Raspberry, LeituraTag
 from django.contrib import messages, auth
 from django.core.paginator import Paginator
@@ -25,10 +24,12 @@ def tags(request):
     filtro = request.GET.get('filtro')  # Obtém o valor do parâmetro 'filtro' da URL
     if filtro == 'vinculadas':
         tags = TagBle.objects.exclude(monitorado=None)  # Filtra apenas as tags com monitorado vinculado
+    elif filtro == 'disponiveis':
+        tags = TagBle.objects.filter(monitorado=None)  # Filtra tags sem monitorado
     else:
-        tags = TagBle.objects.all()  # Obtém todas as tags
+         tags = TagBle.objects.all()  # Obtém todas as tags
 
-    paginator = Paginator(tags, 10)  
+    paginator = Paginator(tags, 20)  
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
@@ -68,7 +69,10 @@ def cadastrar_tag(request):
         
         if form.is_valid():
             form.save()
-            return redirect('tags')
+            messages.success(request,"Tag cadastrada com sucesso")
+            return redirect('cadastrar_tag')
+        else:
+            messages.error(request, 'Tag não cadastrada')
         
         return render(request, 'home/cadastrar_tag.html', context)
     
@@ -87,7 +91,9 @@ def cadastrar_paciente(request):
         }
 
         if form.is_valid():
+            nome = form.cleaned_data['nome']
             form.save()
+            messages.success(request, f'Paciente {nome} adicionado(a)')
 
         return render(request, 'home/cadastrar_paciente.html', context)
 
@@ -97,12 +103,52 @@ def cadastrar_paciente(request):
     return render(request, 'home/cadastrar_paciente.html', context)
 
 @login_required(login_url='login')
+def cadastrar_acompanhante(request):
+    
+    if request.method == 'POST':
+        form = forms.AcompanhanteForm(request.POST)
+        context = {
+            'form': form
+        }
+
+        if form.is_valid():
+            nome = form.cleaned_data['nome']
+            form.save()
+            messages.success(request, f'Acompanhante {nome} adicionado(a)')
+
+        return render(request, 'home/cadastrar_acompanhante.html', context)
+
+    context = {
+        'form': forms.AcompanhanteForm()
+    }
+    return render(request, 'home/cadastrar_acompanhante.html', context)
+
+def cadastrar_funcionario(request):
+    if request.method == 'POST':
+        form = forms.FuncionarioForm(request.POST)
+        context = {
+            'form': form
+        }
+
+        if form.is_valid():
+            nome = form.cleaned_data['nome']
+            form.save()
+            messages.success(request, f'Funcionário {nome} adicionado(a)')
+        
+        return render(request, 'home/cadastrar_funcionario.html', context)
+    
+    context = {
+        'form': forms.FuncionarioForm()
+    }
+    return render(request, 'home/cadastrar_funcionario.html',context)
+
+@login_required(login_url='login')
 def registrar_usuario(request):
-    form = RegistroForm()
+    form = forms.RegistroForm()
 
 
     if request.method == 'POST':
-        form = RegistroForm(request.POST)
+        form = forms.RegistroForm(request.POST)
 
         if form.is_valid():
             form.save()
@@ -118,10 +164,10 @@ def registrar_usuario(request):
         )
 
 def login_view(request):
-    form = AuthenticationForm(request)
+    form = forms.BootstrapAuthenticationForm(request)
 
     if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
+        form = forms.BootstrapAuthenticationForm(request, data=request.POST)
 
         if form.is_valid():
             user = form.get_user()
@@ -261,16 +307,31 @@ def dashboard(request):
 
 @login_required(login_url='login')
 def local_detalhes(request, local_localizacao):
-    local = get_object_or_404(Local,localizacao=local_localizacao)
+    local = get_object_or_404(Local, localizacao=local_localizacao)
     pessoas_no_local = Pessoa.objects.filter(local_atual=local)
+    leituras = LeituraTag.objects.filter(local=local)
+
+    # Dicionário para armazenar o horário de entrada de cada pessoa
+    lista_leituras = []
+
+    # Iterar sobre as pessoas no local
+    for pessoa in pessoas_no_local:
+        # Filtrar leituras para a pessoa atual
+        leituras_pessoa = leituras.filter(monitorado=pessoa.id)
+        # Se houver leituras para a pessoa, encontrar a leitura mais antiga como horário de entrada
+        if leituras_pessoa.exists():
+            lista_leituras.append(leituras_pessoa.earliest('data_leitura'))
+    
+    lista_leituras = sorted(lista_leituras, key=lambda leitura: leitura.id, reverse=True)
+
+
 
     context = {
-        'local': local,
-        'pessoas_no_local': pessoas_no_local
+        'lista_leituras': lista_leituras,  # Adicionando o horário de entrada ao contexto
+        'local':local
     }
 
     return render(request, 'home/local_detalhes.html', context)
-
 @login_required(login_url='login')
 def simula_leitura(request):
     raspberry = random.choice(Raspberry.objects.all())
@@ -353,7 +414,7 @@ def leituras(request):
 
 @login_required(login_url='login')
 def vincular_tag_pessoa(request):
-
+    resultados_da_busca = None
     if request.method == 'POST':
         tag_id = request.POST.get('tag_id')
         pessoa_id = request.POST.get('pessoa_id')
@@ -375,19 +436,17 @@ def vincular_tag_pessoa(request):
                 messages.error(request, 'Tag ou pessoa indisponíveis. Tag não vinculada',)
     elif request.method == 'GET' and 'search' in request.GET:
         termo_busca = request.GET.get('search')
-        # Realizar a busca no banco de dados
-        resultados_da_busca = Pessoa.objects.filter(nome__icontains=termo_busca) | Pessoa.objects.filter(cpf__icontains=termo_busca)
-    else:
-        resultados_da_busca = 'Nenhum resultado'
-    
+        if termo_busca:
+            resultados_da_busca = Pessoa.objects.filter(nome__icontains=termo_busca).order_by('id') | Pessoa.objects.filter(cpf__icontains=termo_busca).order_by('id')
 
-
-    tags_ble = TagBle.objects.filter(monitorado=None)
-    monitorados = Monitorado.objects.filter(tag_ble=None)
+    page_obj = None
+    if resultados_da_busca:
+        paginator = Paginator(resultados_da_busca, 10)  
+        page_number = request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
 
     context = {
-        'tags_ble': tags_ble,
-        'monitorados': monitorados,
-        'resultados_da_busca': resultados_da_busca
+
+        'page_obj': page_obj,
     }
     return render(request, 'home/vincular_tag_pessoa.html', context)

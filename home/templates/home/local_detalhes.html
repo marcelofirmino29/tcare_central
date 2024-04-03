@@ -1,17 +1,40 @@
 {% extends "global/base.html" %}
 
 {% block content %}
-    <h1>Detalhes da Área: {{ local.localizacao }}</h1>
-    <h2>Pessoas na Área:</h2>
-    <ul>
-        {% for pessoa in pessoas_no_local %}
-            <li>{{ pessoa.nome }}</li>
-        {% empty %}
-            <li>Nenhuma pessoa nesta área no momento.</li>
-        {% endfor %}
-    </ul>
+    <div class="container mt-5 ">
+        <h1 class="text-center">Detalhes da Área {{ local.localizacao }}</h1>
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-8 ">
+                <h2>Pessoas na Área</h2>
+                <table class="table table-striped fundo-verde-claro">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Tag BLE</th>
+                            <th>Horário de Entrada</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pessoa in lista_leituras %}
+                            <tr>
+                                <td>{{ pessoa.monitorado.id }}</td>
+                                <td>{{ pessoa.monitorado}}</td>
+                                <td>{{ pessoa.tag_ble }}</td>
+                                <td>
+                                    {{pessoa.data_leitura}}
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="4">Nenhuma pessoa nesta área no momento.</td>
+                            </tr>
+                        {% endfor %}
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
 {% endblock content %}
-
-{% block nao_autenticado %}
-    <p>Você não está logado. Por favor, faça o <a href="{% url 'login' %}">login</a> para acessar este conteúdo.</p> 
-{% endblock nao_autenticado %}

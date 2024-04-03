@@ -36,40 +36,42 @@
                     <button type="submit" class="btn custom-button">Buscar</button>
                 </form>
                 <h2>Resultados da busca</h2>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>CPF</th>
-                        <th>Tag BLE</th>
-                        <!-- Adicione mais colunas conforme necessário -->
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Iterar sobre os resultados da busca -->
-                    {% for resultado in resultados_da_busca %}
-                    <tr>
-                        <td>{{ resultado.id }}</td>
-                        <td>{{ resultado.nome }}</td>
-                        <td>{{ resultado.cpf }}</td>
-                        <td>
-                            {% if resultado.tag_ble %}
-                                {{ resultado.tag_ble }}
-                            {% else %}
-                                Sem tag vinculada
-                            {% endif %}
-                        </td>
-                        <!-- Adicione mais colunas conforme necessário -->
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>CPF</th>
+                            <th>Tag BLE</th>
+                        
+                            <!-- Adicione mais colunas conforme necessário -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Iterar sobre os resultados da busca -->
+                        {% if page_obj %}
+                            {% for resultado in page_obj %}
+                            <tr>
+                                <td>{{ resultado.id }}</td>
+                                <td>{{ resultado.nome }}</td>
+                                <td>{{ resultado.cpf }}</td>
+                                {% if resultado.tag_ble %}
+                                    <td>{{ resultado.tag_ble }}</td>
+                                {% else %}
+                                    <td>Sem tag vinculada</td>
+                                {% endif %}
+                                <!-- Adicione mais colunas conforme necessário -->
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr> <td> Nenhum resultado </td></tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+                {% include "global/partials/_pagination.html" %}
             </div>
         </div>
     </div>
-    <!-- Tabela de resultados da busca -->
     
-</div>
 
 {% endblock content %}

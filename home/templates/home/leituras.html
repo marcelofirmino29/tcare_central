@@ -38,6 +38,7 @@
                         <option value="paciente">Paciente</option>
                         <option value="medico">Médico</option>
                         <option value="acompanhante">Acompanhante</option>
+                        <option value="enfermeiro">Enfermeiros</option>
                     </select>
                 </div>
         
@@ -48,6 +49,21 @@
         </form>
     </div>
     
+    <h2 class="text-center">
+        {% if request.GET.tipo %}
+            {% if request.GET.tipo == 'paciente' %}
+                Pacientes
+            {% elif request.GET.tipo == 'acompanhante' %}
+                Acompanhantes
+            {% elif request.GET.tipo == 'medico' %}
+                Médicos
+            {% elif request.GET.tipo == 'enfermeiro' %}
+                Enfermeiros
+            {% endif %}
+
+            
+        {% endif %}
+    </h2>
 
     <table class="table table-hover custom-table">
         <thead class="thead-dark">

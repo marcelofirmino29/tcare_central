@@ -1,58 +1,61 @@
-
 {% extends "global/base.html" %}
 
 {% block content %}
     <!-- Este bloco representa o conteúdo específico desta página -->
-    
-    <!-- Formulário de seleção para escolher entre todas as tags ou apenas aquelas com monitorado vinculado -->
-    <form method="get" action="{% url 'tags' %}">
-        <input type="radio" id="todas" name="filtro" value="todas" {% if filtro == 'todas' %}checked{% endif %}>
-        <label for="todas">Todas |</label>
-        <input type="radio" id="vinculadas" name="filtro" value="vinculadas" {% if filtro == 'vinculadas' %}checked{% endif %}>
-        <label for="vinculadas">Vinculadas |</label>
-        <button class="btn" type="submit">Filtrar</button>
-        <a class="btn" href="{% url "cadastrar_tag" %}">Adicionar nova TAG</a>
-    </form>
 
-   
+    <div class="container mt-5">
+        <!-- Formulário de seleção para escolher entre todas as tags ou apenas aquelas com monitorado vinculado -->
+        <form method="get" action="{% url 'tags' %}" class="mb-4">
+            <div class="form-check form-check-inline">
+                <input type="radio" id="todas" name="filtro" value="todas" {% if filtro == 'todas' %}checked{% endif %} class="form-check-input">
+                <label for="todas" class="form-check-label">Todas</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input type="radio" id="vinculadas" name="filtro" value="vinculadas" {% if filtro == 'vinculadas' %}checked{% endif %} class="form-check-input">
+                <label for="vinculadas" class="form-check-label">Vinculadas</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input type="radio" id="disponiveis" name="filtro" value="disponiveis" {% if filtro == 'disponiveis' %}checked{% endif %} class="form-check-input">
+                <label for="disponiveis" class="form-check-label">Disponíveis</label>
+            </div>
+            <button class="btn btn-primary" type="submit">Filtrar</button>
+            <a class="btn btn-success" href="{% url 'cadastrar_tag' %}">Adicionar nova TAG</a>
+        </form>
 
-    <div class="responsive-table">
-        <table class="contacts-table">
-            <!-- Título da tabela -->
-            <caption class="table-caption">
-                Tags
-            </caption>
+        
+            <table table class="table table-hover custom-table">
+                <!-- Título da tabela -->
+                <caption class="table-caption">Tags</caption>
 
-            <!-- Cabeçalho da tabela -->
-            <thead>
-                <tr class="table-row table-row-header">
-                    <th class="table-header">ID</th>
-                    <th class="table-header">UUID</th>
-                    <th class="table-header">STATUS</th>
-                    <th class="table-header">Monitorado</th>
-                </tr>
-            </thead>
-
-            <!-- Corpo da tabela -->
-            <tbody>
-                <!-- Loop sobre cada tag para exibir na tabela -->
-                {% for tag in page_obj %}
-                    <tr class="table-row">
-                        <!-- Coluna de ID -->
-                        <td class="table-cel">{{ tag.id }}</td>
-                        <!-- Coluna de UUID -->
-                        <td class="table-cel">{{ tag.uuid_tag }}</td>
-                        <!-- Coluna de status -->
-                        <td class="table-cel">{{ tag.status }}</td>
-                        <!-- Coluna de monitorado -->
-                        <td class="table-cel">{{ tag.monitorado }}</td>
+                <!-- Cabeçalho da tabela -->
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">UUID</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Monitorado</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-{% endblock content %}
+                </thead>
 
-{% block nao_autenticado %}
-    <p>Você não está logado. Por favor, faça o <a href="{% url 'login' %}">login</a> para acessar este conteúdo.</p> 
-{% endblock nao_autenticado %}
+                <!-- Corpo da tabela -->
+                <tbody>
+                    <!-- Loop sobre cada tag para exibir na tabela -->
+                    {% for tag in page_obj %}
+                        <tr>
+                            <!-- Coluna de ID -->
+                            <td>{{ tag.id }}</td>
+                            <!-- Coluna de UUID -->
+                            <td>{{ tag.uuid_tag }}</td>
+                            <!-- Coluna de status -->
+                            <td>{{ tag.status }}</td>
+                            <!-- Coluna de monitorado -->
+                            <td>{{ tag.monitorado }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        
+    </div>
+
+    {% include "global/partials/_pagination.html" %}
+{% endblock content %}
