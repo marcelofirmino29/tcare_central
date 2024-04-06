@@ -1,5 +1,5 @@
 from home import forms
-from home.models import TagBle, Monitorado, Pessoa, Local, Paciente, Medico, Acompanhante, Enfermeiro, Raspberry, LeituraTag
+from home.models import TagBle, Monitorado, Pessoa, Local, Paciente, Funcionario, Acompanhante, Enfermeiro, Raspberry, LeituraTag
 from django.contrib import messages, auth
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
@@ -9,6 +9,8 @@ import colorsys, random
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from collections import Counter
+from django.utils.text import slugify
+
 
 def index(request):
     # Define o contexto com as tags recuperadas
@@ -118,6 +120,7 @@ def cadastrar_acompanhante(request):
 
         return render(request, 'home/cadastrar_acompanhante.html', context)
 
+    
     context = {
         'form': forms.AcompanhanteForm()
     }
@@ -132,8 +135,9 @@ def cadastrar_funcionario(request):
 
         if form.is_valid():
             nome = form.cleaned_data['nome']
+            tipo = form.cleaned_data['tipo']
             form.save()
-            messages.success(request, f'Funcionário {nome} adicionado(a)')
+            messages.success(request, f'{tipo} {nome} adicionado(a)')
         
         return render(request, 'home/cadastrar_funcionario.html', context)
     
@@ -190,6 +194,7 @@ def logout_view(request):
     auth.logout(request)
     return redirect('login')
 
+
 @login_required(login_url='login')
 def dashboard(request):
     total_pessoas = Pessoa.objects.exclude(tag_ble=None).count()
@@ -197,8 +202,8 @@ def dashboard(request):
     ultimas_leituras = LeituraTag.objects.order_by('-id').filter()[:11] 
     ultimos_pacientes = LeituraTag.objects.filter(monitorado__in=Paciente.objects.all()).order_by('-id')[:6]
     ultimos_acompanhantes = LeituraTag.objects.filter(monitorado__in=Acompanhante.objects.all()).order_by('-id')[:6]
-    ultimos_medicos = LeituraTag.objects.filter(monitorado__in=Medico.objects.all()).order_by('-id')[:6]
-    ultimos_enfermeiros = LeituraTag.objects.filter(monitorado__in=Enfermeiro.objects.all()).order_by('-id')[:6]
+    ultimos_medicos = LeituraTag.objects.filter(monitorado__in=Funcionario.objects.filter(tipo=3)).order_by('-id')[:6]
+    ultimos_enfermeiros = LeituraTag.objects.filter(monitorado__in=Funcionario.objects.filter(tipo=4)).order_by('-id')[:6]
 
     pessoas_por_local = {}
 
@@ -213,11 +218,11 @@ def dashboard(request):
 
     pacientes = Paciente.objects.exclude(tag_ble=None)
     total_pacientes = pacientes.count()
-    medicos = Medico.objects.exclude(tag_ble=None)
+    medicos = Funcionario.objects.exclude(tag_ble=None).filter(tipo=3)
     total_medicos = medicos.count()
     acompanhantes = Acompanhante.objects.exclude(tag_ble=None)
     total_acompanhantes = acompanhantes.count()
-    enfermeiros = Enfermeiro.objects.exclude(tag_ble=None)
+    enfermeiros = Funcionario.objects.exclude(tag_ble=None).filter(tipo=4)
     total_enfermeiros = enfermeiros.count()
 
 
@@ -264,7 +269,7 @@ def dashboard(request):
     bar_colors = colors[:len(tipos)]
 
     # Criar gráfico de barras
-    bar_links = [f"<a href='/leituras/?tipo={tipo.lower()}' target='_self'>{tipo}</a>" for tipo in tipos]
+    bar_links = [f"<a href='/locais_por_tipo/?tipo={slugify(tipo)}' target='_self'>{tipo}</a>" for tipo in tipos] #TODO trocar o link, em vez de abrir leituras, abrir lista de pessoas por tipo
 
     fig_bar = go.Figure([go.Bar(
         x=bar_links,
@@ -304,6 +309,32 @@ def dashboard(request):
     
 
     return render(request,'home/dashboard.html', context)
+
+@login_required(login_url='login')
+def locais_por_tipo(request):
+    tipo = request.GET.get('tipo','todos')
+    if tipo == 'medico':
+        lista = Pessoa.objects.exclude(tag_ble=None).filter(tipo__tipo='Médico')
+    elif tipo == 'acompanhante':
+        lista = Pessoa.objects.exclude(tag_ble=None).filter(tipo__tipo='Acompanhante')
+    elif tipo == 'enfermeiro':
+        lista = Pessoa.objects.exclude(tag_ble=None).filter(tipo__tipo='Enfermeiro')
+    elif tipo == 'paciente':
+        lista = Pessoa.objects.exclude(tag_ble=None).filter(tipo__tipo='Paciente') 
+
+    else:
+        lista = Pessoa.objects.exclude(tag_ble=None)
+
+    paginator = Paginator(lista, 20)  # 20 leituras por página
+    page_number = request.GET.get('page')
+    lista_paginated = paginator.get_page(page_number)
+    
+    context = {
+        'tipo': tipo,
+        'lista': lista_paginated
+    }
+
+    return render(request, 'home/locais_por_tipo.html', context)
 
 @login_required(login_url='login')
 def local_detalhes(request, local_localizacao):
@@ -359,55 +390,75 @@ def simula_leitura(request):
 @login_required(login_url='login')
 def leituras(request):
     leituras = LeituraTag.objects.all().order_by('-id')
-    monitorados = set(leitura.monitorado for leitura in leituras)
+    monitorados = set(leitura.monitorado for leitura in leituras),
     locais = set(leitura.local for leitura in leituras)
-    
-
-    # Filtrando por monitorado
+    # Obter parâmetros de filtro do GET
     monitorado_id = request.GET.get('monitorado')
-    if monitorado_id:
-        leituras = leituras.filter(monitorado_id=monitorado_id).order_by('id')
-
-    # Filtrando por local
+    filtro_pessoa = request.GET.get('filtro-pessoa')
+    filtro_tipo = request.GET.get('filtro-tipo')  
     local_id = request.GET.get('local')
-    if local_id:
-        leituras = leituras.filter(local_id=local_id).order_by('id')
-
-    # Filtrando por data
     data = request.GET.get('data')
-
-    if data:
-        # Supondo que a data seja passada no formato YYYY-MM-DD
-        leituras = leituras.filter(data_leitura__date=data).order_by('id')
-
     tipo = request.GET.get('tipo')
+
+
+    if filtro_tipo or filtro_pessoa:
+        if filtro_tipo == 'cpf':
+            pessoas_filtradas = Pessoa.objects.filter(cpf__icontains=filtro_pessoa)
+            leituras = LeituraTag.objects.filter(monitorado__in=pessoas_filtradas)
+        elif filtro_tipo == 'id':
+            try:
+                id_pessoa = int(filtro_pessoa)  # Converter filtro_pessoa para inteiro (se for um ID válido)
+                pessoas_filtradas = Pessoa.objects.filter(id=id_pessoa)
+                leituras = LeituraTag.objects.filter(monitorado__in=pessoas_filtradas)
+
+            except ValueError:
+                leituras = Pessoa.objects.none()  # Retorna uma queryset vazia se filtro_pessoa não for um número válido
+        else:
+            pessoas_filtradas = Pessoa.objects.filter(nome__icontains=filtro_pessoa)
+            leituras = leituras.filter(monitorado__in=pessoas_filtradas)
+
+
+
+    # Aplicar filtros conforme necessário
+    if monitorado_id:
+        leituras = leituras.filter(monitorado_id=monitorado_id)
+    # if filtro_pessoa:
+    #     pessoas_filtradas = Pessoa.objects.filter(nome__icontains=filtro_pessoa)
+    #     leituras = leituras.filter(monitorado__in=pessoas_filtradas)
+    if local_id:
+        leituras = leituras.filter(local_id=local_id)
+    if data:
+        leituras = leituras.filter(data_leitura__date=data)
     if tipo:
         if tipo == 'paciente':
-            leituras = LeituraTag.objects.filter(monitorado__in=Paciente.objects.all()).order_by('-id')[:50]
+            leituras = leituras.filter(monitorado__in=Paciente.objects.all())
         elif tipo == 'acompanhante':
-            leituras = LeituraTag.objects.filter(monitorado__in=Acompanhante.objects.all()).order_by('-id')[:50]
+            leituras = leituras.filter(monitorado__in=Acompanhante.objects.all())
         elif tipo == 'medico':
-            leituras = LeituraTag.objects.filter(monitorado__in=Medico.objects.all()).order_by('-id')[:50]
+            leituras = leituras.filter(monitorado__in=Funcionario.objects.filter(tipo=3))
         elif tipo == 'enfermeiro':
-            leituras = LeituraTag.objects.filter(monitorado__in=Enfermeiro.objects.all()).order_by('-id')[:50]
-        else:
-            # Se o tipo não corresponder a nenhum dos tipos esperados, exibir todas as últimas leituras
-            leituras = LeituraTag.objects.order_by('-id')[:50]
-    else:
-        # Se nenhum tipo for especificado, exibir todas as últimas leituras
-        leituras = LeituraTag.objects.order_by('-id')[:50]
+            leituras = leituras.filter(monitorado__in=Funcionario.objects.filter(tipo=4))
+
+
 
             
 
 
     paginator = Paginator(leituras, 20)  # 20 leituras por página
     page_number = request.GET.get('page')
-    leituras = paginator.get_page(page_number)
+    leituras_paginated = paginator.get_page(page_number)
 
     context = {
-        'leituras': leituras,
+        'leituras': leituras_paginated,
         'monitorados': monitorados,
         'locais': locais,
+        'filtro_pessoa': filtro_pessoa,
+        'filtro_tipo': filtro_tipo,        
+        'monitorado_id': monitorado_id,
+        'local_id': local_id,
+        'data': data,
+        'tipo': tipo,
+
     }
 
     return render(request, 'home/leituras.html', context)
@@ -450,3 +501,7 @@ def vincular_tag_pessoa(request):
         'page_obj': page_obj,
     }
     return render(request, 'home/vincular_tag_pessoa.html', context)
+
+#TODO criar o MVT da lista de pessoas no hospital, com filtros de tipo
+
+#TODO criar MVT para cadastrar e listar objetos

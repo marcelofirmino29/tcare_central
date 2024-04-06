@@ -6,7 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 import uuid
 from django.contrib.auth.forms import AuthenticationForm
-
+from .models import Funcionario
 
 class TagBleForm(forms.ModelForm):
     class Meta:
@@ -32,6 +32,12 @@ class TagBleForm(forms.ModelForm):
 
     
 class PacienteForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Defina um valor padrão para o campo 'tipo' aqui
+        self.fields['tipo'].initial = 1
+
+
     class Meta:
         model = models.Paciente
         fields = (
@@ -43,6 +49,7 @@ class PacienteForm(forms.ModelForm):
             'telefone',
             'numero_quarto',
             'tag_ble',
+            'tipo',
         )
         widgets = {
             'nome': forms.TextInput(attrs={'class': 'form-control'}),
@@ -53,17 +60,28 @@ class PacienteForm(forms.ModelForm):
             'telefone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ex: (99) 99999-9999'}),
             'numero_quarto': forms.TextInput(attrs={'class': 'form-control'}),
             'tag_ble': forms.TextInput(attrs={'class': 'form-control'}),
+            'tipo': forms.Select(attrs={'class': 'form-select'}),
+
         }
+
 
     def clean_cpf(self):
         cpf = self.cleaned_data.get('cpf')
         print (f'passei no clean {cpf}')
         validate_cpf(cpf)
 
+
+
         return cpf
 
 
 class AcompanhanteForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Defina um valor padrão para o campo 'tipo' aqui
+        self.fields['tipo'].initial = 2
+
+        
     class Meta:
         model = models.Acompanhante
         fields = (
@@ -76,6 +94,7 @@ class AcompanhanteForm(forms.ModelForm):
             'paciente_acomp',
             'relacionamento',
             'tag_ble',
+            'tipo',
         )
 
         widgets = {
@@ -88,6 +107,7 @@ class AcompanhanteForm(forms.ModelForm):
             'telefone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ex: (99) 99999-9999'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
             'paciente_acomp': forms.Select(attrs={'class': 'form-select'}),
+            'tipo': forms.Select(attrs={'class': 'form-select'}),
         }
         
         
@@ -103,24 +123,16 @@ class AcompanhanteForm(forms.ModelForm):
         return cpf
 
 
-from django import forms
-from .models import Funcionario, Medico, Enfermeiro, Recepcionista
+#TODO Fazer o cadastro de visitante
+
 
 class FuncionarioForm(forms.ModelForm):
     class Meta:
         model = Funcionario
-        fields = ['nome', 'cpf', 'genero', 'data_nascimento', 'telefone', 'email', 'matricula', 'salario', 'data_admissao', 'status', 'setor']
-
-    tipo_funcionario = forms.ChoiceField(choices=(
-        ('generico', 'Genérico'),
-        ('medico', 'Médico'),
-        ('enfermeiro', 'Enfermeiro'),
-        ('recepcionista', 'Recepcionista'),
-    ), widget=forms.Select(attrs={'class': 'form-select mb-3'}))
+        fields = ['nome', 'cpf', 'genero', 'data_nascimento', 'telefone', 'email', 'matricula', 'salario', 'data_admissao', 'status', 'setor', 'tipo', 'tag_ble']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['tipo_funcionario'].label = 'Tipo de Funcionário'
 
         # Adicionando classes Bootstrap aos widgets dos campos
         self.fields['nome'].widget.attrs.update({'class': 'form-control mb-3', 'placeholder': 'Nome'})
@@ -134,21 +146,15 @@ class FuncionarioForm(forms.ModelForm):
         self.fields['data_admissao'].widget.attrs.update({'class': 'form-control mb-3', 'placeholder': 'Data de Admissão'})
         self.fields['status'].widget.attrs.update({'class': 'form-select mb-3'})
         self.fields['setor'].widget.attrs.update({'class': 'form-control mb-3'})
+        self.fields['tipo'].widget.attrs.update({'class': 'form-select mb-3'})
+        self.fields['tag_ble'].widget.attrs.update({'class': 'form-select mb-3'})
 
     def save(self, commit=True):
         instance = super().save(commit=False)
-        tipo = self.cleaned_data['tipo_funcionario']
-        if tipo == 'medico':
-            instance = Medico(**self.cleaned_data)
-        elif tipo == 'enfermeiro':
-            instance = Enfermeiro(**self.cleaned_data)
-        elif tipo == 'recepcionista':
-            instance = Recepcionista(**self.cleaned_data)
 
         if commit:
             instance.save()
         return instance
-
 
 
 class RegistroForm(UserCreationForm):

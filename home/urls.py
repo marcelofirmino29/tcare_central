@@ -15,6 +15,7 @@ urlpatterns = [
     path('leituras/',views.leituras, name='leituras'),
     path('dashboard/',views.dashboard, name='dashboard'),
     path('local/<str:local_localizacao>/',views.local_detalhes, name='local_detalhes'),
+    path('locais_por_tipo/',views.locais_por_tipo, name='locais_por_tipo'),
 
     # user
     path('usuario/registrar/',views.registrar_usuario, name='registrar_usuario'),

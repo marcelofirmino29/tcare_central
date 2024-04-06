@@ -11,6 +11,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Nome</th>
+                            <th>Tipo</th>
                             <th>Tag BLE</th>
                             <th>Horário de Entrada</th>
                         </tr>
@@ -20,6 +21,7 @@
                             <tr>
                                 <td>{{ pessoa.monitorado.id }}</td>
                                 <td>{{ pessoa.monitorado}}</td>
+                                <td>{{ pessoa.monitorado.tipo}}</td>
                                 <td>{{ pessoa.tag_ble }}</td>
                                 <td>
                                     {{pessoa.data_leitura}}

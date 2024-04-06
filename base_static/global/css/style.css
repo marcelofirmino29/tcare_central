@@ -33,6 +33,18 @@ a:hover{
   padding: 4px;
 }
 
+.link-limpo{
+    color: inherit; /* Manter a cor padrão do texto */
+    text-decoration: none; /* Remover sublinhado */
+    cursor: pointer; /* Mostrar cursor padrão */
+}
+.link-limpo:hover {
+    color: inherit; /* Manter a cor padrão do texto */
+    text-decoration: none; /* Remover sublinhado */
+    cursor: pointer; /* Mostrar cursor padrão */
+}
+
+
 /* Cor de fundo do menu */
 
 

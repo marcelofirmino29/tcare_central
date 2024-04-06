@@ -1,0 +1,109 @@
+{% extends "global/base.html" %}
+
+{% block content %}
+    <div class="container">
+        <h1>Localização</h1>
+        <form id="filtroForm" method="GET" action="">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="tipo" id="todos" value="todos" {% if request.GET.tipo == "todos" %}checked{% endif %}>
+                <label class="form-check-label" for="todos">Todos</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="tipo" id="paciente" value="paciente" {% if request.GET.tipo == "paciente" %}checked{% endif %}>
+                <label class="form-check-label" for="paciente">Pacientes</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="tipo" id="medico" value="medico" {% if request.GET.tipo == "medico" %}checked{% endif %}>
+                <label class="form-check-label" for="medico">Médicos</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="tipo" id="acompanhante" value="acompanhante" {% if request.GET.tipo == "acompanhante" %}checked{% endif %}>
+                <label class="form-check-label" for="acompanhante">Acompanhantes</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="tipo" id="enfermeiro" value="enfermeiro" {% if request.GET.tipo == "enfermeiro" %}checked{% endif %}>
+                <label class="form-check-label" for="enfermeiro">Enfermeiros</label>
+            </div>
+        </form>
+
+
+        <table class="table table-hover table-striped custom-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Tipo</th>
+                    <th>Tag BLE</th>
+                    <th>Local Atual</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pessoa in lista %}
+                    <tr>
+                        <td>{{ pessoa.id }}</td>
+                        <td>{{ pessoa.nome }}</td>
+                        <td>{{ pessoa.tipo }}</td>
+                        <td>{{ pessoa.tag_ble }}</td>
+                        <td><a class="link-limpo" href="/local/{{pessoa.local_atual}}">{{ pessoa.local_atual }}</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <div>
+            <nav aria-label="...">
+                <ul class="pagination d-flex justify-content-center">
+                    {% if lista.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1{% if tipo %}&tipo={{ tipo }}{% endif %}"">&laquo; Primeira</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ lista.previous_page_number }}{% if tipo %}&tipo={{ tipo }}{% endif %}">Anterior</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">&laquo; Primeira</span>
+                        </li>
+                        <li class="page-item disabled">
+                            <span class="page-link">Anterior</span>
+                        </li>
+                    {% endif %}
+            
+                    <li class="page-item active">
+                        <span class="page-link">Página {{ lista.number }} de {{ lista.paginator.num_pages }}</span>
+                    </li>
+            
+                    {% if lista.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ lista.next_page_number }}{% if tipo %}&tipo={{ tipo }}{% endif %}">Próxima</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ lista.paginator.num_pages }}{% if tipo %}&tipo={{ tipo }}{% endif %}"">Última &raquo;</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">Próxima</span>
+                        </li>
+                        <li class="page-item disabled">
+                            <span class="page-link">Última &raquo;</span>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Selecionar todos os radio buttons dentro do formulário
+            const radioButtons = document.querySelectorAll('#filtroForm input[type="radio"]');
+
+            // Adicionar um listener de evento de mudança a cada radio button
+            radioButtons.forEach(function(radioButton) {
+                radioButton.addEventListener('change', function() {
+                    // Submeter automaticamente o formulário ao selecionar um radio button
+                    document.getElementById('filtroForm').submit();
+                });
+            });
+        });
+    </script>
+{% endblock content %}

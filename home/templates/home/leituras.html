@@ -8,14 +8,29 @@
         <form method="GET" class="mb-4">
             <div class="row">
                 <div class="col-md-3 mb-3">
-                    <label for="monitorado" class="form-label">Filtrar por Pessoa:</label>
+                    {% comment %} <label for="monitorado" class="form-label">Filtrar por Pessoa:</label>
                     <select name="monitorado" id="monitorado" class="form-select">
                         <option value="">Todas as Pessoas</option>
                         <!-- Aqui você pode iterar sobre as pessoas disponíveis -->
                         {% for monitorado in monitorados %}
                             <option value="{{ monitorado.id }}">{{ monitorado }}</option>
                         {% endfor %}
-                    </select>
+                    </select> {% endcomment %}
+                    <label for="filtro-pessoa">Filtrar por Pessoa:</label>
+                    <input type="text" id="filtro-pessoa" name="filtro-pessoa" value="{% if filtro_pessoa %}{{filtro_pessoa}}{% endif %}" class="form-control" placeholder="Digite o nome da pessoa">
+                    
+                    <label>Tipo de Filtro:</label>
+                    <input type="radio" id="filtro-cpf" name="filtro-tipo" value="cpf" {% if filtro_tipo == 'cpf' %}checked{% endif %}>
+                    <label for="filtro-cpf">CPF</label>
+                    
+                    <input type="radio" id="filtro-id" name="filtro-tipo" value="id" {% if filtro_tipo == 'id' %}checked{% endif %}>
+                    <label for="filtro-id">ID</label>
+                    
+                    <input type="radio" id="filtro-nome" name="filtro-tipo" value="nome" {% if filtro_tipo == 'nome' %}checked{% endif %}>
+                    <label for="filtro-nome">Nome</label>
+
+
+
                 </div>
                 <div class="col-md-3 mb-3">
                     <label for="local" class="form-label">Filtrar por Local:</label>
@@ -71,6 +86,7 @@
                 <th scope="col">ID Leitura</th>
                 <th scope="col">Tag BLE</th>
                 <th scope="col">Monitorado</th>
+                <th scope="col">Tipo</th>
                 <th scope="col">Raspberry</th>
                 <th scope="col">Local</th>
                 <th scope="col">Data da Leitura</th>
@@ -83,6 +99,7 @@
                 <td>{{ leitura.id }}</td>
                 <td>{{ leitura.tag_ble }}</td>
                 <td>{{ leitura.monitorado }}</td>
+                <td>{{ leitura.monitorado.tipo }}</td>
                 <td>{{ leitura.raspberry }}</td>
                 <td>{{ leitura.local }}</td>
                 <td>{{ leitura.data_leitura }}</td>
@@ -96,10 +113,10 @@
             <ul class="pagination d-flex justify-content-center">
                 {% if leituras.has_previous %}
                     <li class="page-item">
-                        <a class="page-link" href="?page=1">&laquo; Primeira</a>
+                        <a class="page-link" href="?page=1{% if filtro_pessoa %}&filtro-pessoa={{ filtro_pessoa }}{% endif %}{% if monitorado_id %}&monitorado={{ monitorado_id }}{% endif %}{% if local_id %}&local={{ local_id }}{% endif %}{% if data %}&data={{ data }}{% endif %}{% if tipo %}&tipo={{ tipo }}{% endif %}"">&laquo; Primeira</a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ leituras.previous_page_number }}">Anterior</a>
+                        <a class="page-link" href="?page={{ leituras.previous_page_number }}{% if filtro_pessoa %}&filtro-pessoa={{ filtro_pessoa }}{% endif %}{% if monitorado_id %}&monitorado={{ monitorado_id }}{% endif %}{% if local_id %}&local={{ local_id }}{% endif %}{% if data %}&data={{ data }}{% endif %}{% if tipo %}&tipo={{ tipo }}{% endif %}">Anterior</a>
                     </li>
                 {% else %}
                     <li class="page-item disabled">
@@ -116,10 +133,10 @@
         
                 {% if leituras.has_next %}
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ leituras.next_page_number }}">Próxima</a>
+                        <a class="page-link" href="?page={{ leituras.next_page_number }}{% if filtro_pessoa %}&filtro-pessoa={{ filtro_pessoa }}{% endif %}{% if monitorado_id %}&monitorado={{ monitorado_id }}{% endif %}{% if local_id %}&local={{ local_id }}{% endif %}{% if data %}&data={{ data }}{% endif %}{% if tipo %}&tipo={{ tipo }}{% endif %}">Próxima</a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ leituras.paginator.num_pages }}">Última &raquo;</a>
+                        <a class="page-link" href="?page={{ leituras.paginator.num_pages }}{% if filtro_pessoa %}&filtro-pessoa={{ filtro_pessoa }}{% endif %}{% if monitorado_id %}&monitorado={{ monitorado_id }}{% endif %}{% if local_id %}&local={{ local_id }}{% endif %}{% if data %}&data={{ data }}{% endif %}{% if tipo %}&tipo={{ tipo }}{% endif %}"">Última &raquo;</a>
                     </li>
                 {% else %}
                     <li class="page-item disabled">
