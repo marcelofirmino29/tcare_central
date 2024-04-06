@@ -29,14 +29,14 @@
                     <!-- Input para pesquisa por nome ou CPF -->
                     <div class="mb-3">
                         <h2 class="mt-4 mb-4">Buscar pessoa por nome ou CPF</h2>
-                        <label for="search" class="form-label">Busca:</label>
-                        <input type="text" class="form-control" name="search" id="search">
+                        <label for="busca" class="form-label">Busca:</label>
+                        <input type="text" class="form-control" name="busca" id="busca">
                     </div>
                     <!-- Botão de envio para busca -->
                     <button type="submit" class="btn custom-button">Buscar</button>
                 </form>
                 <h2>Resultados da busca</h2>
-                <table class="table">
+                <table class="table custom-table table-hover">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -49,26 +49,77 @@
                     </thead>
                     <tbody>
                         <!-- Iterar sobre os resultados da busca -->
-                        {% if page_obj %}
-                            {% for resultado in page_obj %}
+                        {% if resultado %}
+                            {% for item in resultado %}
                             <tr>
-                                <td>{{ resultado.id }}</td>
-                                <td>{{ resultado.nome }}</td>
-                                <td>{{ resultado.cpf }}</td>
-                                {% if resultado.tag_ble %}
-                                    <td>{{ resultado.tag_ble }}</td>
+                                <td>{{ item.id }}</td>
+                                <td>{{ item.nome }}</td>
+                                <td>{{ item.cpf }}</td>
+                                {% if item.tag_ble %}
+                                    <td>{{ item.tag_ble }}</td>
                                 {% else %}
                                     <td>Sem tag vinculada</td>
+
                                 {% endif %}
                                 <!-- Adicione mais colunas conforme necessário -->
                             </tr>
                             {% endfor %}
                         {% else %}
-                            <tr> <td> Nenhum resultado </td></tr>
+                            <tr> 
+                                <td> Nenhum resultado </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
                         {% endif %}
                     </tbody>
                 </table>
-                {% include "global/partials/_pagination.html" %}
+
+                {% if resultado.paginator.num_pages > 1 %}
+                <div>
+                    <nav aria-label="...">
+                        <ul class="pagination d-flex justify-content-center">
+                            {% if resultado.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=1{% if busca %}&busca={{ busca }}{% endif %}"">&laquo; Primeira</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ resultado.previous_page_number }}{% if busca %}&busca={{ busca }}{% endif %}">Anterior</a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled">
+                                    <span class="page-link">&laquo; Primeira</span>
+                                </li>
+                                <li class="page-item disabled">
+                                    <span class="page-link">Anterior</span>
+                                </li>
+                            {% endif %}
+                    
+                            <li class="page-item active">
+                                <span class="page-link">Página {{ resultado.number }} de {{ resultado.paginator.num_pages }}</span>
+                            </li>
+                    
+                            {% if resultado.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ resultado.next_page_number }}{% if busca %}&busca={{ busca }}{% endif %}">Próxima</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ resultado.paginator.num_pages }}{% if busca %}&busca={{ busca }}{% endif %}"">Última &raquo;</a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled">
+                                    <span class="page-link">Próxima</span>
+                                </li>
+                                <li class="page-item disabled">
+                                    <span class="page-link">Última &raquo;</span>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+                {% endif %}
+
+                
             </div>
         </div>
     </div>

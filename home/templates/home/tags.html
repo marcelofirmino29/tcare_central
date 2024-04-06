@@ -4,8 +4,9 @@
     <!-- Este bloco representa o conteúdo específico desta página -->
 
     <div class="container mt-5">
+        <h1> Lista de tags</h1>
         <!-- Formulário de seleção para escolher entre todas as tags ou apenas aquelas com monitorado vinculado -->
-        <form method="get" action="{% url 'tags' %}" class="mb-4">
+        <form method="get" id="filtroForm" action="" class="mb-4">
             <div class="form-check form-check-inline">
                 <input type="radio" id="todas" name="filtro" value="todas" {% if filtro == 'todas' %}checked{% endif %} class="form-check-input">
                 <label for="todas" class="form-check-label">Todas</label>
@@ -18,8 +19,7 @@
                 <input type="radio" id="disponiveis" name="filtro" value="disponiveis" {% if filtro == 'disponiveis' %}checked{% endif %} class="form-check-input">
                 <label for="disponiveis" class="form-check-label">Disponíveis</label>
             </div>
-            <button class="btn btn-primary" type="submit">Filtrar</button>
-            <a class="btn btn-success" href="{% url 'cadastrar_tag' %}">Adicionar nova TAG</a>
+
         </form>
 
         
@@ -40,7 +40,7 @@
                 <!-- Corpo da tabela -->
                 <tbody>
                     <!-- Loop sobre cada tag para exibir na tabela -->
-                    {% for tag in page_obj %}
+                    {% for tag in tags %}
                         <tr>
                             <!-- Coluna de ID -->
                             <td>{{ tag.id }}</td>
@@ -57,5 +57,61 @@
         
     </div>
 
-    {% include "global/partials/_pagination.html" %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Selecionar todos os radio buttons dentro do formulário
+            const radioButtons = document.querySelectorAll('#filtroForm input[type="radio"]');
+
+            // Adicionar um listener de evento de mudança a cada radio button
+            radioButtons.forEach(function(radioButton) {
+                radioButton.addEventListener('change', function() {
+                    // Submeter automaticamente o formulário ao selecionar um radio button
+                    document.getElementById('filtroForm').submit();
+                });
+            });
+        });
+    </script>
+
+    <div>
+        <nav aria-label="...">
+            <ul class="pagination d-flex justify-content-center">
+                {% if tags.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1{% if filtro %}&filtro={{ filtro }}{% endif %}"">&laquo; Primeira</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ tags.previous_page_number }}{% if filtro %}&filtro={{ filtro }}{% endif %}">Anterior</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">&laquo; Primeira</span>
+                    </li>
+                    <li class="page-item disabled">
+                        <span class="page-link">Anterior</span>
+                    </li>
+                {% endif %}
+        
+                <li class="page-item active">
+                    <span class="page-link">Página {{ tags.number }} de {{ tags.paginator.num_pages }}</span>
+                </li>
+        
+                {% if tags.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ tags.next_page_number }}{% if filtro %}&filtro={{ filtro }}{% endif %}">Próxima</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ tags.paginator.num_pages }}{% if filtro %}&filtro={{ filtro }}{% endif %}"">Última &raquo;</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">Próxima</span>
+                    </li>
+                    <li class="page-item disabled">
+                        <span class="page-link">Última &raquo;</span>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</div>
 {% endblock content %}

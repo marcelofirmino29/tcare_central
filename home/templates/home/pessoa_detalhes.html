@@ -1,0 +1,52 @@
+{% extends "global/base.html" %}
+
+{% block content %}
+    <div class="container">
+        <div class="col-md-4">
+            <form method="GET">
+                <!-- Input para pesquisa por nome ou CPF -->
+                <div class="mb-3">
+                    <h2 class="mt-4 mb-4">Buscar pessoa por ID</h2>
+                    <input type="number" class="form-control" name="busca" id="busca">
+                </div>
+                <!-- Botão de envio para busca -->
+                <button type="submit" class="btn custom-button">Buscar</button>
+            </form>
+            <hr>
+        </div>
+        
+        {% if pessoa %}
+            <h1 class="mb-4">Detalhes da Pessoa</h1>
+            
+            
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">{{ pessoa.nome }}</h2>
+                    <p class="card-text"><strong>CPF:</strong> {{ pessoa.cpf }}</p>
+                    <p class="card-text"><strong>ID:</strong> {{ pessoa.monitorado_ptr.id }}</p>
+                    <p class="card-text"><strong>Tag Ble:</strong> {{ pessoa.monitorado_ptr.tag_ble }}</p>
+                    <p class="card-text"><strong>Local Atual:</strong> {{ pessoa.monitorado_ptr.local_atual }}</p>
+                    <p class="card-text"><strong>Tipo:</strong> {{ pessoa.monitorado_ptr.tipo }}</p>
+                    <p class="card-text"><strong>Gênero:</strong> {{ pessoa.get_genero_display }}</p>
+                    <p class="card-text"><strong>Data de Nascimento:</strong> {{ pessoa.data_nascimento|date:"d/m/Y" }}</p>
+                    <p class="card-text"><strong>Telefone:</strong> {{ pessoa.telefone }}</p>
+                    <p class="card-text"><strong>Email:</strong> {{ pessoa.email }}</p>
+                    {% if pessoa.monitorado_ptr.pessoa.funcionario.matricula %}
+                        <p class="card-text"><strong>Matrícula:</strong> {{ pessoa.monitorado_ptr.pessoa.funcionario.matricula }}</p>
+                    {% endif %}
+                    {% if pessoa.monitorado_ptr.pessoa.paciente.numero_quarto %}
+                        <p class="card-text"><strong>Número do quarto:</strong> {{ pessoa.monitorado_ptr.pessoa.paciente.numero_quarto }}</p>
+                    {% endif %}
+                    {% if pessoa.monitorado_ptr.pessoa.acompanhante.paciente_acomp %}
+                        <p class="card-text"><strong>{{pessoa.monitorado_ptr.pessoa.acompanhante.relacionamento}} de </strong> {{ pessoa.monitorado_ptr.pessoa.acompanhante.paciente_acomp }} - ID: {{ pessoa.monitorado_ptr.pessoa.acompanhante.paciente_acomp.id }} </p>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+
+
+
+
+{% endblock content %}

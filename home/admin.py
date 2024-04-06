@@ -49,7 +49,7 @@ class ObjetoAdmin(admin.ModelAdmin):
 
 @admin.register(models.Pessoa)
 class PessoaAdmin(admin.ModelAdmin):
-        list_display = ('nome', 'tipo','tag_ble','cpf', 'genero','local_atual','data_nascimento', 'email','telefone')
+        list_display = ('id', 'nome', 'tipo','tag_ble','cpf', 'genero','local_atual','data_nascimento', 'email','telefone')
 
 
 @admin.register(models.Funcionario)
@@ -57,7 +57,7 @@ class FuncionarioAdmin(admin.ModelAdmin):
     """
     Classe de administração para o modelo Funcionario.
     """
-    list_display = ('nome', 'tipo','tag_ble', 'cpf', 'genero', 'data_nascimento', 'telefone', 'email','matricula', 'salario', 'data_admissao', 'status', 'setor')
+    list_display = ('id','nome', 'tipo','tag_ble', 'cpf', 'genero', 'data_nascimento', 'telefone', 'email','matricula', 'salario', 'data_admissao', 'status', 'setor')
     list_editable = ('tipo',)
 
 
@@ -66,15 +66,15 @@ class PacienteAdmin(admin.ModelAdmin):
     """
     Classe de administração para o modelo Paciente.
     """
-    list_display = ('id','nome', 'tipo', 'tag_ble','cpf', 'genero','local_atual','data_nascimento', 'email','telefone', 'numero_quarto')
-    list_editable = ('tipo',)
+    list_display = ('id','nome', 'tipo', 'tag_ble','cpf', 'numero_quarto','local_atual','data_nascimento', 'email','telefone', )
+    list_editable = ('tipo','numero_quarto')
 
 @admin.register(models.Acompanhante)
 class AcompanhanteAdmin(admin.ModelAdmin):
     """
     Classe de administração para o modelo Acompanhante.
     """
-    list_display = ('nome', 'tipo', 'tag_ble', 'cpf', 'genero', 'data_nascimento', 'telefone','email', 'relacionamento', 'paciente_acomp')
+    list_display = ('id','nome', 'tipo', 'tag_ble', 'cpf', 'genero', 'data_nascimento', 'telefone','email', 'relacionamento', 'paciente_acomp')
     list_editable = ('tipo',)
 
 @admin.register(models.Visitante)

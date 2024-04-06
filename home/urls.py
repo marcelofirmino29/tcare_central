@@ -2,20 +2,27 @@ from django.urls import path
 from home import views
 
 urlpatterns = [
-    # Define a rota raiz que corresponde à função 'index' no arquivo 'views.py' dentro do aplicativo 'home'
+        
     path('',views.index, name='index'),
+
+    path('dashboard/',views.dashboard, name='dashboard'),
+
+
     path('tags/',views.tags, name='tags'),
     path('cadastrar_tag/',views.cadastrar_tag, name='cadastrar_tag'),
     path('vincular_tag_pessoa/',views.vincular_tag_pessoa, name='vincular_tag_pessoa'),
+
     path('pessoas/',views.pessoas, name='pessoas'),
+    path('pessoas/detalhes/',views.pessoa_detalhes, name='pessoa_detalhes'),
     path('cadastrar_paciente/',views.cadastrar_paciente, name='cadastrar_paciente'),
     path('cadastrar_acompanhante/',views.cadastrar_acompanhante, name='cadastrar_acompanhante'),
     path('cadastrar_funcionario/',views.cadastrar_funcionario, name='cadastrar_funcionario'),
+    path('localizacao/',views.localizacao, name='localizacao'),
+
     path('simula_leitura/',views.simula_leitura, name='simula_leitura'),
     path('leituras/',views.leituras, name='leituras'),
-    path('dashboard/',views.dashboard, name='dashboard'),
+
     path('local/<str:local_localizacao>/',views.local_detalhes, name='local_detalhes'),
-    path('locais_por_tipo/',views.locais_por_tipo, name='locais_por_tipo'),
 
     # user
     path('usuario/registrar/',views.registrar_usuario, name='registrar_usuario'),

@@ -21,6 +21,7 @@ def index(request):
     # Renderiza o template 'home/index.html' com o contexto e retorna a resposta
     return render(request, 'home/index.html', context)
 
+
 @login_required(login_url='login')
 def tags(request):
     filtro = request.GET.get('filtro')  # Obtém o valor do parâmetro 'filtro' da URL
@@ -33,14 +34,15 @@ def tags(request):
 
     paginator = Paginator(tags, 20)  
     page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
+    tags_paginated = paginator.get_page(page_number)
 
     context = {
-        'tags': tags,
-        'page_obj': page_obj,
+        'tags': tags_paginated,
         'site_title': 'Tags | ',
+        'filtro': filtro,
     }
     return render(request, 'home/tags.html', context)
+
 
 @login_required(login_url='login')
 def pessoas(request):
@@ -60,6 +62,7 @@ def pessoas(request):
         'site_title': 'Pessoas | ',
     }
     return render(request,'home/pessoas.html', context)
+
 
 @login_required(login_url='login')
 def cadastrar_tag(request):
@@ -83,6 +86,7 @@ def cadastrar_tag(request):
     }
     return render(request, 'home/cadastrar_tag.html', context)
 
+
 @login_required(login_url='login')
 def cadastrar_paciente(request):
     
@@ -103,6 +107,7 @@ def cadastrar_paciente(request):
         'form': forms.PacienteForm()
     }
     return render(request, 'home/cadastrar_paciente.html', context)
+
 
 @login_required(login_url='login')
 def cadastrar_acompanhante(request):
@@ -126,6 +131,7 @@ def cadastrar_acompanhante(request):
     }
     return render(request, 'home/cadastrar_acompanhante.html', context)
 
+
 def cadastrar_funcionario(request):
     if request.method == 'POST':
         form = forms.FuncionarioForm(request.POST)
@@ -145,6 +151,7 @@ def cadastrar_funcionario(request):
         'form': forms.FuncionarioForm()
     }
     return render(request, 'home/cadastrar_funcionario.html',context)
+
 
 @login_required(login_url='login')
 def registrar_usuario(request):
@@ -167,6 +174,7 @@ def registrar_usuario(request):
         }
         )
 
+
 def login_view(request):
     form = forms.BootstrapAuthenticationForm(request)
 
@@ -188,6 +196,7 @@ def login_view(request):
             'form': form,
         }
         )
+
 
 @login_required(login_url='login')
 def logout_view(request):
@@ -310,8 +319,9 @@ def dashboard(request):
 
     return render(request,'home/dashboard.html', context)
 
+
 @login_required(login_url='login')
-def locais_por_tipo(request):
+def localizacao(request):
     tipo = request.GET.get('tipo','todos')
     if tipo == 'medico':
         lista = Pessoa.objects.exclude(tag_ble=None).filter(tipo__tipo='Médico')
@@ -334,7 +344,8 @@ def locais_por_tipo(request):
         'lista': lista_paginated
     }
 
-    return render(request, 'home/locais_por_tipo.html', context)
+    return render(request, 'home/localizacao.html', context)
+
 
 @login_required(login_url='login')
 def local_detalhes(request, local_localizacao):
@@ -363,6 +374,20 @@ def local_detalhes(request, local_localizacao):
     }
 
     return render(request, 'home/local_detalhes.html', context)
+
+@login_required(login_url='login')
+def pessoa_detalhes(request):
+    busca = request.GET.get('busca')
+    pessoa = None
+    if busca:
+        pessoa = get_object_or_404(Pessoa, id=busca)
+
+    context = {
+        'pessoa': pessoa,
+    }
+
+    return render(request,'home/pessoa_detalhes.html', context)
+
 @login_required(login_url='login')
 def simula_leitura(request):
     raspberry = random.choice(Raspberry.objects.all())
@@ -386,6 +411,7 @@ def simula_leitura(request):
     }
 
     return render(request, 'home/leitura_tag.html', context)
+
 
 @login_required(login_url='login')
 def leituras(request):
@@ -463,9 +489,11 @@ def leituras(request):
 
     return render(request, 'home/leituras.html', context)
 
+
 @login_required(login_url='login')
 def vincular_tag_pessoa(request):
     resultados_da_busca = None
+    resultados_da_busca_paginated = None
     if request.method == 'POST':
         tag_id = request.POST.get('tag_id')
         pessoa_id = request.POST.get('pessoa_id')
@@ -485,23 +513,25 @@ def vincular_tag_pessoa(request):
                 return redirect('vincular_tag_pessoa')
             except (TagBle.DoesNotExist, Pessoa.DoesNotExist):
                 messages.error(request, 'Tag ou pessoa indisponíveis. Tag não vinculada',)
-    elif request.method == 'GET' and 'search' in request.GET:
-        termo_busca = request.GET.get('search')
+    elif request.method == 'GET':
+        termo_busca = request.GET.get('busca')
         if termo_busca:
             resultados_da_busca = Pessoa.objects.filter(nome__icontains=termo_busca).order_by('id') | Pessoa.objects.filter(cpf__icontains=termo_busca).order_by('id')
 
-    page_obj = None
+    
     if resultados_da_busca:
-        paginator = Paginator(resultados_da_busca, 10)  
+        paginator = Paginator(resultados_da_busca, 5)  
         page_number = request.GET.get("page")
-        page_obj = paginator.get_page(page_number)
+        resultados_da_busca_paginated = paginator.get_page(page_number)
+
+    print(f'{termo_busca} e {resultados_da_busca_paginated} e {resultados_da_busca}')
 
     context = {
 
-        'page_obj': page_obj,
+        'resultado': resultados_da_busca_paginated,
+        'busca': termo_busca
     }
     return render(request, 'home/vincular_tag_pessoa.html', context)
 
-#TODO criar o MVT da lista de pessoas no hospital, com filtros de tipo
 
 #TODO criar MVT para cadastrar e listar objetos
