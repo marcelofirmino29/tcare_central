@@ -57,8 +57,8 @@ class FuncionarioAdmin(admin.ModelAdmin):
     """
     Classe de administração para o modelo Funcionario.
     """
-    list_display = ('id','nome', 'tipo','tag_ble', 'cpf', 'genero', 'data_nascimento', 'telefone', 'email','matricula', 'salario', 'data_admissao', 'status', 'setor')
-    list_editable = ('tipo',)
+    list_display = ('id','nome', 'tipo','tag_ble', 'cpf', 'genero', 'data_nascimento', 'telefone', 'email','matricula', 'status', 'setor')
+    list_editable = ('tipo','tag_ble')
 
 
 @admin.register(models.Paciente)
@@ -67,7 +67,7 @@ class PacienteAdmin(admin.ModelAdmin):
     Classe de administração para o modelo Paciente.
     """
     list_display = ('id','nome', 'tipo', 'tag_ble','cpf', 'numero_quarto','local_atual','data_nascimento', 'email','telefone', )
-    list_editable = ('tipo','numero_quarto')
+    list_editable = ('tipo','numero_quarto','tag_ble')
 
 @admin.register(models.Acompanhante)
 class AcompanhanteAdmin(admin.ModelAdmin):
@@ -96,7 +96,7 @@ class MedicoAdmin(admin.ModelAdmin):
     """
     Classe de administração para o modelo Medico.
     """
-    list_display = ('nome', 'tag_ble', 'cpf', 'genero','local_atual', 'data_nascimento', 'telefone', 'email','matricula', 'salario', 'data_admissao', 'status', 'setor', )
+    list_display = ('nome', 'tag_ble', 'cpf', 'genero','local_atual', 'data_nascimento', 'telefone', 'email','matricula', 'status', 'setor', )
 
 
 @admin.register(models.Enfermeiro)
@@ -104,7 +104,7 @@ class EnfermeiroAdmin(admin.ModelAdmin):
     """
     Classe de administração para o modelo Enfermeiro.
     """
-    list_display = ('nome', 'tag_ble', 'cpf', 'genero','local_atual', 'data_nascimento', 'telefone', 'email','matricula', 'salario', 'data_admissao', 'status', 'setor', )
+    list_display = ('nome', 'tag_ble', 'cpf', 'genero','local_atual', 'data_nascimento', 'telefone', 'email','matricula', 'status', 'setor', )
 """
 Neste código:
 

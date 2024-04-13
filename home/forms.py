@@ -129,7 +129,7 @@ class AcompanhanteForm(forms.ModelForm):
 class FuncionarioForm(forms.ModelForm):
     class Meta:
         model = Funcionario
-        fields = ['nome', 'cpf', 'genero', 'data_nascimento', 'telefone', 'email', 'matricula', 'salario', 'data_admissao', 'status', 'setor', 'tipo', 'tag_ble']
+        fields = ['nome', 'cpf', 'genero', 'data_nascimento', 'telefone', 'email', 'matricula',  'status', 'setor', 'tipo', 'tag_ble']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -142,8 +142,8 @@ class FuncionarioForm(forms.ModelForm):
         self.fields['telefone'].widget.attrs.update({'class': 'form-control mb-3', 'placeholder': 'Telefone'})
         self.fields['email'].widget.attrs.update({'class': 'form-control mb-3', 'placeholder': 'E-mail'})
         self.fields['matricula'].widget.attrs.update({'class': 'form-control mb-3', 'placeholder': 'Matrícula'})
-        self.fields['salario'].widget.attrs.update({'class': 'form-control mb-3', 'placeholder': 'Salário'})
-        self.fields['data_admissao'].widget.attrs.update({'class': 'form-control mb-3', 'placeholder': 'Data de Admissão'})
+        #self.fields['salario'].widget.attrs.update({'class': 'form-control mb-3', 'placeholder': 'Salário'})
+        #self.fields['data_admissao'].widget.attrs.update({'class': 'form-control mb-3', 'placeholder': 'Data de Admissão'})
         self.fields['status'].widget.attrs.update({'class': 'form-select mb-3'})
         self.fields['setor'].widget.attrs.update({'class': 'form-control mb-3'})
         self.fields['tipo'].widget.attrs.update({'class': 'form-select mb-3'})

@@ -41,7 +41,7 @@
                 {% for pessoa in lista %}
                     <tr>
                         <td>{{ pessoa.id }}</td>
-                        <td><a href="{% url 'pessoa_detalhes' pessoa.id %}" class="link-limpo">{{ pessoa.nome }}</a></td>
+                        <td><a href="{% url 'pessoa_detalhes' %}" class="link-limpo">{{ pessoa.nome }}</a></td>
                         <td>{{ pessoa.tipo }}</td>
                         <td>{{ pessoa.tag_ble }}</td>
                         <td><a class="link-limpo" href="/local/{{pessoa.local_atual}}">{{ pessoa.local_atual }}</a></td>
@@ -49,48 +49,49 @@
                 {% endfor %}
             </tbody>
         </table>
-        
-        <div>
-            <nav aria-label="...">
-                <ul class="pagination d-flex justify-content-center">
-                    {% if lista.has_previous %}
-                        <li class="page-item">
-                            <a class="page-link" href="?page=1{% if tipo %}&tipo={{ tipo }}{% endif %}"">&laquo; Primeira</a>
+        {% if lista.paginator.num_pages > 1 %}
+            <div>
+                <nav aria-label="...">
+                    <ul class="pagination d-flex justify-content-center">
+                        {% if lista.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page=1{% if tipo %}&tipo={{ tipo }}{% endif %}"">&laquo; Primeira</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ lista.previous_page_number }}{% if tipo %}&tipo={{ tipo }}{% endif %}">Anterior</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">&laquo; Primeira</span>
+                            </li>
+                            <li class="page-item disabled">
+                                <span class="page-link">Anterior</span>
+                            </li>
+                        {% endif %}
+                
+                        <li class="page-item active">
+                            <span class="page-link">Página {{ lista.number }} de {{ lista.paginator.num_pages }}</span>
                         </li>
-                        <li class="page-item">
-                            <a class="page-link" href="?page={{ lista.previous_page_number }}{% if tipo %}&tipo={{ tipo }}{% endif %}">Anterior</a>
-                        </li>
-                    {% else %}
-                        <li class="page-item disabled">
-                            <span class="page-link">&laquo; Primeira</span>
-                        </li>
-                        <li class="page-item disabled">
-                            <span class="page-link">Anterior</span>
-                        </li>
-                    {% endif %}
-            
-                    <li class="page-item active">
-                        <span class="page-link">Página {{ lista.number }} de {{ lista.paginator.num_pages }}</span>
-                    </li>
-            
-                    {% if lista.has_next %}
-                        <li class="page-item">
-                            <a class="page-link" href="?page={{ lista.next_page_number }}{% if tipo %}&tipo={{ tipo }}{% endif %}">Próxima</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="?page={{ lista.paginator.num_pages }}{% if tipo %}&tipo={{ tipo }}{% endif %}"">Última &raquo;</a>
-                        </li>
-                    {% else %}
-                        <li class="page-item disabled">
-                            <span class="page-link">Próxima</span>
-                        </li>
-                        <li class="page-item disabled">
-                            <span class="page-link">Última &raquo;</span>
-                        </li>
-                    {% endif %}
-                </ul>
-            </nav>
-        </div>
+                
+                        {% if lista.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ lista.next_page_number }}{% if tipo %}&tipo={{ tipo }}{% endif %}">Próxima</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ lista.paginator.num_pages }}{% if tipo %}&tipo={{ tipo }}{% endif %}"">Última &raquo;</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">Próxima</span>
+                            </li>
+                            <li class="page-item disabled">
+                                <span class="page-link">Última &raquo;</span>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        {% endif %}
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {

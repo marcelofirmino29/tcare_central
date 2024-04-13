@@ -79,7 +79,7 @@ class Tipo(models.Model):
 
 class Monitorado(models.Model):
     tag_ble = models.OneToOneField(TagBle, on_delete=models.PROTECT, null=True, blank=True)
-    local_atual = models.ForeignKey(Local, on_delete=models.PROTECT, null=True, blank=True)
+    local_atual = models.ForeignKey(Local, on_delete=models.PROTECT, null=True, blank=True, default=13) #default 13 = recepção
     tipo = models.ForeignKey(Tipo, on_delete=models.PROTECT, null=True, blank=False)
     
 
@@ -170,10 +170,10 @@ class Funcionario(Pessoa):
 
 
     matricula = models.CharField(max_length=20, unique=True)
-    salario = models.DecimalField(max_digits=10, decimal_places=2) #TODO Remover campos de salário e data_admissão
-    data_admissao = models.DateField()
+    #salario = models.DecimalField(max_digits=10, decimal_places=2) #TODO Remover campos de salário e data_admissão
+    #data_admissao = models.DateField()
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='ativo')
-    setor = models.CharField(max_length=100)
+    setor = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return f"{self.nome} ({self.tipo})"

@@ -71,47 +71,48 @@
             });
         });
     </script>
-
-    <div>
-        <nav aria-label="...">
-            <ul class="pagination d-flex justify-content-center">
-                {% if tags.has_previous %}
-                    <li class="page-item">
-                        <a class="page-link" href="?page=1{% if filtro %}&filtro={{ filtro }}{% endif %}"">&laquo; Primeira</a>
+    {% if tags.paginator.num_pages > 1 %}
+        <div>
+            <nav aria-label="...">
+                <ul class="pagination d-flex justify-content-center">
+                    {% if tags.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1{% if filtro %}&filtro={{ filtro }}{% endif %}"">&laquo; Primeira</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ tags.previous_page_number }}{% if filtro %}&filtro={{ filtro }}{% endif %}">Anterior</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">&laquo; Primeira</span>
+                        </li>
+                        <li class="page-item disabled">
+                            <span class="page-link">Anterior</span>
+                        </li>
+                    {% endif %}
+            
+                    <li class="page-item active">
+                        <span class="page-link">Página {{ tags.number }} de {{ tags.paginator.num_pages }}</span>
                     </li>
-                    <li class="page-item">
-                        <a class="page-link" href="?page={{ tags.previous_page_number }}{% if filtro %}&filtro={{ filtro }}{% endif %}">Anterior</a>
-                    </li>
-                {% else %}
-                    <li class="page-item disabled">
-                        <span class="page-link">&laquo; Primeira</span>
-                    </li>
-                    <li class="page-item disabled">
-                        <span class="page-link">Anterior</span>
-                    </li>
-                {% endif %}
-        
-                <li class="page-item active">
-                    <span class="page-link">Página {{ tags.number }} de {{ tags.paginator.num_pages }}</span>
-                </li>
-        
-                {% if tags.has_next %}
-                    <li class="page-item">
-                        <a class="page-link" href="?page={{ tags.next_page_number }}{% if filtro %}&filtro={{ filtro }}{% endif %}">Próxima</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="?page={{ tags.paginator.num_pages }}{% if filtro %}&filtro={{ filtro }}{% endif %}"">Última &raquo;</a>
-                    </li>
-                {% else %}
-                    <li class="page-item disabled">
-                        <span class="page-link">Próxima</span>
-                    </li>
-                    <li class="page-item disabled">
-                        <span class="page-link">Última &raquo;</span>
-                    </li>
-                {% endif %}
-            </ul>
-        </nav>
-    </div>
+            
+                    {% if tags.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ tags.next_page_number }}{% if filtro %}&filtro={{ filtro }}{% endif %}">Próxima</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ tags.paginator.num_pages }}{% if filtro %}&filtro={{ filtro }}{% endif %}"">Última &raquo;</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">Próxima</span>
+                        </li>
+                        <li class="page-item disabled">
+                            <span class="page-link">Última &raquo;</span>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    {% endif %}
 </div>
 {% endblock content %}

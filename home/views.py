@@ -10,7 +10,7 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from collections import Counter
 from django.utils.text import slugify
-
+from django.db.models import Q
 
 def index(request):
     # Define o contexto com as tags recuperadas
@@ -216,11 +216,11 @@ def dashboard(request):
 
     pessoas_por_local = {}
 
-    locais_com_pessoas = [local for local in locais if Pessoa.objects.filter(local_atual=local).exists()]
+    locais_com_pessoas = [local for local in locais if Pessoa.objects.exclude(tag_ble=None).filter(local_atual=local).exists()]
 
 
     for local in locais_com_pessoas:
-        pessoas_por_local[local.localizacao] = Pessoa.objects.filter(local_atual=local).count()
+        pessoas_por_local[local.localizacao] = Pessoa.objects.exclude(tag_ble=None).filter(local_atual=local).count()
     
     # Em seguida, extraímos os IDs dos pacientes associados a essas leituras
     
@@ -278,7 +278,7 @@ def dashboard(request):
     bar_colors = colors[:len(tipos)]
 
     # Criar gráfico de barras
-    bar_links = [f"<a href='/locais_por_tipo/?tipo={slugify(tipo)}' target='_self'>{tipo}</a>" for tipo in tipos] #TODO trocar o link, em vez de abrir leituras, abrir lista de pessoas por tipo
+    bar_links = [f"<a href='/localizacao/?tipo={slugify(tipo)}' target='_self'>{tipo}</a>" for tipo in tipos] #TODO trocar o link, em vez de abrir leituras, abrir lista de pessoas por tipo
 
     fig_bar = go.Figure([go.Bar(
         x=bar_links,
@@ -350,7 +350,7 @@ def localizacao(request):
 @login_required(login_url='login')
 def local_detalhes(request, local_localizacao):
     local = get_object_or_404(Local, localizacao=local_localizacao)
-    pessoas_no_local = Pessoa.objects.filter(local_atual=local)
+    pessoas_no_local = Pessoa.objects.exclude(tag_ble=None).filter(local_atual=local)
     leituras = LeituraTag.objects.filter(local=local)
 
     # Dicionário para armazenar o horário de entrada de cada pessoa
@@ -362,7 +362,7 @@ def local_detalhes(request, local_localizacao):
         leituras_pessoa = leituras.filter(monitorado=pessoa.id)
         # Se houver leituras para a pessoa, encontrar a leitura mais antiga como horário de entrada
         if leituras_pessoa.exists():
-            lista_leituras.append(leituras_pessoa.earliest('data_leitura'))
+            lista_leituras.append(leituras_pessoa.latest('data_leitura'))
     
     lista_leituras = sorted(lista_leituras, key=lambda leitura: leitura.id, reverse=True)
 
@@ -379,8 +379,20 @@ def local_detalhes(request, local_localizacao):
 def pessoa_detalhes(request):
     busca = request.GET.get('busca')
     pessoa = None
+    
     if busca:
-        pessoa = get_object_or_404(Pessoa, id=busca)
+        busca = ''.join(filter(str.isdigit, busca))
+
+    
+    if busca:
+        try:
+            # Tenta buscar a pessoa por id (busca convertida para inteiro)
+            pessoa = Pessoa.objects.filter(Q(id=int(busca)) | Q(cpf=busca)).first
+        except (ValueError, Pessoa.DoesNotExist):
+            # Se não encontrou por id ou por cpf, retorna None ou faça algo adequado ao seu caso
+            pessoa = None
+
+
 
     context = {
         'pessoa': pessoa,

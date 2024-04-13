@@ -107,47 +107,48 @@
             {% endfor %}
         </tbody>
     </table>
-    
-    <div>
-        <nav aria-label="...">
-            <ul class="pagination d-flex justify-content-center">
-                {% if leituras.has_previous %}
-                    <li class="page-item">
-                        <a class="page-link" href="?page=1{% if filtro_pessoa %}&filtro-pessoa={{ filtro_pessoa }}{% endif %}{% if monitorado_id %}&monitorado={{ monitorado_id }}{% endif %}{% if local_id %}&local={{ local_id }}{% endif %}{% if data %}&data={{ data }}{% endif %}{% if tipo %}&tipo={{ tipo }}{% endif %}"">&laquo; Primeira</a>
+    {% if leituras.paginator.num_pages > 1 %}
+        <div>
+            <nav aria-label="...">
+                <ul class="pagination d-flex justify-content-center">
+                    {% if leituras.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1{% if filtro_pessoa %}&filtro-pessoa={{ filtro_pessoa }}{% endif %}{% if monitorado_id %}&monitorado={{ monitorado_id }}{% endif %}{% if local_id %}&local={{ local_id }}{% endif %}{% if data %}&data={{ data }}{% endif %}{% if tipo %}&tipo={{ tipo }}{% endif %}"">&laquo; Primeira</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ leituras.previous_page_number }}{% if filtro_pessoa %}&filtro-pessoa={{ filtro_pessoa }}{% endif %}{% if monitorado_id %}&monitorado={{ monitorado_id }}{% endif %}{% if local_id %}&local={{ local_id }}{% endif %}{% if data %}&data={{ data }}{% endif %}{% if tipo %}&tipo={{ tipo }}{% endif %}">Anterior</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">&laquo; Primeira</span>
+                        </li>
+                        <li class="page-item disabled">
+                            <span class="page-link">Anterior</span>
+                        </li>
+                    {% endif %}
+            
+                    <li class="page-item active">
+                        <span class="page-link">Página {{ leituras.number }} de {{ leituras.paginator.num_pages }}</span>
                     </li>
-                    <li class="page-item">
-                        <a class="page-link" href="?page={{ leituras.previous_page_number }}{% if filtro_pessoa %}&filtro-pessoa={{ filtro_pessoa }}{% endif %}{% if monitorado_id %}&monitorado={{ monitorado_id }}{% endif %}{% if local_id %}&local={{ local_id }}{% endif %}{% if data %}&data={{ data }}{% endif %}{% if tipo %}&tipo={{ tipo }}{% endif %}">Anterior</a>
-                    </li>
-                {% else %}
-                    <li class="page-item disabled">
-                        <span class="page-link">&laquo; Primeira</span>
-                    </li>
-                    <li class="page-item disabled">
-                        <span class="page-link">Anterior</span>
-                    </li>
-                {% endif %}
-        
-                <li class="page-item active">
-                    <span class="page-link">Página {{ leituras.number }} de {{ leituras.paginator.num_pages }}</span>
-                </li>
-        
-                {% if leituras.has_next %}
-                    <li class="page-item">
-                        <a class="page-link" href="?page={{ leituras.next_page_number }}{% if filtro_pessoa %}&filtro-pessoa={{ filtro_pessoa }}{% endif %}{% if monitorado_id %}&monitorado={{ monitorado_id }}{% endif %}{% if local_id %}&local={{ local_id }}{% endif %}{% if data %}&data={{ data }}{% endif %}{% if tipo %}&tipo={{ tipo }}{% endif %}">Próxima</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="?page={{ leituras.paginator.num_pages }}{% if filtro_pessoa %}&filtro-pessoa={{ filtro_pessoa }}{% endif %}{% if monitorado_id %}&monitorado={{ monitorado_id }}{% endif %}{% if local_id %}&local={{ local_id }}{% endif %}{% if data %}&data={{ data }}{% endif %}{% if tipo %}&tipo={{ tipo }}{% endif %}"">Última &raquo;</a>
-                    </li>
-                {% else %}
-                    <li class="page-item disabled">
-                        <span class="page-link">Próxima</span>
-                    </li>
-                    <li class="page-item disabled">
-                        <span class="page-link">Última &raquo;</span>
-                    </li>
-                {% endif %}
-            </ul>
-        </nav>
-    </div>
+            
+                    {% if leituras.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ leituras.next_page_number }}{% if filtro_pessoa %}&filtro-pessoa={{ filtro_pessoa }}{% endif %}{% if monitorado_id %}&monitorado={{ monitorado_id }}{% endif %}{% if local_id %}&local={{ local_id }}{% endif %}{% if data %}&data={{ data }}{% endif %}{% if tipo %}&tipo={{ tipo }}{% endif %}">Próxima</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ leituras.paginator.num_pages }}{% if filtro_pessoa %}&filtro-pessoa={{ filtro_pessoa }}{% endif %}{% if monitorado_id %}&monitorado={{ monitorado_id }}{% endif %}{% if local_id %}&local={{ local_id }}{% endif %}{% if data %}&data={{ data }}{% endif %}{% if tipo %}&tipo={{ tipo }}{% endif %}"">Última &raquo;</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">Próxima</span>
+                        </li>
+                        <li class="page-item disabled">
+                            <span class="page-link">Última &raquo;</span>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    {% endif %}
 {% endblock content %}
 
