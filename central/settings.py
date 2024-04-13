@@ -23,9 +23,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-rk*je+1fb0@%s-0n-(9-=3i&n!7#zdxpoq2x+3)e!i#8wf90oo'
 
 # AVISO DE SEGURANÇA: não execute com debug ativado em produção!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'tcare-central.onrender.com',
+]
 
 
 # Definição de Aplicações
