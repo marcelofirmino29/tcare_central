@@ -85,11 +85,11 @@ WSGI_APPLICATION = 'central.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'base_tcare',
         'USER': 'usuario_tcare',
-        'PASSWORD': '',
-        'HOST': '',
+        'PASSWORD': 'VTaQSQgotVjmfyI2g5FUwaCRlbxo9PU6',
+        'HOST': 'dpg-codf4520si5c738vjo2g-a.oregon-postgres.render.com',
         'PORT': '5432',
     }
 }
