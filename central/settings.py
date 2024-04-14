@@ -136,7 +136,7 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = (
     BASE_DIR / 'static' ,
 ) #define os diretórios onde o Django procurará por arquivos estáticos, como arquivos CSS, JavaScript, imagens, etc.
-print(STATICFILES_DIRS)
+
 
 
 MEDIA_URL = 'media/'
