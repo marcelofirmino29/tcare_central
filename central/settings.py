@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -136,7 +137,7 @@ STATICFILES_DIRS = (
     BASE_DIR / 'base_static' ,
 ) #define os diretórios onde o Django procurará por arquivos estáticos, como arquivos CSS, JavaScript, imagens, etc.
 
-STATIC_ROOT = 'static/'  # Diretório onde os arquivos estáticos são coletados
+STATIC_ROOT = BASE_DIR / 'static'  # Diretório onde os arquivos estáticos são coletados
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 
