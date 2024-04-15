@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-rk*je+1fb0@%s-0n-(9-=3i&n!7#zdxpoq2x+3)e!i#8wf90oo'
 
 # AVISO DE SEGURANÇA: não execute com debug ativado em produção!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     'tcare-central.onrender.com', '*'
@@ -131,12 +131,12 @@ USE_TZ = True
 # Arquivos Estáticos (CSS, JavaScript, Imagens)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    BASE_DIR / 'base_static' ,
+    BASE_DIR / '/opt/render/project/src/static/' ,
 ) #define os diretórios onde o Django procurará por arquivos estáticos, como arquivos CSS, JavaScript, imagens, etc.
 
-STATIC_ROOT = 'opt/render/project/src/static/'  # Diretório onde os arquivos estáticos são coletados
+STATIC_ROOT = 'static/'  # Diretório onde os arquivos estáticos são coletados
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 
