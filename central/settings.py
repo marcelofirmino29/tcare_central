@@ -133,7 +133,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    BASE_DIR / '/opt/render/project/src/static/' ,
+    BASE_DIR / 'base_static' ,
 ) #define os diretórios onde o Django procurará por arquivos estáticos, como arquivos CSS, JavaScript, imagens, etc.
 
 STATIC_ROOT = 'static/'  # Diretório onde os arquivos estáticos são coletados
