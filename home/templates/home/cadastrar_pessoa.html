@@ -1,0 +1,31 @@
+{% extends "global/base.html" %}
+
+{% block content %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h2>Cadastrar pessoa</h2>
+                <form action="{% url "cadastrar_pessoa" %}" method="POST">
+                    {% csrf_token %}
+
+                    {% for field in form %}
+                        <div class="form-group">
+                            <label for="{{field.id_for_label}}">{{field.label}}</label>
+                            {{field}}
+                            {% for error in field.errors %}
+                                <small class="text-danger">{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                    <br>
+                    <div class="form-group">
+                        <button type="submit" class="btn custom-button">
+                            Criar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

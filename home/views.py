@@ -1,5 +1,5 @@
 from home import forms
-from home.models import TagBle, Monitorado, Pessoa, Local, Paciente, Funcionario, Acompanhante, Enfermeiro, Raspberry, LeituraTag
+from home.models import TagBle, Monitorado, Pessoa, Local, Paciente, Funcionario, Acompanhante, Raspberry, LeituraTag
 from django.contrib import messages, auth
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
@@ -88,6 +88,30 @@ def cadastrar_tag(request):
 
 
 @login_required(login_url='login')
+def cadastrar_pessoa(request):
+    
+    if request.method == 'POST':
+        form = forms.PessoaForm(request.POST)
+        context = {
+            'form': form
+        }
+
+        if form.is_valid():
+            nome = form.cleaned_data['nome']
+            tipo = form.cleaned_data['tipo']
+            form.save()
+            messages.success(request, f'{tipo} {nome} adicionado(a)')
+
+        return render(request, 'home/cadastrar_pessoa.html', context)
+
+    context = {
+        'form': forms.PessoaForm()
+    }
+    return render(request, 'home/cadastrar_pessoa.html', context)
+
+
+
+@login_required(login_url='login')
 def cadastrar_paciente(request):
     
     if request.method == 'POST':
@@ -133,6 +157,7 @@ def cadastrar_acompanhante(request):
 
 
 def cadastrar_funcionario(request):
+    print('cadastrando funcionário')
     if request.method == 'POST':
         form = forms.FuncionarioForm(request.POST)
         context = {
@@ -209,10 +234,10 @@ def dashboard(request):
     total_pessoas = Pessoa.objects.exclude(tag_ble=None).count()
     locais = Local.objects.all()
     ultimas_leituras = LeituraTag.objects.order_by('-id').filter()[:11] 
-    ultimos_pacientes = LeituraTag.objects.filter(monitorado__in=Paciente.objects.all()).order_by('-id')[:6]
-    ultimos_acompanhantes = LeituraTag.objects.filter(monitorado__in=Acompanhante.objects.all()).order_by('-id')[:6]
-    ultimos_medicos = LeituraTag.objects.filter(monitorado__in=Funcionario.objects.filter(tipo=3)).order_by('-id')[:6]
-    ultimos_enfermeiros = LeituraTag.objects.filter(monitorado__in=Funcionario.objects.filter(tipo=4)).order_by('-id')[:6]
+    ultimos_pacientes = LeituraTag.objects.filter(monitorado__in=Pessoa.objects.filter(tipo=1)).order_by('-id')[:6]
+    ultimos_acompanhantes = LeituraTag.objects.filter(monitorado__in=Pessoa.objects.filter(tipo=2)).order_by('-id')[:6]
+    ultimos_medicos = LeituraTag.objects.filter(monitorado__in=Pessoa.objects.filter(tipo=3)).order_by('-id')[:6]
+    ultimos_enfermeiros = LeituraTag.objects.filter(monitorado__in=Pessoa.objects.filter(tipo=4)).order_by('-id')[:6]
 
     pessoas_por_local = {}
 
@@ -225,13 +250,13 @@ def dashboard(request):
     # Em seguida, extraímos os IDs dos pacientes associados a essas leituras
     
 
-    pacientes = Paciente.objects.exclude(tag_ble=None)
+    pacientes = Pessoa.objects.exclude(tag_ble=None).filter(tipo=1)
     total_pacientes = pacientes.count()
-    medicos = Funcionario.objects.exclude(tag_ble=None).filter(tipo=3)
+    medicos = Pessoa.objects.exclude(tag_ble=None).filter(tipo=3)
     total_medicos = medicos.count()
-    acompanhantes = Acompanhante.objects.exclude(tag_ble=None)
+    acompanhantes = Pessoa.objects.exclude(tag_ble=None).filter(tipo=2)
     total_acompanhantes = acompanhantes.count()
-    enfermeiros = Funcionario.objects.exclude(tag_ble=None).filter(tipo=4)
+    enfermeiros = Pessoa.objects.exclude(tag_ble=None).filter(tipo=4)
     total_enfermeiros = enfermeiros.count()
 
 
@@ -396,6 +421,7 @@ def pessoa_detalhes(request):
 
     context = {
         'pessoa': pessoa,
+        'busca': busca,
     }
 
     return render(request,'home/pessoa_detalhes.html', context)
@@ -525,10 +551,12 @@ def vincular_tag_pessoa(request):
                 return redirect('vincular_tag_pessoa')
             except (TagBle.DoesNotExist, Pessoa.DoesNotExist):
                 messages.error(request, 'Tag ou pessoa indisponíveis. Tag não vinculada',)
-    elif request.method == 'GET':
-        termo_busca = request.GET.get('busca')
-        if termo_busca:
-            resultados_da_busca = Pessoa.objects.filter(nome__icontains=termo_busca).order_by('id') | Pessoa.objects.filter(cpf__icontains=termo_busca).order_by('id')
+
+
+    termo_busca = request.GET.get('busca')
+    tags = TagBle.objects.filter(monitorado=None)[:3] #TODO remover quando em produção
+    if termo_busca:
+        resultados_da_busca = Pessoa.objects.filter(nome__icontains=termo_busca).order_by('id') | Pessoa.objects.filter(cpf__icontains=termo_busca).order_by('id')
 
     
     if resultados_da_busca:
@@ -536,12 +564,11 @@ def vincular_tag_pessoa(request):
         page_number = request.GET.get("page")
         resultados_da_busca_paginated = paginator.get_page(page_number)
 
-    print(f'{termo_busca} e {resultados_da_busca_paginated} e {resultados_da_busca}')
-
     context = {
 
         'resultado': resultados_da_busca_paginated,
-        'busca': termo_busca
+        'busca': termo_busca,
+        'tags': tags #TODO remover quando em produção
     }
     return render(request, 'home/vincular_tag_pessoa.html', context)
 

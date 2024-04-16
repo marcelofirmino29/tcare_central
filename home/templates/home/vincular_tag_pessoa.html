@@ -21,6 +21,28 @@
                     
                     <button type="submit" class="btn custom-button">Vincular</button>
                 </form>
+                <hr>
+                <h2 class="mt-4 mb-4">Tags disponíveis</h2>
+                <table class="table custom-table table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if tags %}
+                            {% for tag in tags %}
+                            <tr class="table-row"> <!-- Adicione a classe 'table-row' à linha da tabela -->
+                                <td class="tag-id">{{ tag.id }}</td> 
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr> 
+                                <td> Sem tags disponíveis </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
 
                 
             </div>
@@ -48,18 +70,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Iterar sobre os resultados da busca -->
                         {% if resultado %}
                             {% for item in resultado %}
-                            <tr>
-                                <td>{{ item.id }}</td>
+                            <tr class="table-row"> <!-- Adicione a classe 'table-row' à linha da tabela -->
+                                <td class="pessoa-id">{{ item.id }}</td> <!-- Adicione a classe 'pessoa-id' à célula do ID da pessoa -->
                                 <td>{{ item.nome }}</td>
                                 <td>{{ item.cpf }}</td>
                                 {% if item.tag_ble %}
                                     <td>{{ item.tag_ble }}</td>
                                 {% else %}
                                     <td>Sem tag vinculada</td>
-
                                 {% endif %}
                                 <!-- Adicione mais colunas conforme necessário -->
                             </tr>
@@ -123,6 +143,42 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Captura todas as linhas da tabela com a classe 'table-row'
+            const rows = document.querySelectorAll('.table-row');
+    
+            // Adiciona um event listener para cada linha da tabela
+            rows.forEach(function(row) {
+                row.addEventListener('click', function() {
+                    // Obtém o ID da pessoa da célula da primeira coluna da linha clicada
+                    const pessoaId = row.querySelector('.pessoa-id').textContent;
+                    // const tagId = row.querySelector('.tag-id').textContent;
+    
+                    // Preenche automaticamente o campo 'pessoa_id' no formulário com o ID da pessoa
+                    document.getElementById('pessoa_id').value = pessoaId;
+                    // document.getElementById('tag_id').value = tagId;
+                });
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Captura todas as linhas da tabela com a classe 'table-row'
+            const rows = document.querySelectorAll('.table-row');
+    
+            // Adiciona um event listener para cada linha da tabela
+            rows.forEach(function(row) {
+                row.addEventListener('click', function() {
+                    // Obtém o ID da tag da célula da primeira coluna da linha clicada
+                    const tagId = row.querySelector('.tag-id').textContent;
+    
+                    // Preenche automaticamente o campo 'tag_id' no formulário com o ID da tag
+                    document.getElementById('tag_id').value = tagId;
+                });
+            });
+        });
+    </script>
     
 
 {% endblock content %}

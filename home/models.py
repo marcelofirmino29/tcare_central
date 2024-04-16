@@ -79,7 +79,7 @@ class Tipo(models.Model):
 
 class Monitorado(models.Model):
     tag_ble = models.OneToOneField(TagBle, on_delete=models.PROTECT, null=True, blank=True)
-    local_atual = models.ForeignKey(Local, on_delete=models.PROTECT, null=True, blank=True, default=13) #default 13 = recepção
+    local_atual = models.ForeignKey(Local, on_delete=models.PROTECT, null=True, blank=True, default=1) #default 1 = recepção
     tipo = models.ForeignKey(Tipo, on_delete=models.PROTECT, null=True, blank=False)
     
 
@@ -151,14 +151,14 @@ class Paciente(Pessoa):
 
 
 class Acompanhante(Pessoa):
-    relacionamento = models.CharField(max_length=100)
-    paciente_acomp = models.OneToOneField(Paciente, on_delete=models.PROTECT)
+    relacionamento = models.CharField(max_length=100, blank=True, null=True)
+    paciente_acomp = models.OneToOneField(Paciente, on_delete=models.PROTECT, blank=True, null=True)
     
 
 
 class Visitante(Pessoa):
-    motivo_visita = models.CharField(max_length=100)
-    paciente_vis = models.ForeignKey(Paciente, on_delete=models.PROTECT)
+    motivo_visita = models.CharField(max_length=100, blank=True, null=True)
+    paciente_vis = models.ForeignKey(Paciente, on_delete=models.PROTECT, blank=True, null=True)
 
 
 class Funcionario(Pessoa):
@@ -169,7 +169,7 @@ class Funcionario(Pessoa):
 
 
 
-    matricula = models.CharField(max_length=20, unique=True)
+    matricula = models.CharField(max_length=20, blank=True, null=True)
     #salario = models.DecimalField(max_digits=10, decimal_places=2) #TODO Remover campos de salário e data_admissão
     #data_admissao = models.DateField()
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='ativo')
@@ -180,12 +180,12 @@ class Funcionario(Pessoa):
     
 
 
-class Recepcionista(Funcionario):
-    ...
+# class Recepcionista(Funcionario):
+#     ...
 
 
-class Medico(Funcionario):
-    ...
+# class Medico(Funcionario):
+#     ...
 
-class Enfermeiro(Funcionario):
-    ...
+# class Enfermeiro(Funcionario):
+#     ...

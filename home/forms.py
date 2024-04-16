@@ -6,7 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 import uuid
 from django.contrib.auth.forms import AuthenticationForm
-from .models import Funcionario
+from .models import Funcionario, Pessoa
 
 class TagBleForm(forms.ModelForm):
     class Meta:
@@ -125,6 +125,30 @@ class AcompanhanteForm(forms.ModelForm):
 
 #TODO Fazer o cadastro de visitante
 
+class PessoaForm(forms.ModelForm):
+    class Meta:
+        model = Pessoa
+        fields = ['nome', 'cpf', 'genero', 'data_nascimento', 'telefone', 'email', 'tipo', 'tag_ble']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Adicionando classes Bootstrap aos widgets dos campos
+        self.fields['nome'].widget.attrs.update({'class': 'form-control mb-3', 'placeholder': 'Nome'})
+        self.fields['cpf'].widget.attrs.update({'class': 'form-control mb-3', 'placeholder': 'CPF'})
+        self.fields['genero'].widget.attrs.update({'class': 'form-select mb-3'})
+        self.fields['data_nascimento'].widget.attrs.update({'class': 'form-control mb-3', 'placeholder': 'Data de Nascimento'})
+        self.fields['telefone'].widget.attrs.update({'class': 'form-control mb-3', 'placeholder': 'Telefone'})
+        self.fields['email'].widget.attrs.update({'class': 'form-control mb-3', 'placeholder': 'E-mail'})
+        self.fields['tipo'].widget.attrs.update({'class': 'form-select mb-3'})
+        self.fields['tag_ble'].widget.attrs.update({'class': 'form-select mb-3'})
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+
+        if commit:
+            instance.save()
+        return instance
 
 class FuncionarioForm(forms.ModelForm):
     class Meta:

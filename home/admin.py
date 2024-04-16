@@ -91,20 +91,20 @@ class EnderecoAdmin(admin.ModelAdmin):
     list_display = ('tipo', 'cep', 'logradouro', 'numero', 'bairro', 'cidade', 'uf', 'pessoa')
 
 """
-@admin.register(models.Medico)
-class MedicoAdmin(admin.ModelAdmin):
-    """
-    Classe de administração para o modelo Medico.
-    """
-    list_display = ('nome', 'tag_ble', 'cpf', 'genero','local_atual', 'data_nascimento', 'telefone', 'email','matricula', 'status', 'setor', )
+# @admin.register(models.Medico)
+# class MedicoAdmin(admin.ModelAdmin):
+#     """
+#     Classe de administração para o modelo Medico.
+#     """
+#     list_display = ('nome', 'tag_ble', 'cpf', 'genero','local_atual', 'data_nascimento', 'telefone', 'email','matricula', 'status', 'setor', )
 
 
-@admin.register(models.Enfermeiro)
-class EnfermeiroAdmin(admin.ModelAdmin):
-    """
-    Classe de administração para o modelo Enfermeiro.
-    """
-    list_display = ('nome', 'tag_ble', 'cpf', 'genero','local_atual', 'data_nascimento', 'telefone', 'email','matricula', 'status', 'setor', )
+# @admin.register(models.Enfermeiro)
+# class EnfermeiroAdmin(admin.ModelAdmin):
+#     """
+#     Classe de administração para o modelo Enfermeiro.
+#     """
+#     list_display = ('nome', 'tag_ble', 'cpf', 'genero','local_atual', 'data_nascimento', 'telefone', 'email','matricula', 'status', 'setor', )
 """
 Neste código:
 
