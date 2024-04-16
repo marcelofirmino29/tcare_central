@@ -48,14 +48,14 @@
                 <div class="card-body">
                     <h5 class="card-title">Pessoa não encontrada</h5>
                     <p class="card-text">A pessoa com o ID ou CPF especificado não foi encontrada.</p>
-                    <p class="card-text">Você pode <a href="{% url "cadastrar_paciente" %}">cadastrar essa pessoa</a> se for necessário.</p>
+                    <p class="card-text">Você pode <a href="{% url "cadastrar_pessoa" %}">cadastrar essa pessoa</a> se for necessário.</p>
                 </div>
             </div>
         {% else %}
             <div class="card mb-4">
                 <div class="card-body">
                     <h5 class="card-title">Cadastro</h5>
-                    <p class="card-text">Você pode <a href="{% url "cadastrar_paciente" %}"> cadastrar uma nova pessoa aqui.</a></p>
+                    <p class="card-text">Você pode <a href="{% url "cadastrar_pessoa" %}"> cadastrar uma nova pessoa aqui.</a></p>
                 </div>
             </div>
         {% endif %}
