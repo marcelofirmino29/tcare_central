@@ -11,8 +11,6 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-import dj_database_url
-import os
 
 # Construa caminhos dentro do projeto como este: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -89,10 +87,14 @@ WSGI_APPLICATION = 'central.wsgi.application'
 # }
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default='postgres://usuario_tcare:VTaQSQgotVjmfyI2g5FUwaCRlbxo9PU6@dpg-codf4520si5c738vjo2g-a/base_tcare',
-        conn_max_age=600
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'base_tcare',
+        'USER': 'usuario_tcare',
+        'PASSWORD': 'VTaQSQgotVjmfyI2g5FUwaCRlbxo9PU6',
+        'HOST': 'dpg-codf4520si5c738vjo2g-a.oregon-postgres.render.com',
+        'PORT': '5432',
+    }
 }
 
 
@@ -131,14 +133,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = '/static/'
-if not DEBUG:
-    # Tell Django to copy static assets into a path called `staticfiles` (this is specific to Render)
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    # Enable the WhiteNoise storage backend, which compresses static files to reduce disk use
-    # and renames the files with unique names for each version to support long-term caching
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_DIRS = (
+    BASE_DIR / 'base_static' ,
+) #define os diretórios onde o Django procurará por arquivos estáticos, como arquivos CSS, JavaScript, imagens, etc.
 
-
+STATIC_ROOT = BASE_DIR / 'static'  # Diretório onde os arquivos estáticos são coletados
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 
 
