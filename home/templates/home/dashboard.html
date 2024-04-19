@@ -6,7 +6,7 @@
     <div class="container mt-5">
         <div class="row">
             <!-- Estatísticas em Tempo Real -->
-            <div class="col-md-7">
+            <div class="col-md-7  wow fadeInLeft">
                 <div class="card mb-4 shadow-sm">
                     <div class="card-body">
                         <h1 class="card-title">Estatísticas em Tempo Real</h1>
@@ -18,7 +18,7 @@
             </div>
             
             <!-- Últimas Leituras -->
-            <div class="col-md-5">
+            <div class="col-md-5  wow fadeInRight">
                 <div class="card mb-4 shadow-sm">
                     <div class="card-body">
                         <h1 class="card-title">Últimas Leituras</h1>
@@ -35,7 +35,7 @@
                             {% endfor %}
                         </ul>
                         <div class="text-center">
-                            <a href="{% url "leituras" %}" class="link-unstyled"><button type="button" class="btn custom-button">Ver mais</button></a>
+                            <a href="{% url "leituras" %}" class="link-unstyled"><button type="button" class="btn btn-primary">Ver mais</button></a>
                         </div>
                     </div>
                 </div>
@@ -43,7 +43,7 @@
         </div>
 
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12 wow fadeInUp">
                 <div class="card">
                     <div class="card-body">
                         <h1 class="card-title">Total de Pessoas no Hospital por Tipo</h1>
@@ -55,7 +55,7 @@
         <br>
 
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-6 wow fadeInLeft">
                 <div class="card mb-4 shadow-sm">
                     <div class="card-body">
                         <h1 class="card-title">Pacientes</h1>
@@ -73,13 +73,13 @@
                             {% endfor %}
                         </ul>
                         <div class="text-center list-group">
-                            <a href="{% url "leituras" %}?tipo=paciente" class="link-unstyled"><button type="button" class="btn custom-button">Ver mais</button></a>
+                            <a href="{% url "leituras" %}?tipo=paciente" class="link-unstyled"><button type="button" class="btn btn-primary">Ver mais</button></a>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <div class="col-md-6">
+            <div class="col-md-6 wow fadeInRight">
                 <div class="card mb-4 shadow-sm">
                     <div class="card-body">
                         <h1 class="card-title">Acompanhantes</h1>
@@ -97,7 +97,7 @@
                             {% endfor %}
                         </ul>
                         <div class="text-center list-group">
-                            <a href="{% url "leituras" %}?tipo=acompanhante" class="link-unstyled"><button type="button" class="btn custom-button">Ver mais</button></a>
+                            <a href="{% url "leituras" %}?tipo=acompanhante" class="link-unstyled"><button type="button" class="btn btn-primary">Ver mais</button></a>
                         </div>
                     </div>
                 </div>
@@ -105,7 +105,7 @@
         </div>
 
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-6 wow fadeInLeft">
                 <div class="card mb-4 shadow-sm">
                     <div class="card-body">
                         <h1 class="card-title">Médicos</h1>
@@ -123,14 +123,14 @@
                             {% endfor %}
                         </ul>
                         <div class="text-center list-group">
-                            <a href="{% url "leituras" %}?tipo=medico" class="link-unstyled"><button type="button" class="btn custom-button">Ver mais</button></a>
+                            <a href="{% url "leituras" %}?tipo=medico" class="link-unstyled"><button type="button" class="btn btn-primary">Ver mais</button></a>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <div class="col-md-6">
-                <div class="card mb-4 shadow-sm">
+            <div class="col-md-6 wow fadeInRight">
+                <div class="card mb-4 shadow-sm ">
                     <div class="card-body">
                         <h1 class="card-title">Enfermeiros</h1>
                         <h2 class="card-subtitle mb-4 text-muted">Número de Enfermeiros: {{ total_enfermeiros }}</h2>
@@ -147,7 +147,7 @@
                             {% endfor %}
                         </ul>
                         <div class="text-center list-group">
-                            <a href="{% url "leituras" %}?tipo=enfermeiro" class="link-unstyled"><button type="button" class="btn custom-button">Ver mais</button></a>
+                            <a href="{% url "leituras" %}?tipo=enfermeiro" class="link-unstyled"><button type="button" class="btn btn-primary">Ver mais</button></a>
                         </div>
                     </div>
                 </div>

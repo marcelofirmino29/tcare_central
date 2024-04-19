@@ -10,6 +10,13 @@
     <main class="content"> 
         {% block content %}
         {% endblock content %}
+
+                <!-- Global Mailform Output-->
+        <div class="snackbars" id="form-output-global"></div>
+        <!-- Javascript-->
+        <script src="{% static 'global/js/core.min.js' %} "></script>
+        <script src="{% static 'global/js/script.js' %}"></script>
+        <!-- coded by Himic-->
     </main>
     
     {% comment %} <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

@@ -41,7 +41,7 @@
                 {% for pessoa in lista %}
                     <tr>
                         <td>{{ pessoa.id }}</td>
-                        <td><a href="{% url 'pessoa_detalhes' %}" class="link-limpo">{{ pessoa.nome }}</a></td>
+                        <td><a href="{% url 'pessoa_detalhes'%}?busca={{pessoa.id}}" class="link-limpo">{{ pessoa.nome }}</a></td>
                         <td>{{ pessoa.tipo }}</td>
                         <td>{{ pessoa.tag_ble }}</td>
                         <td><a class="link-limpo" href="/local/{{pessoa.local_atual}}">{{ pessoa.local_atual }}</a></td>
