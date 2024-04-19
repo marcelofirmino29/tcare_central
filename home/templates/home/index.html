@@ -1,7 +1,326 @@
 {% extends "global/base.html" %}
+{% load static %}
 
 {% block content %}
-    <h1>O front-end vai fazer uma index bem bonita</h1>
+    
+    <div class="page">
+        <div id="home">
+        <!-- Page Header-->
+        
+
+        <!-- Swiper-->
+        <section class="section swiper-container swiper-slider swiper-slider-classic texto-branco" data-loop="true" data-autoplay="4859" data-simulate-touch="true" data-direction="vertical" data-nav="false">
+          <div class="swiper-wrapper text-center">
+            <div class="swiper-slide" data-slide-bg="{% static 'global/img/slider-1-slide-2-1770x742.jpeg' %} ">
+              <div class="swiper-slide-caption section-md">
+                <div class="container">
+                  <h1  data-caption-animate="fadeInLeft" data-caption-delay="0" class="texto-branco" >Controle e Segurança em Tempo Real</h1>
+                  <p class="text-width-large" data-caption-animate="fadeInRight" data-caption-delay="100">  Otimize a prestação de cuidados de saúde ao mesmo tempo que minimiza riscos. Com nossa tecnologia de rastreamento baseada em tags BLE, você pode identificar padrões de movimento, facilitar o planejamento de recursos e receber alertas instantâneos sobre presenças em áreas críticas.</p><a class="button button-primary button-ujarak" href="#modalCta" data-toggle="modal" data-caption-animate="fadeInUp" data-caption-delay="200">Entre em contato</a>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-slide" data-slide-bg="{% static 'global/img/slider-1-slide-4-1770x742.jpeg'%}">
+              <div class="swiper-slide-caption section-md">
+                <div class="container">
+                  <h1 data-caption-animate="fadeInLeft" data-caption-delay="0" class="texto-branco">Otimizando Cuidados, Minimizando Riscos</h1>
+                  <p class="text-width-large" data-caption-animate="fadeInRight" data-caption-delay="100">Conecte seu hospital com inteligência. Nosso sistema oferece insights valiosos sobre o movimento das pessoas, permitindo uma gestão mais eficaz de instalações, horários e protocolos de segurança. Esteja à frente com tecnologia de ponta para um ambiente hospitalar mais inteligente e seguro.</p><a class="button button-primary button-ujarak" href="#modalCta" data-toggle="modal" data-caption-animate="fadeInUp" data-caption-delay="200">Entre em contato</a>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-slide" data-slide-bg="{% static 'global/img/slider-1-slide-6-1770x742.jpeg'%}">
+              <div class="swiper-slide-caption section-md">
+                <div class="container">
+                  <h1 data-caption-animate="fadeInLeft" data-caption-delay="0" class="texto-branco">Inteligência para um Hospital Conectado</h1>
+                  <p class="text-width-large" data-caption-animate="fadeInRight" data-caption-delay="100">As soluções de software desenvolvidas por nossa empresa foram inúmeras vezes premiadas pela usabilidade e recursos inovadores.</p><a class="button button-primary button-ujarak" href="#modalCta" data-toggle="modal" data-caption-animate="fadeInUp" data-caption-delay="200">Entre em contato</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Swiper Pagination-->
+          <div class="swiper-pagination__module">
+            <div class="swiper-pagination__fraction"><span class="swiper-pagination__fraction-index">00</span><span class="swiper-pagination__fraction-divider">/</span><span class="swiper-pagination__fraction-count">00</span></div>
+            <div class="swiper-pagination__divider"></div>
+            <div class="swiper-pagination"></div>
+          </div>
+        </section>
+
+        </div>
+<!-- Years of experience-->
+        <section class="section section-sm bg-default">
+            <div class="container">
+            <div class="row row-30 row-xl-24 justify-content-center align-items-center align-items-lg-start text-left">
+                <div class="col-md-6 col-lg-5 col-xl-4 text-center"><a class="text-img" href="#">
+                    <div id="particles-js"></div><span class="counter">3</span></a></div>
+                <div class="col-sm-8 col-md-6 col-lg-5 col-xl-4">
+                <div class="text-width-extra-small offset-top-lg-24 wow fadeInUp">
+                    <h3 class="title-decoration-lines-left" >Aplicações interligadas</h3>
+                    <p class="text-gray-500">
+                        <ul>
+                            <li>Aplicativo Web</li>
+                            <li>Aplicativo Móvel</li>
+                            <li>Aplicativo Embarcado</li>
+                        </ul>
+                    </p><a class="button button-secondary button-pipaluk" href="#">Entre em contato</a>
+                </div>
+                </div>
+                <div class="col-sm-10 col-md-8 col-lg-6 col-xl-4 wow fadeInRight" data-wow-delay=".1s">
+                <div class="row justify-content-center border-2-column offset-top-xl-26">
+                    <div class="col-9 col-sm-6">
+                    <div class="counter-amy">
+                        <div class="counter-amy-number"><span class="symbol">web</span>
+                        </div>
+                        <h6 class="counter-amy-title">T-Care Central</h6>
+                    </div>
+                    </div>
+                    <div class="col-9 col-sm-6">
+                    <div class="counter-amy">
+                        <div class="counter-amy-number"><span class="symbol">IOT</span>
+                        </div>
+                        <h6 class="counter-amy-title">T-Care Box</h6>
+                    </div>
+                    </div>
+                    <div class="col-9 col-sm-6">
+                    <div class="counter-amy">
+                        <div class="counter-amy-number"><span class="symbol">Mobile</span>
+                        </div>
+                        <h6 class="counter-amy-title">T-Care Mobile</h6>
+                    </div>
+                    </div>
+                    
+                    </div>
+                </div>
+                </div>
+                
+            </div>
+            </div>
+        </section>
+
+      <!-- See all services-->
+        <section class="section section-sm section-first bg-default text-center" id="services">
+            <div class="container">
+            <div class="row row-30 justify-content-center">
+                <div class="col-md-7 col-lg-5 col-xl-6 text-lg-left wow fadeInUp"><img src="{% static 'global/img/index-1-415x592.jpeg' %} " alt="" width="415" height="592"/>
+                </div>
+                <div class="col-lg-7 col-xl-6">
+                <div class="row row-30">
+                    <div class="col-sm-6 wow fadeInRight">
+                    <article class="box-icon-modern box-icon-modern-custom">
+                        <div>
+                        <h3 class="box-icon-modern-big-title">O que nós oferecemos</h3>
+                        <div class="box-icon-modern-decor"></div><a class="button button-primary button-ujarak" href="#">Ver todos os serviços</a>
+                        </div>
+                    </article>
+                    </div>
+                    <div class="col-sm-6 wow fadeInRight" data-wow-delay=".1s">
+                    <article class="box-icon-modern box-icon-modern-2">
+                        <div class="box-icon-modern-icon linearicons-smartphone"></div>
+                        <h5 class="box-icon-modern-title"><a href="#">APLICATIVO<br>MÓVEL</a></h5>
+                        <div class="box-icon-modern-decor"></div>
+                        <p class="box-icon-modern-text">Acompanhe tudo em tempo real, receba notificações importantes e gerencie o fluxo de pessoas de qualquer lugar. Segurança e eficiência hospitalar no seu smartphone.</p>
+                    </article>
+                    </div>
+                    <div class="col-sm-6 wow fadeInRight" data-wow-delay=".2s">
+                    <article class="box-icon-modern box-icon-modern-2">
+                        <div class="box-icon-modern-icon linearicons-heart-pulse"></div>
+                        <h5 class="box-icon-modern-title"><a href="#">TAGS<br>BLE</a></h5>
+                        <div class="box-icon-modern-decor"></div>
+                        <p class="box-icon-modern-text">Com uma tecnologia discreta e de baixo consumo de energia, as tags BLE oferecem uma solução confiável para monitorar o movimento dentro do ambiente hospitalar.</p>
+                    </article>
+                    </div>
+                    <div class="col-sm-6 wow fadeInRight" data-wow-delay=".3s">
+                    <article class="box-icon-modern box-icon-modern-2">
+                        <div class="box-icon-modern-icon linearicons-cloud-sync"></div>
+                        <h5 class="box-icon-modern-title"><a href="#">HOSPITAL<br>CONECTADO</a></h5>
+                        <div class="box-icon-modern-decor"></div>
+                        <p class="box-icon-modern-text">Prepare-se para o futuro da saúde com um hospital totalmente conectado e inovador.</p>
+                    </article>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+        </section>
+
+      <!-- Cta-->
+      <section class="section section-fluid bg-default">
+        <div class="parallax-container" data-parallax-img="{% static 'global/img/parallax-1.jpeg' %} ">
+          <div class="parallax-content section-xl context-dark bg-overlay-68 bg-mobile-overlay">
+            <div class="container">
+              <div class="row row-30 justify-content-end text-right">
+                <div class="col-sm-7">
+                  <h3 class="wow fadeInLeft">Vamos desenvolver seu próximo aplicativo!</h3>
+                  <p>Você precisa de uma solução de software exclusiva para sua empresa? Nós sabemos como ajudar você!</p>
+                  <div class="group-sm group-middle group justify-content-end"><a class="button button-primary button-ujarak" href="#modalCta" data-toggle="modal">Entre em contato</a><a class="button button-white-outline button-ujarak" href="#">Saber mais</a></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      
+
+
+      <!-- Contact information-->
+      <section class="section section-sm bg-default" id="contacts">
+        <div class="container">
+          <div class="row row-30 justify-content-center">
+            <div class="col-sm-8 col-md-6 col-lg-4">
+              <article class="box-contacts">
+                <div class="box-contacts-body">
+                  <div class="box-contacts-icon fl-bigmug-line-cellphone55"></div>
+                  <div class="box-contacts-decor"></div>
+                  <p class="box-contacts-link"><a href="tel:#">+55 95 99967-8401</a></p>
+                  <p class="box-contacts-link"><a href="tel:#">+55 47 98880-8719</a></p>
+                </div>
+              </article>
+            </div>
+            <div class="col-sm-8 col-md-6 col-lg-4">
+              <article class="box-contacts">
+                <div class="box-contacts-body">
+                  <div class="box-contacts-icon fl-bigmug-line-up104"></div>
+                  <div class="box-contacts-decor"></div>
+                  <p class="box-contacts-link"><a href="#">Boa Vista, Roraima</a></p>
+                </div>
+              </article>
+            </div>
+            <div class="col-sm-8 col-md-6 col-lg-4">
+              <article class="box-contacts">
+                <div class="box-contacts-body">
+                  <div class="box-contacts-icon fl-bigmug-line-chat55"></div>
+                  <div class="box-contacts-decor"></div>
+                  <p class="box-contacts-link"><a href="mailto:#">central@tcare.com</a></p>
+                  <p class="box-contacts-link"><a href="mailto:#">mateuscrvg@live.com</a></p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact Form-->
+      <section class="section section-sm section-last bg-default text-left" >
+        <div class="container">
+          <article class="title-classic">
+            <div class="title-classic-title">
+              <h3>Entre em contato</h3>
+            </div>
+            <div class="title-classic-text">
+              <p>Se você tiver alguma dúvida, basta preencher o formulário de contato e responderemos em breve.</p>
+            </div>
+          </article>
+          <form class="rd-form rd-form-variant-2 rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" action="bat/rd-mailform.php">
+            <div class="row row-14 gutters-14">
+              <div class="col-md-4">
+                <div class="form-wrap">
+                  <input class="form-input" id="contact-your-name-2" type="text" name="name" data-constraints="@Required">
+                  <label class="form-label" for="contact-your-name-2">Nome</label>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-wrap">
+                  <input class="form-input" id="contact-email-2" type="email" name="email" data-constraints="@Email @Required">
+                  <label class="form-label" for="contact-email-2">E-mail</label>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-wrap">
+                  <input class="form-input" id="contact-phone-2" type="text" name="phone" data-constraints="@Numeric">
+                  <label class="form-label" for="contact-phone-2">Telefone</label>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-wrap">
+                  <label class="form-label" for="contact-message-2">Mensagem</label>
+                  <textarea class="form-input textarea-lg" id="contact-message-2" name="message" data-constraints="@Required"></textarea>
+                </div>
+              </div>
+            </div>
+            <button class="button button-primary button-pipaluk" type="submit">Enviar Mensagem</button>
+          </form>
+        </div>
+      </section>
+
+      
+      <!-- Page Footer-->
+      <footer class="section section-fluid footer-minimal context-dark">
+        <div class="bg-gray-15">
+          <div class="container-fluid">
+            
+            <div class="footer-minimal-bottom-panel text-sm-left">
+              <div class="row row-10 align-items-md-center">
+                <div class="col-sm-6 col-md-4 text-sm-right text-md-center">
+                  <div>
+                    <ul class="list-inline list-inline-sm footer-social-list-2">
+                      <li><a class="icon fa fa-facebook" href="#"></a></li>
+                      <li><a class="icon fa fa-twitter" href="#"></a></li>
+                      <li><a class="icon fa fa-google-plus" href="#"></a></li>
+                      <li><a class="icon fa fa-instagram" href="#"></a></li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-md-4 order-sm-first">
+                  <!-- Rights-->
+                  <p class="rights"><span>&copy;&nbsp;</span><span class="copyright-year"></span> <span>T-Care</span>
+                  </p>
+                </div>
+                <div class="col-sm-6 col-md-4 text-md-right"><span>Todos os direitos reservados.</span> 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+      <div class="modal fade" id="modalCta" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4>Contact Us</h4>
+              <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+              <form class="rd-form rd-form-variant-2 rd-mailform" data-form-output="form-output-global" data-form-type="contact-modal" method="post" action="bat/rd-mailform.php">
+                <div class="row row-14 gutters-14">
+                  <div class="col-12">
+                    <div class="form-wrap">
+                      <input class="form-input" id="contact-modal-name" type="text" name="name" data-constraints="@Required">
+                      <label class="form-label" for="contact-modal-name">Your Name</label>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="form-wrap">
+                      <input class="form-input" id="contact-modal-email" type="email" name="email" data-constraints="@Email @Required">
+                      <label class="form-label" for="contact-modal-email">E-mail</label>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="form-wrap">
+                      <input class="form-input" id="contact-modal-phone" type="text" name="phone" data-constraints="@Numeric">
+                      <label class="form-label" for="contact-modal-phone">Phone</label>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="form-wrap">
+                      <label class="form-label" for="contact-modal-message">Message</label>
+                      <textarea class="form-input textarea-lg" id="contact-modal-message" name="message" data-constraints="@Required"></textarea>
+                    </div>
+                  </div>
+                </div>
+                <button class="button button-primary button-pipaluk" type="submit">Send Message</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Global Mailform Output-->
+    <div class="snackbars" id="form-output-global"></div>
+    <!-- Javascript-->
+    <script src="{% static 'global/js/core.min.js' %} "></script>
+    <script src="{% static 'global/js/script.js' %}"></script>
+    <!-- coded by Himic-->
+
 {% endblock content %}
 
 

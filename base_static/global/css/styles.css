@@ -1,0 +1,527 @@
+
+body {
+  padding-top: 60px;
+  background-color: rgb(0, 22, 19);
+  color: #fff;
+}
+h1{
+  color: #fff;
+}
+
+h2{
+  color: #fff;
+}
+
+.fundo-verde-claro {
+  background-color: rgb(0, 180, 160);
+}
+
+.logo-menu{
+  border-radius: 50%;
+}
+
+.navbar-color{
+  background-color: rgb(0, 90, 80);
+  
+}
+
+a:hover{
+  background-color: rgb(220, 230, 250); /* Cor de fundo quando passar o mouse */
+  color: rgb(0, 90, 80); /* Cor do texto quando passar o mouse */
+  border-radius: 5px; /* Borda arredondada quando passar o mouse */
+  text-decoration: none; /* Remover sublinhado quando passar o mouse */
+  padding: 4px;
+}
+
+.link-limpo{
+    color: inherit; /* Manter a cor padrão do texto */
+    text-decoration: none; /* Remover sublinhado */
+    cursor: pointer; /* Mostrar cursor padrão */
+}
+.link-limpo:hover {
+    color: inherit; /* Manter a cor padrão do texto */
+    text-decoration: none; /* Remover sublinhado */
+    cursor: pointer; /* Mostrar cursor padrão */
+}
+
+
+/* Cor de fundo do menu */
+
+
+/* Cor do texto do menu */
+.navbar-color .navbar-nav .nav-link {
+  color: #ffffff !important;
+}
+
+.navbar a {
+  color: #f8f9fa;
+}
+
+/* Cor de fundo do menu suspenso */
+.navbar-color .dropdown-menu {
+  background-color:rgb(0, 90, 80) !important;
+}
+
+/* Cor do texto do menu suspenso */
+.navbar-color .dropdown-menu .dropdown-item {
+  color: #ffffff !important;
+}
+
+/* Cor de fundo do menu suspenso ao passar o mouse */
+.navbar-color .dropdown-menu .dropdown-item:hover {
+  background-color: #fff !important;
+  color:rgb(0, 90, 80)
+}
+
+/* Cor do texto do menu quando o mouse passa sobre ele */
+.navbar-color .navbar-nav .nav-link:hover {
+  color: rgb(0, 90, 80) !important; /* Cor desejada ao passar o mouse */
+}
+
+/* Cor do texto do menu suspenso quando o mouse passa sobre ele */
+.navbar-color .dropdown-menu .dropdown-item:hover {
+  color: rgb(0, 90, 80) !important; /* Cor desejada ao passar o mouse */
+}
+
+
+/* Estilos para a paginação */
+.pagination {
+  margin: 20px 0;
+}
+
+.pagination .page-item .page-link {
+  color: rgb(0, 90, 80);  /* Cor do texto dos links */
+  background-color: #fff; /* Cor de fundo dos links */
+  border: 1px solid #ddd; /* Cor da borda dos links */
+}
+
+.pagination .page-item .page-link:hover {
+  color: #fff; /* Cor do texto dos links ao passar o mouse */
+  background-color:rgb(0, 90, 80); /* Cor de fundo dos links ao passar o mouse */
+  border-color: rgb(220, 230, 250); /* Cor da borda dos links ao passar o mouse */
+}
+
+.pagination .page-item.active .page-link {
+  z-index: 1;
+  color: #fff; /* Cor do texto dos links ativos */
+  background-color: rgb(0, 90, 80); /* Cor de fundo dos links ativos */
+  border-color: rgb(220, 230, 250);/* Cor da borda dos links ativos */
+}
+
+.pagination .page-item.disabled .page-link {
+  color: #868e96; /* Cor do texto dos links desativados */
+  pointer-events: none;
+  cursor: not-allowed;
+  background-color: #fff; /* Cor de fundo dos links desativados */
+  border-color: #ddd; /* Cor da borda dos links desativados */
+}
+
+
+
+
+
+
+.custom-table thead th {
+  background-color:rgb(0, 90, 80); /* Cor de fundo do cabeçalho da tabela */
+  color: #ffffff; /* Cor do texto do cabeçalho da tabela */
+}
+
+.custom-table tbody tr:nth-child(odd) {
+  background-color: #f8f9fa; /* Cor de fundo das linhas ímpares da tabela */
+}
+
+.custom-table tbody tr:hover {
+  background-color: rgb(100, 200, 150); /* Cor de fundo das linhas ao passar o mouse sobre elas */
+}
+
+.filtro-leitura {
+  padding: 15px;
+}
+
+/* Estilo para o botão Filtrar */
+.custom-button {
+  background-color: rgb(0, 90, 80);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+/* Mudança de cor ao passar o mouse sobre o botão */
+.custom-button:hover {
+  background-color: rgb(0, 45, 40);
+  color: #fff;
+  border: 1px solid;
+  border-color: rgb(0, 90, 80);
+  
+}
+
+.container {
+  padding: 5px;
+}
+
+.link-unstyled {
+  text-decoration: none; /* Remove sublinhado */
+  color: inherit; /* Usa a cor padrão do texto */
+}
+.link-unstyled:hover {
+  text-decoration: none; /* Remove sublinhado no hover */
+  color: inherit; /* Mantém a cor padrão do texto no hover */
+}
+
+.text-center {
+  padding-top: 5px;
+}
+
+.message {
+  max-width: 600px;
+  margin: var(--spacing) auto;
+  margin-top: calc(var(--spacing) * 2);
+  padding: var(--spacing);
+  text-align: center;
+  border-radius: var(--default-border-radius);
+  font-size: var(--smaller-font-size);
+}
+
+.message.success {
+  background: rgba(0, 255, 0, 0.3);
+  border: 1px solid rgba(0, 255, 0, 90%);
+}
+
+.message.error {
+  background: rgba(255, 0, 0, 0.3);
+  border: 1px solid rgba(255, 0, 0, 90%);
+}
+
+.message.warning {
+  background: rgba(255, 255, 0, 0.3);
+  border: 1px solid rgba(255, 255, 0, 90%);
+}
+
+.message.info {
+  background: rgba(0, 0, 255, 0.3);
+  border: 1px solid rgba(33, 33, 255, 90%);
+}
+/* :root {
+    --spacing: 1.5rem;
+    --link-dark-color: rgb(0, 90, 80);
+    --link-light-color: rgb(156, 217, 255);
+    --clr-white: rgb(245, 245, 255);
+    --clr-black: rgb(0, 90, 80);
+    --clr-light-gray: rgb(230, 230, 245);
+    --clr-dark-shadow-5: rgba(0, 90, 80, 5%);
+    --clr-dark-shadow-10: rgba(0, 90, 80, 10%);
+    --clr-dark-shadow-20: rgba(0, 90, 80, 20%);
+    --clr-light-shadow-5: rgba(200, 200, 255, 5%);
+    --clr-light-shadow-10: rgba(200, 200, 255, 10%);
+    --clr-light-shadow-20: rgba(200, 200, 255, 20%);
+    --main-page-width: 120rem;
+    --table-min-width: 60rem;
+    --biggest-font-size: 5rem;
+    --bigger-font-size: 4rem;
+    --big-font-size: 3.2rem;
+    --medium-font-size: 2.4rem;
+    --small-font-size: 1.6rem;
+    --smaller-font-size: 1.4rem;
+    --smallest-font-size: 1.2rem;
+    --transition-fast: 300ms;
+    --transition-medium: 600ms;
+    --transition-slow: 1s;
+    --default-border-radius: 4px;
+  }
+  
+  *,
+  *::before,
+  *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html {
+    font-size: 62.5%;
+  }
+  
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+      Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    line-height: 1.5;
+    font-size: var(--small-font-size);
+    color: var(--clr-black);
+    -webkit-font-smoothing: antialiased;
+    background: var(--clr-light-gray);
+  }
+  
+  img,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+  
+  .header {
+    background: var(--clr-black);
+    padding: var(--spacing);
+    box-shadow: 0 5px 10px 2px var(--clr-dark-shadow-20);
+    z-index: 1;
+    position: relative;
+  }
+  
+  .header-heading {
+    font-size: var(--biggest-font-size);
+    text-align: center;
+  }
+  
+  .header-link {
+    color: var(--link-light-color);
+    text-decoration: none;
+    transition: filter var(--transition-fast) ease-in-out;
+  }
+  
+  .header-link:hover {
+    filter: brightness(70%);
+  }
+  
+  .menu {
+    margin: var(--spacing);
+  }
+  
+  .menu-list {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    flex-flow: row wrap;
+  }
+  
+  .menu-link {
+    display: block;
+    padding: var(--spacing);
+    color: var(--link-light-color);
+    text-decoration: none;
+    transition: background-color var(--transition-fast) ease-in-out;
+    border-radius: var(--default-border-radius);
+  }
+  
+  .menu-link:hover {
+    background: var(--clr-light-shadow-10);
+  }
+  
+  .content {
+    max-width: var(--main-page-width);
+    margin: calc(var(--spacing) * 2) auto;
+    padding: var(--spacing);
+    background: var(--clr-white);
+    box-shadow: 2px 2px 5px var(--clr-dark-shadow-20);
+    border-radius: var(--default-border-radius);
+  }
+  
+  .responsive-table {
+    width: 100%;
+    overflow-x: auto;
+  }
+  
+  .contacts-table {
+    width: 100%;
+    min-width: var(--table-min-width);
+    border-collapse: collapse;
+  }
+  
+  .table-caption {
+    font-size: var(--medium-font-size);
+    font-weight: bold;
+    padding: var(--spacing);
+  }
+  
+  .table-row {
+    text-align: left;
+    text-overflow: ellipsis;
+    transition: background-color var(--transition-fast) ease-in-out;
+  }
+  
+  .table-row:nth-of-type(2n) {
+    background: var(--clr-dark-shadow-5);
+  }
+  
+  .table-row:not(.table-row-header):hover {
+    background: var(--clr-dark-shadow-10);
+  }
+  
+  .table-row-header {
+    background: var(--clr-light-gray);
+    color: var(--clr-black);
+  }
+  
+  .table-cel,
+  .table-header {
+    padding: var(--spacing);
+  }
+  
+  .table-link {
+    color: var(--link-dark-color);
+    transition: color var(--transition-fast) ease-in-out;
+    text-decoration: none;
+  }
+  
+  .table-link:hover {
+    color: var(--clr-black);
+  }
+  
+  @media (min-width: 600px) {
+    .single-contact {
+      max-width: 80%;
+      margin: calc(var(--spacing) * 2) auto;
+    }
+  }
+  
+  .single-contact h1 {
+    margin: 1rem 0;
+  }
+  
+  .single-contact p {
+    margin: 1rem 0;
+  }
+  
+  .pagination {
+    margin-top: var(--spacing);
+    display: flex;
+    justify-content: center;
+    padding: calc(var(--spacing) * 0.8);
+    font-size: var(--small-font-size);
+  }
+  
+  .pagination .step-links {
+    display: flex;
+    gap: calc(var(--spacing) * 0.8);
+  }
+  
+  .pagination .step-links a {
+    color: var(--link-dark-color);
+    transition: color var(--transition-fast) ease-in-out;
+    text-decoration: none;
+    display: block;
+  }
+  
+  .search {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .search-input {
+    font-size: var(--medium-font-size);
+    padding: 1rem 2rem;
+    width: 100%;
+    max-width: 32rem;
+    border-radius: var(--default-border-radius);
+    border: 1px solid var(--link-light-color);
+  }
+  
+  .search-input:focus {
+    box-shadow: 0 0 15px var(--link-light-color);
+  }
+  
+  .message {
+    max-width: 600px;
+    margin: var(--spacing) auto;
+    margin-top: calc(var(--spacing) * 2);
+    padding: var(--spacing);
+    text-align: center;
+    border-radius: var(--default-border-radius);
+    font-size: var(--smaller-font-size);
+  }
+  
+  .message.success {
+    background: rgba(0, 255, 0, 0.3);
+    border: 1px solid rgba(0, 255, 0, 90%);
+  }
+  
+  .message.error {
+    background: rgba(255, 0, 0, 0.3);
+    border: 1px solid rgba(255, 0, 0, 90%);
+  }
+  
+  .message.warning {
+    background: rgba(255, 255, 0, 0.3);
+    border: 1px solid rgba(255, 255, 0, 90%);
+  }
+
+  .message.info {
+    background: rgba(0, 0, 255, 0.3);
+    border: 1px solid rgba(33, 33, 255, 90%);
+  }
+
+  .form-wrapper {
+    max-width: 60rem;
+    margin: var(--spacing) auto;
+  }
+  
+  .form-content {
+    margin: var(--spacing) 0;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: var(--spacing);
+  }
+  .errorlist {
+    list-style: none;
+    font-size: var(--smaller-font-size);
+    color: tomato;
+  }
+  .errorlist.nonfield {
+    color: inherit;
+  }
+  
+  .form-group p {
+    margin: 1em 0;
+  }
+  
+  .form-group .help-text,
+  .form-group .help-text ~ ul {
+    margin: 0;
+    font-size: var(--smallest-font-size);
+    list-style: none;
+  }
+  
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    padding: 1rem;
+    border-radius: var(--default-border-radius);
+    border: 1px solid var(--link-dark-color);
+  }
+  
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    outline: none;
+    box-shadow: 0 0 5px var(--link-dark-color);
+  }
+  
+  .form-group label {
+    font-size: var(--smaller-font-size);
+  }
+  
+  .btn {
+    background-color: var(--link-dark-color);
+    color: var(--clr-white);
+    font-weight: bold;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: var(--default-border-radius);
+    cursor: pointer;
+    transition: filter var(--transition-fast) ease-in-out;
+  }
+  
+  .btn:hover {
+    filter: brightness(90%);
+  }
+  
+  .btn:focus,
+  .btn:active {
+    filter: brightness(80%);
+    box-shadow: 0 0 5px var(--link-dark-color);
+  } */
+
