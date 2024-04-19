@@ -6225,7 +6225,7 @@ textarea.textarea-lg {
 	margin-left: auto;
 	margin-right: auto;
 	padding-top: 10px;
-	background-image: url(../images/quote-jean.png);
+	background-image: url(../img/quote-jean.png);
 	background-repeat: no-repeat;
 	background-position: 50% 0;
 }
@@ -10453,7 +10453,7 @@ h2.title-modern > span {
 }
 
 html.boxed body {
-	background: #f2f2f2 url(../images/bg-pattern-boxed.png) repeat fixed;
+	background: #f2f2f2 url(../img/bg-pattern-boxed.png) repeat fixed;
 }
 
 @media (min-width: 1630px) {
@@ -16118,7 +16118,7 @@ html.rd-navbar-fixed-linked .page-header {
 	width: 64px;
 	height: 64px;
 	margin-top: 15px;
-	background-image: url("../images/isotope-loader.png");
+	background-image: url("../img/isotope-loader.png");
 	background-position: -1152px 0;
 	animation: 0.7s sprite-animation steps(18) infinite;
 	transition: .4s all ease;
@@ -18918,15 +18918,15 @@ body:not(.lg-from-hash) .lg-outer.lg-start-zoom .lg-item.lg-complete .lg-object 
 }
 
 .lg-outer .lg-has-vimeo .lg-video-play {
-	background: url(../images/vimeo-play.png) no-repeat;
+	background: url(../img/vimeo-play.png) no-repeat;
 }
 
 .lg-outer .lg-has-vimeo:hover .lg-video-play {
-	background: url(../images/vimeo-play.png) 0 -58px no-repeat;
+	background: url(../img/vimeo-play.png) 0 -58px no-repeat;
 }
 
 .lg-outer .lg-has-html5 .lg-video-play {
-	background: url(../images/video-play.png) no-repeat;
+	background: url(../img/video-play.png) no-repeat;
 	height: 64px;
 	margin-left: -32px;
 	margin-top: -32px;
@@ -18939,11 +18939,11 @@ body:not(.lg-from-hash) .lg-outer.lg-start-zoom .lg-item.lg-complete .lg-object 
 }
 
 .lg-outer .lg-has-youtube .lg-video-play {
-	background: url(../images/youtube-play.png) no-repeat;
+	background: url(../img/youtube-play.png) no-repeat;
 }
 
 .lg-outer .lg-has-youtube:hover .lg-video-play {
-	background: url(../images/youtube-play.png) 0 -60px no-repeat;
+	background: url(../img/youtube-play.png) 0 -60px no-repeat;
 }
 
 .lg-outer .lg-video-object {
@@ -19394,7 +19394,7 @@ body:not(.lg-from-hash) .lg-outer.lg-start-zoom .lg-item.lg-complete .lg-object 
 }
 
 .lg-outer .lg-item {
-	background: url(../images/loading.gif) center center no-repeat;
+	background: url(../img/loading.gif) center center no-repeat;
 	display: none !important;
 }
 
