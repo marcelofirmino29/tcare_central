@@ -572,5 +572,26 @@ def vincular_tag_pessoa(request):
     }
     return render(request, 'home/vincular_tag_pessoa.html', context)
 
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .models import BleData
+
+@csrf_exempt
+def receive_ble_data(request):
+    if request.method == 'POST':
+        data = request.POST
+        device_id = data.get('device_id')
+        rssi = int(data.get('rssi'))
+
+        # Salvar os dados recebidos no banco de dados
+        ble_data = BleData.objects.create(device_id=device_id, rssi=rssi)
+        ble_data.save()
+
+        print("Dados recebidos do Raspberry Pi:", data)
+
+        return JsonResponse({'status': 'success'})
+    else:
+        return JsonResponse({'status': 'error'}, status=400)
+
 
 #TODO criar MVT para cadastrar e listar objetos

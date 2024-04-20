@@ -178,7 +178,13 @@ class Funcionario(Pessoa):
     def __str__(self):
         return f"{self.nome} ({self.tipo})"
     
+class BleData(models.Model):
+    device_id = models.CharField(max_length=100)
+    rssi = models.IntegerField()
+    timestamp = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f"Device: {self.device_id}, RSSI: {self.rssi}, Timestamp: {self.timestamp}"
 
 # class Recepcionista(Funcionario):
 #     ...

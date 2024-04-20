@@ -30,6 +30,10 @@ urlpatterns = [
     path('usuario/login/',views.login_view, name='login'),
     path('usuario/logout/',views.logout_view, name='logout'),
 
+
+    #leitura de tag
+    path('api/ble/', views.recebe_dados_tag, name='recebe_dados_tag'),
+
 ]
 
 
