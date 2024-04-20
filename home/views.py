@@ -577,7 +577,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import BleData
 
 @csrf_exempt
-def receive_ble_data(request):
+def recebe_dados_tag(request):
     if request.method == 'POST':
         data = request.POST
         device_id = data.get('device_id')
