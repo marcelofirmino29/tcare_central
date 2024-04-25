@@ -576,22 +576,51 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import BleData
 
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.utils import timezone
+from django.core.exceptions import ObjectDoesNotExist
+
 @csrf_exempt
 def recebe_dados_tag(request):
     if request.method == 'POST':
-        data = request.POST
-        device_id = data.get('device_id')
-        rssi = int(data.get('rssi'))
+        try:
+            data = request.POST
+            mac_tag = data.get('mac_tag')
+            rssi = int(data.get('rssi'))
+            mac_raspberry = data.get('mac_raspberry')
+            data_leitura = data.get('data_leitura')
 
-        # Salvar os dados recebidos no banco de dados
-        ble_data = BleData.objects.create(device_id=device_id, rssi=rssi)
-        ble_data.save()
+            # Usar try-except para lidar com possíveis exceções de objeto não encontrado
+            try:
+                tag_ble = TagBle.objects.get(uuid_tag=mac_tag)
+                raspberry = Raspberry.objects.get(uuid_rasp=mac_raspberry)
+                monitorado = Monitorado.objects.get(tag_ble=tag_ble)
+                local = Local.objects.get(raspberry=raspberry)
+                leitura = None
 
-        print("Dados recebidos do Raspberry Pi:", data)
+                # Salvar os dados recebidos no banco de dados
+                if monitorado.local_atual != local:
+                    leitura = LeituraTag.objects.create(
+                        tag_ble=tag_ble,
+                        raspberry=raspberry,
+                        monitorado=monitorado,
+                        data_leitura=data_leitura,
+                        local=local
+                    )
+                    if monitorado.local_atual != local:
+                        monitorado.local_atual = local
+                        monitorado.save()   
 
-        return JsonResponse({'status': 'success'})
+                print("Dados recebidos do Raspberry Pi:", leitura)
+                return JsonResponse({'status': 'success'})
+            except ObjectDoesNotExist as e:
+                return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
     else:
-        return JsonResponse({'status': 'error'}, status=400)
+        return JsonResponse({'status': 'error', 'message': 'Método não permitido'}, status=405)
+
 
 
 #TODO criar MVT para cadastrar e listar objetos

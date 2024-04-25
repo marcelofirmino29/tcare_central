@@ -15,7 +15,8 @@ class RaspberryAdmin(admin.ModelAdmin):
     """
     Classe de administração para o modelo Raspberry.
     """
-    list_display = ('id', 'local')
+    list_display = ('id', 'uuid_rasp','local')
+    list_editable = ('local',)
     search_fields = ('local',)
 
 
@@ -83,6 +84,13 @@ class VisitanteAdmin(admin.ModelAdmin):
     Classe de administração para o modelo Visitante.
     """
     list_display = ('nome', 'tag_ble', 'cpf', 'genero', 'data_nascimento','email', 'telefone', 'motivo_visita', 'paciente_vis')
+
+@admin.register(models.BleData)
+class BleDataAdmin(admin.ModelAdmin):
+    """
+    Classe de administração para o modelo Visitante.
+    """
+    list_display = ('device_id', 'rssi',)
 
 """
 @admin.register(models.Endereco)

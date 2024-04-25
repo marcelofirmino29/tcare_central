@@ -1,8 +1,19 @@
 from django.db import models
 import uuid
+from django.core.exceptions import ValidationError
+import re
+
+def validate_mac_address(value):
+    """
+    Valida se o valor fornecido é um endereço MAC válido.
+    Um endereço MAC válido é uma string no formato xx:xx:xx:xx:xx:xx.
+    """
+    # Verifica se o valor é um endereço MAC válido
+    if not re.match(r'^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$', value):
+        raise ValidationError('Endereço MAC inválido')
 
 class TagBle(models.Model):
-    uuid_tag = models.UUIDField(default=uuid.uuid4, unique=True)
+    uuid_tag = models.CharField(max_length=17, unique=True, validators=[validate_mac_address])
     show = models.BooleanField(default=True)
     
     CHOICES = [
@@ -21,6 +32,11 @@ class TagBle(models.Model):
         choices=CHOICES,
         default='novo',
     )
+
+    def save(self, *args, **kwargs):
+        # Antes de salvar, remova os caracteres não alfanuméricos do endereço MAC
+        self.uuid_tag = self.uuid_tag.replace(':', '').upper()
+        super().save(*args, **kwargs)
 
     def __str__(self) -> str:
         return str(self.id)
@@ -52,8 +68,13 @@ class Local(models.Model):
 
 
 class Raspberry(models.Model):
-    uuid_rasp = models.UUIDField(default=uuid.uuid4, unique=True)
+    uuid_rasp = models.CharField(max_length=17, unique=True, validators=[validate_mac_address])
     local = models.ForeignKey(Local, on_delete=models.PROTECT, null=True)
+
+    def save(self, *args, **kwargs):
+        # Antes de salvar, remova os caracteres não alfanuméricos do endereço MAC
+        self.uuid_rasp = self.uuid_rasp.replace(':', '').upper()
+        super().save(*args, **kwargs)
 
     def __str__(self) -> str:
         return str(self.id)
