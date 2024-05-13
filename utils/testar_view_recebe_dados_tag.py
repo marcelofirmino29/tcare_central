@@ -31,7 +31,7 @@ from datetime import datetime
 def testa_recebe_dados_tag():
     url = 'http://127.0.0.1:8000/api/ble/'  # Substitua pela URL correta da sua view
     a=0
-    while a < 10:
+    while a < 1:
         # Dados simulados a serem enviados na requisição POST
         data = {
             'mac_tag': 'bc:57:29:00:a0:0a'.replace(':', '').upper(),  # Exemplo de endereço MAC da tag BLE
@@ -39,7 +39,7 @@ def testa_recebe_dados_tag():
             'mac_raspberry': 'e6:9a:69:a7:9c:72'.replace(':', '').upper(),  # Exemplo de endereço MAC do Raspberry Pi
             'data_leitura': datetime.now().isoformat
         }
-
+        print(data)
         try:
             response = requests.post(url, data=data)
 

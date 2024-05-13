@@ -11,6 +11,7 @@ urlpatterns = [
     path('tags/',views.tags, name='tags'),
     path('cadastrar_tag/',views.cadastrar_tag, name='cadastrar_tag'),
     path('vincular_tag_pessoa/',views.vincular_tag_pessoa, name='vincular_tag_pessoa'),
+    path('desvincular_tag_pessoa/',views.desvincular_tag_pessoa, name='desvincular_tag_pessoa'),
 
     path('pessoas/',views.pessoas, name='pessoas'),
     path('pessoas/detalhes/',views.pessoa_detalhes, name='pessoa_detalhes'),

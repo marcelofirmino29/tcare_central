@@ -32,9 +32,9 @@
 
 
                 </div>
-                <div class="col-md-3 mb-3">
-                    <label for="local" class="form-label">Filtrar por Local:</label>
-                    <select name="local" id="local" class="form-select">
+                <div class="col-md-3 mb-3 form-group">
+                    <label for="local" class="#">Filtrar por Local:</label>
+                    <select name="local" id="local" class="form-select" value="{% if local %}{{local.localizacao}}{% endif %}">
                         <option value="">Todos os Locais</option>
                         <!-- Aqui você pode iterar sobre os locais disponíveis -->
                         {% for local in locais %}
@@ -43,11 +43,11 @@
                     </select>
                 </div>
                 <div class="col-md-3 mb-3">
-                    <label for="data" class="form-label">Filtrar por Data:</label>
+                    <label for="data" class="#">Filtrar por Data:</label>
                     <input type="date" name="data" id="data" class="form-control">
                 </div>
                 <div class="col-md-3 mb-3">
-                    <label for="tipo" class="form-label">Filtrar por Tipo:</label>
+                    <label for="tipo" class="#">Filtrar por Tipo:</label>
                     <select name="tipo" id="tipo" class="form-select">
                         <option value="">Todos os Tipos</option>
                         <option value="paciente">Paciente</option>

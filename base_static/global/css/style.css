@@ -20236,3 +20236,8 @@ disabled look for disabled choices in the results dropdown
 .texto-branco {
 	color: white;
 }
+
+
+.form-select {
+	height: 55px;
+}

@@ -40,6 +40,7 @@ def tags(request):
         'tags': tags_paginated,
         'site_title': 'Tags | ',
         'filtro': filtro,
+        'form': forms.TagBleForm(),
     }
     return render(request, 'home/tags.html', context)
 
@@ -376,6 +377,7 @@ def localizacao(request):
 def local_detalhes(request, local_localizacao):
     local = get_object_or_404(Local, localizacao=local_localizacao)
     pessoas_no_local = Pessoa.objects.exclude(tag_ble=None).filter(local_atual=local)
+    count = pessoas_no_local.__len__
     leituras = LeituraTag.objects.filter(local=local)
 
     # Dicionário para armazenar o horário de entrada de cada pessoa
@@ -395,7 +397,8 @@ def local_detalhes(request, local_localizacao):
 
     context = {
         'lista_leituras': lista_leituras,  # Adicionando o horário de entrada ao contexto
-        'local':local
+        'local':local,
+        'count': count
     }
 
     return render(request, 'home/local_detalhes.html', context)
@@ -454,8 +457,8 @@ def simula_leitura(request):
 @login_required(login_url='login')
 def leituras(request):
     leituras = LeituraTag.objects.all().order_by('-id')
-    monitorados = set(leitura.monitorado for leitura in leituras),
-    locais = set(leitura.local for leitura in leituras)
+    #monitorados = set(leitura.monitorado for leitura in leituras),
+    #locais = set(leitura.local for leitura in leituras)
     # Obter parâmetros de filtro do GET
     monitorado_id = request.GET.get('monitorado')
     filtro_pessoa = request.GET.get('filtro-pessoa')
@@ -495,13 +498,13 @@ def leituras(request):
         leituras = leituras.filter(data_leitura__date=data)
     if tipo:
         if tipo == 'paciente':
-            leituras = leituras.filter(monitorado__in=Paciente.objects.all())
+            leituras = leituras.filter(monitorado__in=Pessoa.objects.filter(tipo=1))
         elif tipo == 'acompanhante':
-            leituras = leituras.filter(monitorado__in=Acompanhante.objects.all())
+            leituras = leituras.filter(monitorado__in=Pessoa.objects.filter(tipo=2))
         elif tipo == 'medico':
-            leituras = leituras.filter(monitorado__in=Funcionario.objects.filter(tipo=3))
+            leituras = leituras.filter(monitorado__in=Pessoa.objects.filter(tipo=3))
         elif tipo == 'enfermeiro':
-            leituras = leituras.filter(monitorado__in=Funcionario.objects.filter(tipo=4))
+            leituras = leituras.filter(monitorado__in=Pessoa.objects.filter(tipo=4))
 
 
 
@@ -514,8 +517,8 @@ def leituras(request):
 
     context = {
         'leituras': leituras_paginated,
-        'monitorados': monitorados,
-        'locais': locais,
+        #'monitorados': monitorados,
+        #'locais': locais,
         'filtro_pessoa': filtro_pessoa,
         'filtro_tipo': filtro_tipo,        
         'monitorado_id': monitorado_id,
@@ -545,7 +548,16 @@ def vincular_tag_pessoa(request):
 
                 # Vinculando a tag à pessoa
                 pessoa.tag_ble = tag
+                pessoa.local_atual = Local.objects.get(id=4) # local = aguardando leitura
                 pessoa.save()
+
+                LeituraTag.objects.create(
+                    tag_ble=pessoa.tag_ble,
+                    raspberry=Raspberry.objects.get(id=6), #rasp = aguardando leituras
+                    monitorado=pessoa,
+                    data_leitura=timezone.now(),
+                    local=Local.objects.get(id=4)
+                )
 
                 messages.success(request, f'Tag {tag} vinculada a {pessoa}')
                 return redirect('vincular_tag_pessoa')
@@ -571,6 +583,47 @@ def vincular_tag_pessoa(request):
         'tags': tags #TODO remover quando em produção
     }
     return render(request, 'home/vincular_tag_pessoa.html', context)
+
+@login_required(login_url='login')
+def desvincular_tag_pessoa(request):
+    if request.method == 'POST':
+        # Obtenha o ID da tag do formulário enviado
+        tag_id = request.POST.get('tagId')
+
+        try:
+            tag_ble = TagBle.objects.get(id=tag_id)
+        except TagBle.DoesNotExist:
+            messages.error(request, f'A tag {tag_id} não existe')
+            return render(request, 'home/desvincular_tag_pessoa.html')
+
+
+
+        try:
+            pessoa = Pessoa.objects.get(tag_ble=tag_ble)
+            if pessoa is not None:
+                
+                LeituraTag.objects.create(
+                        tag_ble=pessoa.tag_ble,
+                        raspberry=Raspberry.objects.get(id=5), #rasp = tag desvinculada
+                        monitorado=pessoa,
+                        data_leitura=timezone.now(),
+                        local=Local.objects.get(id=3)
+                ).save()
+                
+                pessoa.tag_ble = None
+                pessoa.local_atual = Local.objects.get(id=3) #Local = tag desvinculada
+                pessoa.save()
+
+                
+
+
+            messages.success(request, f'A tag {tag_id} foi desvinculada de {pessoa}')
+        except:
+            messages.error(request, f'A tag {tag_id} não está vinculada')
+
+
+    return render(request, 'home/desvincular_tag_pessoa.html')
+
 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt

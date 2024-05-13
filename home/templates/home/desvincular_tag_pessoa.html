@@ -1,0 +1,20 @@
+{% extends "global/base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <h2 class="mb-4">Desvincular Tag</h2>
+            <form action="{% url "desvincular_tag_pessoa" %}" method="POST" id="desvincularTagForm">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="tagId" class="label">ID da Tag:</label>
+                    <input type="number" class="form-control" id="tagId" name="tagId" required>
+                </div>
+                <button type="submit" class="btn btn-danger">Desvincular</button> <br> <br>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
