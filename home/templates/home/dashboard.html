@@ -6,7 +6,8 @@
     <div class="container mt-5">
         <div class="row">
             <!-- Estatísticas em Tempo Real -->
-            <div class="col-md-7  wow fadeInLeft">
+            <div class="col-md-7">
+            <!-- <div class="col-md-7  wow fadeInLeft"> -->
                 <div class="card mb-4 shadow-sm">
                     <div class="card-body">
                         <h1 class="card-title">Estatísticas em Tempo Real</h1>
@@ -18,7 +19,8 @@
             </div>
             
             <!-- Últimas Leituras -->
-            <div class="col-md-5  wow fadeInRight">
+            <div class="col-md-5" id="ultimas-leituras">
+            <!-- <div class="col-md-5  wow fadeInRight"> -->
                 <div class="card mb-4 shadow-sm">
                     <div class="card-body">
                         <h1 class="card-title">Últimas Leituras</h1>
@@ -43,7 +45,8 @@
         </div>
 
         <div class="row">
-            <div class="col-md-12 wow fadeInUp">
+            <div class="col-md-12">
+            <!-- <div class="col-md-12 wow fadeInUp"> -->
                 <div class="card">
                     <div class="card-body">
                         <h1 class="card-title">Total de Pessoas no Hospital por Tipo</h1>
@@ -55,7 +58,8 @@
         <br>
 
         <div class="row">
-            <div class="col-md-6 wow fadeInLeft">
+            <div class="col-md-6">
+            <!-- <div class="col-md-6 wow fadeInLeft"> -->
                 <div class="card mb-4 shadow-sm">
                     <div class="card-body">
                         <h1 class="card-title">Pacientes</h1>
@@ -79,7 +83,8 @@
                 </div>
             </div>
             
-            <div class="col-md-6 wow fadeInRight">
+            <div class="col-md-6">
+            <!-- <div class="col-md-6 wow fadeInRight"> -->
                 <div class="card mb-4 shadow-sm">
                     <div class="card-body">
                         <h2 class="card-title">Acompanhantes</h2>
@@ -105,7 +110,8 @@
         </div>
 
         <div class="row">
-            <div class="col-md-6 wow fadeInLeft">
+            <div class="col-md-6">
+            <!-- <div class="col-md-6 wow fadeInLeft"> -->
                 <div class="card mb-4 shadow-sm">
                     <div class="card-body">
                         <h1 class="card-title">Médicos</h1>
@@ -129,7 +135,8 @@
                 </div>
             </div>
             
-            <div class="col-md-6 wow fadeInRight">
+            <div class="col-md-6">
+            <!-- <div class="col-md-6 wow fadeInRight"> -->
                 <div class="card mb-4 shadow-sm ">
                     <div class="card-body">
                         <h1 class="card-title">Enfermeiros</h1>
@@ -155,7 +162,27 @@
         </div>
     </div>
 
+    <!-- #TODO trocar a recarga braçal por web socket -->
+    <script> 
+           // Função para atualizar dinamicamente a div a cada 10 segundos
+        function updateDivContent() {
+            // Fazer uma solicitação AJAX para obter o conteúdo atualizado da div do servidor
+            $.ajax({
+                url: '/ultimas_leituras', // Endpoint do servidor para obter o conteúdo atualizado
+                type: 'GET',
+                success: function(response) {
+                    // Atualizar dinamicamente a div com o novo conteúdo recebido do servidor
+                    $('#ultimas-leituras').html(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Erro ao obter conteúdo dinâmico:', error);
+                }
+            });
+        }
 
-    
+        // Chamar a função de atualização da div a cada 10 segundos
+        setInterval(updateDivContent, 5000); // 10 segundos em milissegundos
+    </script>
+
     
 {% endblock content %}

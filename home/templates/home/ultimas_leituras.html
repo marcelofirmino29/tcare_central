@@ -1,0 +1,21 @@
+
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h1 class="card-title">Últimas Leituras</h1>
+                <ul class="list-group">
+                    {% for leitura in ultimas_leituras %}
+                        <li class="list-group-item">
+                            <span class="fw-bold">{{ leitura.monitorado }}</span> - {{ leitura.local }}, 
+                            {% if leitura.data_leitura|date:"Y-m-d" == data_hoje %}
+                                hoje, {{ leitura.data_leitura|date:"H:i:s" }}
+                            {% else %}
+                                {{ leitura.data_leitura|date:"d/m/Y - H:i:s" }}
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+                <div class="text-center">
+                    <a href="{% url "leituras" %}" class="link-unstyled"><button type="button" class="btn btn-primary">Ver mais</button></a>
+                </div>
+            </div>
+        </div>

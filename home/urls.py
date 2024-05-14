@@ -35,6 +35,9 @@ urlpatterns = [
     #leitura de tag
     path('api/ble/', views.recebe_dados_tag, name='recebe_dados_tag'),
 
+
+    path('ultimas_leituras/', views.ultimas_leituras, name='ultimas_leituras'),
+
 ]
 
 

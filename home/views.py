@@ -675,5 +675,13 @@ def recebe_dados_tag(request):
         return JsonResponse({'status': 'error', 'message': 'Método não permitido'}, status=405)
 
 
+def ultimas_leituras(request):
+    ultimas_leituras = LeituraTag.objects.order_by('-id').filter()[:11] 
+
+    context = {
+        'ultimas_leituras': ultimas_leituras,
+    }
+
+    return render(request, 'home/ultimas_leituras.html', context)
 
 #TODO criar MVT para cadastrar e listar objetos
