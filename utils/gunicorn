@@ -1,0 +1,75 @@
+###############################################################################
+# Replace
+# tcare the name of the gunicorn file you want
+# mateus your user name
+# tcareapp the folder name of your project
+# central the folder name where you find a file called wsgi.py
+#
+###############################################################################
+# Criando o arquivo tcare.socket
+sudo nano /etc/systemd/system/tcare.socket
+
+###############################################################################
+# Conteúdo do arquivo
+[Unit]
+Description=gunicorn tcare socket
+
+[Socket]
+ListenStream=/run/tcare.socket
+
+[Install]
+WantedBy=sockets.target
+
+###############################################################################
+# Criando o arquivo tcare.service
+sudo nano /etc/systemd/system/tcare.service
+
+###############################################################################
+# Conteúdo do arquivo
+[Unit]
+Description=Gunicorn daemon (You can change if you want)
+Requires=tcare.socket
+After=network.target
+
+[Service]
+User=mateus
+Group=www-data
+Restart=on-failure
+# EnvironmentFile=/home/mateus/tcareapp/.env
+WorkingDirectory=/home/mateus/tcareapp
+# --error-logfile --enable-stdio-inheritance --log-level and --capture-output
+# are all for debugging purposes.
+ExecStart=/home/mateus/tcareapp/venv/bin/gunicorn \
+          --error-logfile /home/mateus/tcareapp/gunicorn-error-log \
+          --enable-stdio-inheritance \
+          --log-level "debug" \
+          --capture-output \
+          --access-logfile - \
+          --workers 6 \
+          --bind unix:/run/tcare.socket \
+          central.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
+
+###############################################################################
+# Ativando
+sudo systemctl start tcare.socket
+sudo systemctl enable tcare.socket
+
+# Checando
+sudo systemctl status tcare.socket
+curl --unix-socket /run/tcare.socket localhost
+sudo systemctl status tcare
+
+# Restarting
+sudo systemctl restart tcare.service
+sudo systemctl restart tcare.socket
+sudo systemctl restart tcare
+
+# After changing something
+sudo systemctl daemon-reload
+
+# Debugging
+sudo journalctl -u tcare.service
+sudo journalctl -u tcare.socket
