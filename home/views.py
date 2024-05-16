@@ -548,15 +548,15 @@ def vincular_tag_pessoa(request):
 
                 # Vinculando a tag à pessoa
                 pessoa.tag_ble = tag
-                pessoa.local_atual = Local.objects.get(id=4) # local = aguardando leitura
+                pessoa.local_atual = Local.objects.get(localizacao="Aguardando leituras") # local = aguardando leitura
                 pessoa.save()
 
                 LeituraTag.objects.create(
                     tag_ble=pessoa.tag_ble,
-                    raspberry=Raspberry.objects.get(id=6), #rasp = aguardando leituras
+                    raspberry=Raspberry.objects.get(uuid_rasp="111111111111"), #rasp = aguardando leituras
                     monitorado=pessoa,
                     data_leitura=timezone.now(),
-                    local=Local.objects.get(id=4)
+                    local=Local.objects.get(localizacao="Aguardando leituras")
                 )
 
                 messages.success(request, f'Tag {tag} vinculada a {pessoa}')
@@ -604,14 +604,14 @@ def desvincular_tag_pessoa(request):
                 
                 LeituraTag.objects.create(
                         tag_ble=pessoa.tag_ble,
-                        raspberry=Raspberry.objects.get(id=5), #rasp = tag desvinculada
+                        raspberry=Raspberry.objects.get(uuid_rasp='000000000000'), #rasp = tag desvinculada
                         monitorado=pessoa,
                         data_leitura=timezone.now(),
-                        local=Local.objects.get(id=3)
+                        local=Local.objects.get(localizacao='Tag desvinculada')
                 ).save()
                 
                 pessoa.tag_ble = None
-                pessoa.local_atual = Local.objects.get(id=3) #Local = tag desvinculada
+                pessoa.local_atual = Local.objects.get(localizacao='Tag desvinculada') #Local = tag desvinculada
                 pessoa.save()
 
                 

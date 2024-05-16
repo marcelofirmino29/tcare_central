@@ -43,24 +43,9 @@ class TagBle(models.Model):
 
 
 class Local(models.Model):
-    # LOCAL_CHOICES = [
-    #     ('ala_a', 'Ala A'),
-    #     ('ala_b', 'Ala B'),
-    #     ('ala_c', 'Ala C'),
-    #     ('ala_d', 'Ala D'),
-    #     ('sala_de_emergencia', 'Sala de Emergência'),
-    #     ('sala_de_cirurgia', 'Sala de Cirurgia'),
-    #     ('sala_de_parto', 'Sala de Parto'),
-    #     ('uti', 'UTI'),
-    #     ('ambulatorio', 'Ambulatório'),
-    #     ('laboratorio', 'Laboratório'),
-    #     ('farmacia', 'Farmácia'),
-    #     ('administracao', 'Administração'),
-    # ]
 
     localizacao = models.CharField(
         max_length=30,
-        #choices=LOCAL_CHOICES,
     )
 
     def __str__(self) -> str:
