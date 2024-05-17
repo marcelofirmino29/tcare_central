@@ -1,8 +1,4 @@
-    <div class="col-md-5" id="ultimas-leituras">
-    <!-- <div class="col-md-5  wow fadeInRight"> -->
-        <div class="card mb-4 shadow-sm">
-            <div class="card-body">
-                <h1 class="card-title">Últimas Leituras</h1>
+
                 <ul class="list-group">
                     {% for leitura in ultimas_leituras %}
                         <li class="list-group-item">
@@ -15,9 +11,6 @@
                         </li>
                     {% endfor %}
                 </ul>
-                <div class="text-center">
-                    <a href="{% url "leituras" %}" class="link-unstyled"><button type="button" class="btn btn-primary">Ver mais</button></a>
-                </div>
-            </div>
-        </div>
-    </div>
+
+
+

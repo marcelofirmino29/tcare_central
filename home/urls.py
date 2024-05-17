@@ -37,6 +37,7 @@ urlpatterns = [
 
 
     path('ultimas_leituras/', views.ultimas_leituras, name='ultimas_leituras'),
+    path('grafico_pizza/', views.grafico_pizza, name='grafico_pizza'),
 
 ]
 

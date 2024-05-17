@@ -1,9 +1,8 @@
 from home import forms
-from home.models import TagBle, Monitorado, Pessoa, Local, Paciente, Funcionario, Acompanhante, Raspberry, LeituraTag
+from home.models import TagBle, Monitorado, Pessoa, Local, Raspberry, LeituraTag
 from django.contrib import messages, auth
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.forms import AuthenticationForm
 import plotly.graph_objs as go
 import colorsys, random
 from django.utils import timezone
@@ -11,6 +10,10 @@ from django.contrib.auth.decorators import login_required
 from collections import Counter
 from django.utils.text import slugify
 from django.db.models import Q
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.utils import timezone
+from django.core.exceptions import ObjectDoesNotExist
 
 def index(request):
     # Define o contexto com as tags recuperadas
@@ -44,7 +47,6 @@ def tags(request):
     }
     return render(request, 'home/tags.html', context)
 
-
 @login_required(login_url='login')
 def pessoas(request):
     filtro = request.GET.get('filtro')  # Obtém o valor do parâmetro 'filtro' da URL
@@ -63,7 +65,6 @@ def pessoas(request):
         'site_title': 'Pessoas | ',
     }
     return render(request,'home/pessoas.html', context)
-
 
 @login_required(login_url='login')
 def cadastrar_tag(request):
@@ -87,7 +88,6 @@ def cadastrar_tag(request):
     }
     return render(request, 'home/cadastrar_tag.html', context)
 
-
 @login_required(login_url='login')
 def cadastrar_pessoa(request):
     
@@ -110,8 +110,6 @@ def cadastrar_pessoa(request):
     }
     return render(request, 'home/cadastrar_pessoa.html', context)
 
-
-
 @login_required(login_url='login')
 def cadastrar_paciente(request):
     
@@ -132,7 +130,6 @@ def cadastrar_paciente(request):
         'form': forms.PacienteForm()
     }
     return render(request, 'home/cadastrar_paciente.html', context)
-
 
 @login_required(login_url='login')
 def cadastrar_acompanhante(request):
@@ -156,7 +153,6 @@ def cadastrar_acompanhante(request):
     }
     return render(request, 'home/cadastrar_acompanhante.html', context)
 
-
 def cadastrar_funcionario(request):
     print('cadastrando funcionário')
     if request.method == 'POST':
@@ -178,7 +174,6 @@ def cadastrar_funcionario(request):
     }
     return render(request, 'home/cadastrar_funcionario.html',context)
 
-
 @login_required(login_url='login')
 def registrar_usuario(request):
     form = forms.RegistroForm()
@@ -199,7 +194,6 @@ def registrar_usuario(request):
             'form': form,
         }
         )
-
 
 def login_view(request):
     form = forms.BootstrapAuthenticationForm(request)
@@ -223,18 +217,16 @@ def login_view(request):
         }
         )
 
-
 @login_required(login_url='login')
 def logout_view(request):
     auth.logout(request)
     return redirect('login')
 
-
 @login_required(login_url='login')
 def dashboard(request):
     total_pessoas = Pessoa.objects.exclude(tag_ble=None).count()
     locais = Local.objects.all()
-    ultimas_leituras = LeituraTag.objects.order_by('-id').filter()[:11] 
+    ultimas_leituras = LeituraTag.objects.order_by('-id').filter()[:6] 
     ultimos_pacientes = LeituraTag.objects.filter(monitorado__in=Pessoa.objects.filter(tipo=1)).order_by('-id')[:6]
     ultimos_acompanhantes = LeituraTag.objects.filter(monitorado__in=Pessoa.objects.filter(tipo=2)).order_by('-id')[:6]
     ultimos_medicos = LeituraTag.objects.filter(monitorado__in=Pessoa.objects.filter(tipo=3)).order_by('-id')[:6]
@@ -345,6 +337,63 @@ def dashboard(request):
 
     return render(request,'home/dashboard.html', context)
 
+def ultimas_leituras(request):
+    ultimas_leituras = LeituraTag.objects.order_by('-id').filter()[:6] 
+
+    context = {
+        'ultimas_leituras': ultimas_leituras,
+    }
+
+    return render(request, 'home/ultimas_leituras.html', context)
+
+def grafico_pizza(request):
+    locais = Local.objects.all()
+
+    pessoas_por_local = {}
+
+    locais_com_pessoas = [local for local in locais if Pessoa.objects.exclude(tag_ble=None).filter(local_atual=local).exists()]
+
+
+    for local in locais_com_pessoas:
+        pessoas_por_local[local.localizacao] = Pessoa.objects.exclude(tag_ble=None).filter(local_atual=local).count()
+
+    # Criar dados para o gráfico de pizza
+    labels = list(pessoas_por_local.keys())
+    values = list(pessoas_por_local.values())
+
+    # Criar texto personalizado para cada fatia
+    #text_info = [f"{label}: {value} " for label, value in zip(labels, values)]
+    text_info = [f"<a target='_self' href='/local/{label}'>{label}: {value}</a> " for label, value in zip(labels, values)]
+
+    # Definir cor principal (RGB)
+    main_color = (0, 90, 80)
+
+    # Converter cor principal para HSL
+    hsl_color = colorsys.rgb_to_hls(main_color[0] / 255, main_color[1] / 255, main_color[2] / 255)
+
+    # Definir cores para as fatias do gráfico de pizza com diferentes intensidades
+    num_slices = len(labels)
+    colors = [f'hsl({hsl_color[0] * 360}, 50%, {70 - i*(50/num_slices)}%)' for i in range(num_slices)]
+    
+
+    # Criar gráfico de pizza
+    fig = go.Figure(data=[go.Pie(labels=labels, values=values, text=text_info, hole=0.3, marker=dict(colors=colors, 
+                line=dict(color='#000000', width=2)), hoverinfo='label+percent+value', textinfo='text+percent', 
+                insidetextorientation='radial', pull=[0.1, 0.1, 0.1, 0.1])])
+
+    # Definir layout
+    fig.update_layout(title='Distribuição de Pessoas por Área')
+
+    # Converter a figura para HTML
+    graph_html = fig.to_html(full_html=False)
+    
+    context = {
+        'pessoas_por_local': pessoas_por_local,
+        'graph_html': graph_html,
+
+    }
+
+    return render(request, 'home/grafico_pizza.html', context)
 
 @login_required(login_url='login')
 def localizacao(request):
@@ -371,7 +420,6 @@ def localizacao(request):
     }
 
     return render(request, 'home/localizacao.html', context)
-
 
 @login_required(login_url='login')
 def local_detalhes(request, local_localizacao):
@@ -453,7 +501,6 @@ def simula_leitura(request):
 
     return render(request, 'home/leitura_tag.html', context)
 
-
 @login_required(login_url='login')
 def leituras(request):
     leituras = LeituraTag.objects.all().order_by('-id')
@@ -529,7 +576,6 @@ def leituras(request):
     }
 
     return render(request, 'home/leituras.html', context)
-
 
 @login_required(login_url='login')
 def vincular_tag_pessoa(request):
@@ -624,16 +670,6 @@ def desvincular_tag_pessoa(request):
 
     return render(request, 'home/desvincular_tag_pessoa.html')
 
-
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from .models import BleData
-
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.utils import timezone
-from django.core.exceptions import ObjectDoesNotExist
-
 @csrf_exempt
 def recebe_dados_tag(request):
     if request.method == 'POST':
@@ -675,13 +711,6 @@ def recebe_dados_tag(request):
         return JsonResponse({'status': 'error', 'message': 'Método não permitido'}, status=405)
 
 
-def ultimas_leituras(request):
-    ultimas_leituras = LeituraTag.objects.order_by('-id').filter()[:11] 
 
-    context = {
-        'ultimas_leituras': ultimas_leituras,
-    }
-
-    return render(request, 'home/ultimas_leituras.html', context)
 
 #TODO criar MVT para cadastrar e listar objetos
